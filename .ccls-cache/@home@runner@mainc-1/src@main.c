@@ -1,5 +1,7 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
 
+#include "main.h"
 #include "map.h"
 
 int main(void) {
@@ -13,12 +15,14 @@ int main(void) {
   int width = 20;
   int heigth = 10;
 
-  Map **map = createMap(width, heigth);
+  Map map;
+  res_Map(&map);
 
-  create_initMap(map, width, heigth);
-  
-  printMap(map, width, heigth);
+  createMap(&map, width, heigth);
 
-  freeMap(map, width);
+
+  printMap(map);
+
+  freeMap(map);
   return 0;
 }
