@@ -12,17 +12,17 @@ int main(void) {
   printf("Hello World\n");
   printf("x: %d\ny: %d\n");
 
+  printf("\e[48;2;150;0;0m \e[38;2;100;200;100m 🌳🤙✨👍🥶😅😓❄💪💨💦🧭💭🖥🎮©🍾👩‍❤️‍👩🙂😎😊😖✈🏹🏎💩💀⬛◼◾▪🏴⚫🖤🔲🟦💙🔵🔷🔹🍀🌿🌾🌴🌳🍃🍁🍂🌲🌱⛏ 🛡 ⚔\n");
+  
   int width = 20;
-  int heigth = 10;
+  int heigth = 30;
 
-  Map map;
-  res_Map(&map);
-
-  createMap(&map, width, heigth);
+  Map* pMap = NULL;
+  pMap = constructor_Map(width, heigth);
 
 
-  printMap(map);
+  printMap(pMap);
 
-  freeMap(map);
+  free_Map(pMap);
   return 0;
 }

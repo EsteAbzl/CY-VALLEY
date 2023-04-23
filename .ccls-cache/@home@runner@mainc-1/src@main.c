@@ -12,8 +12,10 @@ int main(void) {
   printf("Hello World\n");
   printf("x: %d\ny: %d\n");
 
+  printf("\e[43;96m🌳🤙✨👍");
+  
   int width = 20;
-  int heigth = 10;
+  int heigth = 30;
 
   Map map;
   res_Map(&map);
