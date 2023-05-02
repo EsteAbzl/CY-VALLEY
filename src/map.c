@@ -3,9 +3,18 @@
 
 /*RESET des structures*/
 
+void res_Print(Print* pPrint){
+  sprintf(pPrint->caractere, "⛏");
+  
+  sprintf(pPrint->back_color, "\e[48;2;%d;%d;%dm", 100, 200, 100);
+  sprintf(pPrint->font_color, "\e[38;2;%d;%d;%dm", 10, 10, 10);
+}
+
 void res_CaseMap(CaseMap* pCaseMap){
   pCaseMap->biome = 1;
   pCaseMap->ressource = 2;
+
+  res_Print(&(pCaseMap->print));
 }
 
 void res_Map_tab(Map* pMap){
@@ -69,9 +78,10 @@ void free_Map(Map* pMap){
 /*AUTRES fonctions*/
 
 void printMap(Map* pMap){
+  printf("\e[f");
   for (int y = 0; y < pMap->height; y++) {
     for (int x = 0; x < pMap->width; x++) {
-      printf("|%d/%d", pMap->tab[x][y].biome, pMap->tab[x][y].ressource);
+      printf("%s%s %s", pMap->tab[x][y].print.back_color, pMap->tab[x][y].print.font_color, pMap->tab[x][y].print.caractere);
     }
     printf("\n");
   }

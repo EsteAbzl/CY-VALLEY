@@ -1,12 +1,25 @@
+#ifndef MAP_H
+
+#define MAP_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
+
+typedef struct{
+  char caractere[10]; // permet d'afficher des caractère utf-8: sprintf(caractere, "🌳");
+
+  char back_color[30]; // sprintf(back_color, "\033[48;2;%d;%d;%dm", r, g, b);
+  char font_color[30]; // sprintf(font_color, "\033[38;2;%d;%d;%dm", r, g, b);
+  
+}Print;
 
 //Structure qui va contenir les information de chaques cases de la map.
 typedef struct{
   int biome;
   int ressource;
 
+  Print print;
 }CaseMap;
 
 //Structure qui réunis les informations sur une map et son tableau.
@@ -25,6 +38,7 @@ typedef struct{
 // C'est à dire que toutes leurs valeurs sont mis à zero/la valeur décidée comme neutre.
 // /!\ Il faut modifier ces fonctions dès que l'on modifie la dite structure.
 
+void res_Print(Print* pPrint);
 void res_CaseMap(CaseMap* pCaseMap);
 void res_Map_tab(Map* pMap);
 void res_Map(Map* pMap);
@@ -52,3 +66,4 @@ void free_Map(Map* pMap);
 // Affiche le contenu du tableau d'une Map en entier
 void printMap(Map* pMap);
 
+#endif
