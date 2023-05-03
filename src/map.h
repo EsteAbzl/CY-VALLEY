@@ -1,9 +1,9 @@
 #ifndef MAP_H
-
 #define MAP_H
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 typedef struct{
@@ -62,6 +62,9 @@ Map* constructor_Map(int width, int height);
 void free_Map(Map* pMap);
 
 /*AUTRES fonctions*/
+
+void loadMapPrint(Map* pMap);
+void generateMap(Map* pMap);
 
 // Affiche le contenu du tableau d'une Map en entier
 void printMap(Map* pMap);
