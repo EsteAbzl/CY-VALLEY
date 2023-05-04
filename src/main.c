@@ -7,8 +7,8 @@ int main(void) {
   //system("chcp 65001"); A mettre sur windows
   
   Pos test;
-  test.x = 2;
-  test.y = 2;
+  test.x = 10;
+  test.y = 10;
   
   printf("Hello World\n");
   printf("x: %d\ny: %d\n");
@@ -17,21 +17,26 @@ int main(void) {
 
   
   
-  Map* pMap = constructor_Map(70, 70);
-  Info_Cam* pCam = constructor_Info_Cam(25, 15);
+  Map* pMap = constructor_Map(70, 60);
+  Info_Cam* pCam = constructor_Info_Cam(20, 20);
 
   generateMap(pMap);
   loadMapPrint(pMap);
-  
+    
   printMap(pMap);
-  //camera(test, pMap, pCam);
-  
+  //printCam(test, pMap, pCam);
 
-/*
-  for(int i = 0; i<10; i++){
-    printMap(pMap);
-    printf("%d", i);
+  
+  /*
+int a;
+scanf("%d", &a);
+  for(int i = 0; i<40; i++){
+    printCam(test, pMap, pCam);
+    test.x++;
+    test.y++;
+    printf("%d / %d", test.x, test.y);
   }*/
+
 
   free(pCam);
   free_Map(pMap);

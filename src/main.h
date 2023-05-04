@@ -6,7 +6,7 @@
 
 #include "map.h"
 #include "game.h"
-#include "camera.h"
+#include "affichage.h"
 
 
 #endif 

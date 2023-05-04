@@ -5,19 +5,28 @@
 #include <stdlib.h>
 #include <time.h>
 
+typedef enum{
+WATER,SAND,GRASS,VOID
+}Biome;
+
+typedef enum{
+TREE,LEAF,EMPTY
+}Ressource;
+
 
 typedef struct{
   char caractere[10]; // permet d'afficher des caractère utf-8: sprintf(caractere, "🌳");
 
   char back_color[30]; // sprintf(back_color, "\033[48;2;%d;%d;%dm", r, g, b);
   char font_color[30]; // sprintf(font_color, "\033[38;2;%d;%d;%dm", r, g, b);
-  
+
+  int isLoaded;
 }Print;
 
 //Structure qui va contenir les information de chaques cases de la map.
 typedef struct{
-  int biome;
-  int ressource;
+  Biome biome;
+  Ressource ressource;
 
   Print print;
 }CaseMap;
@@ -63,7 +72,6 @@ void free_Map(Map* pMap);
 
 /*AUTRES fonctions*/
 
-void loadMapPrint(Map* pMap);
 void generateMap(Map* pMap);
 
 // Affiche le contenu du tableau d'une Map en entier

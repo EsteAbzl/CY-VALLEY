@@ -1,18 +1,20 @@
-#include "map.h"
+#include "affichage.h"
 
 
 /*RESET des structures*/
 
 void res_Print(Print* pPrint){
-  sprintf(pPrint->caractere, " ");
+  sprintf(pPrint->caractere, "  ");
   
   sprintf(pPrint->back_color, "\e[48;2;%d;%d;%dm", 100, 200, 100);
   sprintf(pPrint->font_color, "\e[38;2;%d;%d;%dm", 10, 10, 10);
+
+  pPrint->isLoaded = 0;
 }
 
 void res_CaseMap(CaseMap* pCaseMap){
-  pCaseMap->biome = 0;
-  pCaseMap->ressource = 0;
+  pCaseMap->biome = VOID;
+  pCaseMap->ressource = EMPTY;
 
   res_Print(&(pCaseMap->print));
 }
@@ -77,47 +79,26 @@ void free_Map(Map* pMap){
 
 /*AUTRES fonctions*/
 
-void loadMapPrint(Map* pMap){
-  for(int y = 0; y < pMap->height; y++){
-    for(int x = 0; x < pMap->width; x++){
-      switch(pMap->tab[x][y].biome){
-        case 1: // eau
-          
-          sprintf(pMap->tab[x][y].print.back_color, "\e[48;2;%d;%d;%dm", 27, 113, 207);
-          sprintf(pMap->tab[x][y].print.font_color, "");
-          sprintf(pMap->tab[x][y].print.caractere, " ");
-        break;
-
-        case 2: // sable
-          sprintf(pMap->tab[x][y].print.back_color, "\e[48;2;%d;%d;%dm", 226, 231, 50);
-          sprintf(pMap->tab[x][y].print.font_color, "");
-          switch(pMap->tab[x][y].ressource){
-            case 1:
-              sprintf(pMap->tab[x][y].print.caractere, "⚔");
-            break;
-            default:
-              sprintf(pMap->tab[x][y].print.caractere, " ");
-            break;
-          }
-        break;
-      }
-    }
-  }
-}
-
 void generateMap(Map* pMap){
   srand(time(NULL));
 
   for (int y = 0; y < pMap->height; y++) {
     for (int x = 0; x < pMap->width; x++) {
       if((x < 10 || pMap->width - x < 10) || (y < 10 || pMap->height - y < 10)){
-        pMap->tab[x][y].biome = 1;
+        pMap->tab[x][y].biome = WATER;
+      }
+      else if((x < 15 || pMap->width - x < 15) || (y < 15 || pMap->height - y < 15)){
+        pMap->tab[x][y].biome = SAND;
+        if( !(rand() % 50)){
+          pMap->tab[x][y].ressource = LEAF;
+        }
       }
       else{
-        pMap->tab[x][y].biome = 2;
-        if( !(rand() % 10)){
-          pMap->tab[x][y].ressource = 1;
+        pMap->tab[x][y].biome = GRASS;
+        if( !(rand() % 20)){
+          pMap->tab[x][y].ressource = TREE;
         }
+        
       }
       
     }
@@ -128,7 +109,7 @@ void printMap(Map* pMap){
   printf("\e[f");
   for (int y = 0; y < pMap->height; y++) {
     for (int x = 0; x < pMap->width; x++) {
-      printf("%s%s %s ", pMap->tab[x][y].print.back_color, pMap->tab[x][y].print.font_color, pMap->tab[x][y].print.caractere);
+      printf("%s%s%s", pMap->tab[x][y].print.back_color, pMap->tab[x][y].print.font_color, pMap->tab[x][y].print.caractere);
     }
     printf("\n");
   }
