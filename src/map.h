@@ -41,7 +41,7 @@ typedef struct{
 }Map;
 
 
-/*RESET des structures*/
+RESET DES STRUCTURES
 
 // Les fonctions "res_Structure" initialisent les structure dédiée.
 // C'est à dire que toutes leurs valeurs sont mis à zero/la valeur décidée comme neutre.

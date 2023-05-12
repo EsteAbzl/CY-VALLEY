@@ -18,7 +18,7 @@ int main(void) {
   
   
   Map* pMap = constructor_Map(70, 60);
-  Info_Cam* pCam = constructor_Info_Cam(20, 20);
+  Info_Cam* pCam = constructor_Info_Cam(10, 10);
 
   generateMap(pMap);
   loadMapPrint(pMap);
