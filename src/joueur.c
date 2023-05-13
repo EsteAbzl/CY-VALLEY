@@ -16,5 +16,7 @@ typedef struct{
 }Entitee;
 
 int modifpv(dmgorheal){
+  Entitee Joueur;
   Joueur->Pv =+ dmgorheal;
+  
 }
