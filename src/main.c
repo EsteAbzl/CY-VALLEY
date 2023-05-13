@@ -11,7 +11,7 @@ int main(void) {
   test.y = 10;
   
   
-  Map* pMap = constructor_Map(70, 60);
+  Map* pMap = constructor_Map(100, 100);
   Info_Cam* pCam = constructor_Info_Cam(16*3, 9*3); //la caméra est en 16/9 du coup (48/27)
 
   generateMap(pMap);
@@ -19,7 +19,7 @@ int main(void) {
     
   //printMap(pMap);
   printCam(test, pMap, pCam);
-  printf("%d / %d", test.x, test.y);
+  printf("%d / %d\n", test.x, test.y);
 
   
   /*  
