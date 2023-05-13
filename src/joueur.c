@@ -9,10 +9,12 @@ typedef struct{
 }Inventaire;
 
 
-
 typedef struct{
   Pos Pjoueur;
-  Int Pv;
+  int Pv;
   Inventaire InvJoueur;
-}Joueur;
+}Entitee;
 
+int modifpv(dmgorheal){
+  Joueur->Pv =+ dm
+}
