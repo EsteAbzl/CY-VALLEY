@@ -1,15 +1,21 @@
 #include "affichage.h"
 
 
+//
+//RESET DES STRUCTURES
+//
 
 void res_Info_Cam(Info_Cam* pCam){
   pCam->width = 0;
   pCam->height = 0;
 
-  pCam->pAffichage = NULL;
+  pCam->fAffichage = NULL;
 }
 
 
+//
+//CONSTRUCTEURS DES STRUCTURES
+//
 
 Info_Cam* constructor_Info_Cam(int width, int height){
   Info_Cam* pCam = NULL;
@@ -22,7 +28,7 @@ Info_Cam* constructor_Info_Cam(int width, int height){
   pCam->width = width;
   pCam->height = height;
   
-  if( !(pCam->pAffichage = fopen("data/affichage.txt", "r"))){
+  if( !(pCam->fAffichage = fopen("data/affichage.txt", "r"))){
     printf("erreur lors de l'ouverture de 'data/affichage.txt'");
     exit(-30);
   }
@@ -30,14 +36,21 @@ Info_Cam* constructor_Info_Cam(int width, int height){
   return pCam;
 }
 
+void free_Cam(Info_Cam* pCam){
+  free(pCam->fAffichage);
+  free(pCam);
+}
 
+
+//
+//AUTRES FONCTIONS
+//
 
 void loadMapPrint(Map* pMap){
   for(int y = 0; y < pMap->height; y++){
     for(int x = 0; x < pMap->width; x++){
       switch(pMap->tab[x][y].biome){
         case WATER: // eau
-          
           sprintf(pMap->tab[x][y].print.back_color, "\e[48;2;%d;%d;%dm", 27, 113, 207);
           sprintf(pMap->tab[x][y].print.font_color, "");
           sprintf(pMap->tab[x][y].print.caractere, "  ");
@@ -47,6 +60,7 @@ void loadMapPrint(Map* pMap){
           sprintf(pMap->tab[x][y].print.back_color, "\e[48;2;%d;%d;%dm", 226, 231, 50);
           sprintf(pMap->tab[x][y].print.font_color, "");
         break;
+        
         case GRASS: // sable
           sprintf(pMap->tab[x][y].print.back_color, "\e[48;2;%d;%d;%dm", 34, 177, 76);
           sprintf(pMap->tab[x][y].print.font_color, "");
@@ -54,16 +68,18 @@ void loadMapPrint(Map* pMap){
       }
 
       switch(pMap->tab[x][y].ressource){
-          case LEAF:
-            sprintf(pMap->tab[x][y].print.caractere, "🌾");
-          break;
-          case TREE:
-            sprintf(pMap->tab[x][y].print.caractere, "🌳");
-          break;
-          default:
-            sprintf(pMap->tab[x][y].print.caractere, "  ");
-          break;
-        }
+        case LEAF:
+          sprintf(pMap->tab[x][y].print.caractere, "🌾");
+        break;
+      
+        case TREE:
+          sprintf(pMap->tab[x][y].print.caractere, "🌳");
+        break;
+      
+        default:
+          sprintf(pMap->tab[x][y].print.caractere, "  ");
+        break;
+      }
       
       pMap->tab[x][y].print.isLoaded = 1;
     }

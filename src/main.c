@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "main.h"
 
 int main(void) {
@@ -17,9 +14,11 @@ int main(void) {
   generateMap(pMap);
   loadMapPrint(pMap);
     
+
   //printMap(pMap);
   printCam(test, pMap, pCam);
   printf("%d / %d\n", test.x, test.y);
+
 
   
   /*  
@@ -33,7 +32,7 @@ int main(void) {
   }*/
 
 
-  free(pCam);
+  free_Cam(pCam);
   free_Map(pMap);
   
   return 0;
