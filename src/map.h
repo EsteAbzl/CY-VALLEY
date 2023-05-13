@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+//
+//ENUMS, STRUCTURES
+//
+
 typedef enum{
 WATER,SAND,GRASS,VOID
 }Biome;
@@ -55,7 +60,7 @@ void res_Map(Map* pMap);
 
 
 //
-//CONSTRUCTEURS des stuctures*/
+//CONSTRUCTEURS DES STRUCTURES
 //
 // Les fonctions "constructor_Structure" vont un peu plus loin que les fonction "res_"
 // Elles ont pour but de facilement créer un objet du type de la structure,
@@ -80,7 +85,7 @@ void free_Map(Map* pMap);
 
 
 //
-//AUTRES fonctions
+//AUTRES FONCTIONS
 //
 
 void generateMap(Map* pMap);

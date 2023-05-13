@@ -3,7 +3,9 @@
 
 
 typedef struct{
-
+  Obj inv[];
+  int stockagefree;
+  int stockagetotal;
 }Inventaire;
 
 

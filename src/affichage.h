@@ -7,18 +7,36 @@
 #include "main.h"
 #include "map.h"
 
+
+//
+//ENUMS, STRUCTURES
+//
+
 typedef struct{
   int width; // largeur
   int height; // hauteur
 
-  FILE* pAffichage;
+  FILE* fAffichage;
 }Info_Cam;
 
 
+//
+//RESET DES STRUCTURES
+//
+
 void res_Info_Cam(Info_Cam* pCam);
 
-Info_Cam* constructor_Info_Cam(int width, int height);
 
+//
+//CONSTRUCTEURS DES STRUCTURES
+//
+
+Info_Cam* constructor_Info_Cam(int width, int height);
+void free_Cam(Info_Cam* pCam);
+
+//
+//AUTRES FONCTIONS
+//
 
 void loadMapPrint(Map* pMap);
 
