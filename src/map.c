@@ -1,7 +1,8 @@
-#include "affichage.h"
+#include "map.h"
 
-
-/*RESET des structures*/
+//
+//RESET DES STRUCTURES
+//
 
 void res_Print(Print* pPrint){
   sprintf(pPrint->caractere, "  ");
@@ -33,7 +34,10 @@ void res_Map(Map* pMap){
   pMap->tab = NULL;
 }
 
-/*CONSTRUCTEURS des stuctures*/
+
+//
+//CONSTRUCTEURS DES STRUCTURES
+//
 
 CaseMap** constructor_Map_tab(int width, int height){
   CaseMap** tab = NULL;
@@ -77,7 +81,10 @@ void free_Map(Map* pMap){
   free(pMap);
 }
 
-/*AUTRES fonctions*/
+
+//
+//AUTRES FONCTIONS
+//
 
 void generateMap(Map* pMap){
   srand(time(NULL));
@@ -111,8 +118,7 @@ void printMap(Map* pMap){
     for (int x = 0; x < pMap->width; x++) {
       printf("%s%s%s", pMap->tab[x][y].print.back_color, pMap->tab[x][y].print.font_color, pMap->tab[x][y].print.caractere);
     }
-    printf("\n");
+    printf("\e[0m\n");
   }
-  printf("\e[0m ");
 }
 
