@@ -1,7 +1,9 @@
 #include <joueur.h>
 
+
+
 typedef struct{
-  
+
 }Inventaire;
 
 

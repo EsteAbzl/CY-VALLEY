@@ -6,4 +6,11 @@ typedef struct{
   int y;
 }Pos;
 
+typedef struct{
+  int nbobj;
+  char tab[30];
+  int nbmax;
+  int nbact;
+}Obj;
+
 #endif
