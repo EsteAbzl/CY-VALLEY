@@ -98,15 +98,37 @@ void printCam(Pos coordonnee, Map* pMap, Info_Cam* pCam){
     yCam = coordonnee.y - (pCam->height/2);
 
 
-  printf("xCam = %d/yCam = %d\n", xCam, yCam);
-
   printf("\e[f"); //met le curseur au début
+  printf("\e[0m");
+
+  //affichage du contour haut de l'écran
+  printf("╔");
+  for(int i = 0; i<pCam->width*2; i++){
+    printf("═");
+  }
+  printf("╗\n");
+
+  
   for(int j = 0; j<pCam->height; j++){ // y
+    printf("║");
     for(int i = 0; i<pCam->width; i++){ // x
 
-      // affichage
-      printf("%s%s %s ", pMap->tab[xCam+i][yCam+j].print.back_color, pMap->tab[xCam+i][yCam+j].print.font_color, pMap->tab[xCam+i][yCam+j].print.caractere);
+      // affichage d'une case de la map
+      printf("%s%s%s", pMap->tab[xCam+i][yCam+j].print.back_color, pMap->tab[xCam+i][yCam+j].print.font_color, pMap->tab[xCam+i][yCam+j].print.caractere);
     }
-    printf("\n");
+    
+    //affichage des contours gauche et droit de l'écran
+    printf("\e[0m");
+    printf("║\n");
   }
+
+  //affichage du contour bas de l'écran
+  printf("╚");
+  for(int i = 0; i<pCam->width*2; i++){
+    printf("═");
+  }
+  printf("╝\n");
+
+  //affichage d'infos sur la position de la caméra
+  printf("xCam = %d/yCam = %d\n", xCam, yCam);
 }
