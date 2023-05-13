@@ -18,16 +18,16 @@ int main(void) {
   
   
   Map* pMap = constructor_Map(70, 60);
-  Info_Cam* pCam = constructor_Info_Cam(10, 10);
+  Info_Cam* pCam = constructor_Info_Cam(20, 15);
 
   generateMap(pMap);
   loadMapPrint(pMap);
     
-  printMap(pMap);
+  //printMap(pMap);
   //printCam(test, pMap, pCam);
 
   
-  /*
+  
 int a;
 scanf("%d", &a);
   for(int i = 0; i<40; i++){
@@ -35,7 +35,7 @@ scanf("%d", &a);
     test.x++;
     test.y++;
     printf("%d / %d", test.x, test.y);
-  }*/
+  }
 
 
   free(pCam);
