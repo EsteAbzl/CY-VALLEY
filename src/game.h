@@ -17,7 +17,7 @@ typedef struct{
 }buffobj;
 
 typedef struct{
-  int nbobj;
+  int idobj;
   char tab[30];
   int nbmax;
   int nbact;

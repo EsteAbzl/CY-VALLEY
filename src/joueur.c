@@ -26,21 +26,26 @@ void iniInventaire(Inventaire* pInv, int size){
     pInv->inv[n].nbobj = 0;
     pInv->inv[n].nbmax = 0;
     pInv->inv[n].nbact = 0;
-    pInv->inv[n].buffobj.buffpv = 0;
-    pInv->inv[n].buffobj.buffatk = 0;
-    pInv->inv[n].buffobj.heal = 0;
+    pInv->inv[n].stats.buffpv = 0;
+    pInv->inv[n].stats.buffatk = 0;
+    pInv->inv[n].stats.heal = 0;
     for (int n; n<30 , n++){
           pInv->inv[n].tab[n] = 0
       }
   }
 }
 
-void mainInventaire(Inventaire* Inv){
-  for(int n; n<5;n++){ // 5 est le nombre d'obj dans le main mais c changable
-    if(Inv->Inv[n].buffobj.buffpv != 0){
-      
+void mainInventaire(Inventaire* Inv, Entitee entitee){ // ajt les stats mais comment faire pr pas quelle s'ajt plusieurs fois
+  for(int n; n<5;n++){
+    if(Inv->inv[n].stats.pvbuff != 0){
+      modifpvTT(Inv[n].stats.pvbuff,  *entitee);
+    }
+    if(Inv->inv[n].stats.buffobj.atkbuff != 0){
+      modifatk(Inv[n].stats.atkbuff,  *entitee);
   }
 }
+
+
 
 //manque prendre un item dans l'inv
 // la barre main inventaire de ce que le mec utilise
