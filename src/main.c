@@ -8,7 +8,7 @@ int main(void) {
   test.y = 10;
   
   
-  Map* pMap = constructor_Map(100, 100);
+  Map* pMap = constructor_Map(70, 70);
   Info_Cam* pCam = constructor_Info_Cam(16*3, 9*3); //la caméra est en 16/9 du coup (48/27)
 
   generateMap(pMap);
