@@ -11,13 +11,18 @@ typedef struct{
 //entitee peux etre utilisé pour les mobs avec posibilité de laisser leurs inv au sol qd ils meurent?
 typedef struct{
   Pos Pjoueur;
-  int Pv;
+  int PvActuelle;
+  int Pvtotal;
   int Atk;
   Inventaire InvJoueur;
 }Entitee;
 
-void modifpv(int dmgorheal, Entitee* x){
-  x->Pv =+ dmgorheal;
+void modifpvA(int dmgorheal, Entitee* x){
+  x->PvActuelle =+ dmgorheal;
+}
+
+void modifpvTT(int dmgorheal, Entitee* x){
+  x->PvActuelle =+ dmgorheal;
 }
 
 void modifatk(int buff, Entitee* x){
@@ -38,6 +43,12 @@ void iniInventaire(Inventaire* Inv, int size){
     for (int n; n<30 , n++){
           Inv->Inv[n]->tab[n] = 0
       }
+  }
+}
+
+void mainInventaire(Inventaire* Inv){
+  for(int n; n<5;n++){ // 5 est le nombre d'obj dans le main mais c changable
+    if{}
   }
 }
 
