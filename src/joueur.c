@@ -48,7 +48,7 @@ void iniInventaire(Inventaire* Inv, int size){
 
 void mainInventaire(Inventaire* Inv){
   for(int n; n<5;n++){ // 5 est le nombre d'obj dans le main mais c changable
-    if{}
+    if(Inv->Inv[n]->buffobj->buffpv == 0){
   }
 }
 
