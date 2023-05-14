@@ -1,54 +1,44 @@
-#include <joueur.h>
+#include "joueur.h"
 
 
 
-typedef struct{
-  Obj Inv[];
-  int Stockagepris;
-  int Stockagetotal;
-}Inventaire;
 
 //entitee peux etre utilisé pour les mobs avec posibilité de laisser leurs inv au sol qd ils meurent?
-typedef struct{
-  Pos Pjoueur;
-  int PvActuelle;
-  int Pvtotal;
-  int Atk;
-  Inventaire InvJoueur;
-}Entitee;
 
-void modifpvA(int dmgorheal, Entitee* x){
-  x->PvActuelle =+ dmgorheal;
+
+void modifpvA(int dmg_Heal, Entitee* entitee){
+  entitee->pvActuelle += dmg_Heal;
 }
 
-void modifpvTT(int dmgorheal, Entitee* x){
-  x->PvActuelle =+ dmgorheal;
+void modifpvTT(int dmg_Heal, Entitee* entitee){
+  entitee->pvTotal += dmg_Heal;
 }
 
-void modifatk(int buff, Entitee* x){
-  x->Atk =+ buff;
+void modifatk(int buff, Entitee* entitee){
+  entitee->atk += buff;
 }
 
-void iniInventaire(Inventaire* Inv, int size){
-  Inv->Inv[size];
-  Inv->Stockagepris = 0;
-  Inv->Stockagetotal = size;
+void iniInventaire(Inventaire* pInv, int size){
+  pInv->inv[size];
+  pInv->stockagePris = 0;
+  pInv->stockageTotal = size;
   for (int n; n<size ; n++){
-    Inv->Inv[n]->nbobj = 0;
-    Inv->Inv[n]->nbmax = 0;
-    Inv->Inv[n]->nbact = 0;
-    Inv->Inv[n]->buffobj->buffpv = 0;
-    Inv->Inv[n]->buffobj->buffatk = 0;
-    Inv->Inv[n]->buffobj->heal = 0;
+    pInv->inv[n].nbobj = 0;
+    pInv->inv[n].nbmax = 0;
+    pInv->inv[n].nbact = 0;
+    pInv->inv[n].buffobj.buffpv = 0;
+    pInv->inv[n].buffobj.buffatk = 0;
+    pInv->inv[n].buffobj.heal = 0;
     for (int n; n<30 , n++){
-          Inv->Inv[n]->tab[n] = 0
+          pInv->inv[n].tab[n] = 0
       }
   }
 }
 
 void mainInventaire(Inventaire* Inv){
   for(int n; n<5;n++){ // 5 est le nombre d'obj dans le main mais c changable
-    if(Inv->Inv[n]->buffobj->buffpv == 0){
+    if(Inv->Inv[n].buffobj.buffpv != 0){
+      
   }
 }
 
