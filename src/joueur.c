@@ -29,6 +29,8 @@ void deplacementJoueur(JOUEUR* pJoueur) {
       a = 1;
     }
 
+    //printf("\e[2J");
     printf("(%d,%d)", pJoueur->posJoueur.x, pJoueur->posJoueur.y);
+    printf("\033[u\e[0m \e[45m\e[%d;%df\033[s \e[f", pJoueur->posJoueur.y, pJoueur->posJoueur.x);
   }
 }
