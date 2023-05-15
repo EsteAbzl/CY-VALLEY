@@ -7,11 +7,11 @@ typedef struct{
 }POSITION;
 
 typedef struct{
-  char nom[100];
+  /*char nom[100];
   int PV;
   int ATK;
-  int DEF;
+  int DEF;*/
   POSITION posJoueur;
 }JOUEUR;
 
-void deplacementJoueur(JOUEUR j1);
+void deplacementJoueur(JOUEUR* pJoueur);

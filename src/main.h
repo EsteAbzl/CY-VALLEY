@@ -7,6 +7,6 @@
 #include "map.h"
 #include "game.h"
 #include "affichage.h"
-
+#include "joueur.h"
 
 #endif 

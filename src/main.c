@@ -13,11 +13,21 @@ int main(void) {
 
   generateMap(pMap);
   loadMapPrint(pMap);
-    
 
+  JOUEUR j1;
+  JOUEUR* pJoueur = &j1;
+  j1.posJoueur.x = 4;
+  j1.posJoueur.y = 4;
+  
+  printf("(%d,%d)", j1.posJoueur.x, j1.posJoueur.y);
+  deplacementJoueur(pJoueur);
+  printf("(%d,%d)", j1.posJoueur.x, j1.posJoueur.y);
+  
+  
   //printMap(pMap);
-  printCam(test, pMap, pCam);
-  printf("%d / %d\n", test.x, test.y);
+  
+  //printCam(test, pMap, pCam);
+  //printf("%d / %d\n", test.x, test.y);
 
 
   
