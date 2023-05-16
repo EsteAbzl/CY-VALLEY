@@ -113,7 +113,7 @@ void printCam(Pos coordonnee, Map* pMap, Info_Cam* pCam){
     printf("║");
     for(int i = 0; i<pCam->width; i++){ // x
 
-      // affichage d'une case de la map
+      // affichage d'une case de la mapv
       printf("%s%s%s", pMap->tab[xCam+i][yCam+j].print.back_color, pMap->tab[xCam+i][yCam+j].print.font_color, pMap->tab[xCam+i][yCam+j].print.caractere);
     }
     
