@@ -3,14 +3,18 @@ all: main
 CC = clang
 override CFLAGS += -g -Wno-everything -pthread -lm
 
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
-HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
+##ajout pour compiler les fichier de src directement
+DIR_SRC = src/
+DIR_INC = src/
+SRCS = $(wildcard $(DIR_SRC)*.c)
+HEADERS = $(wildcard $(DIR_INC)*.h)
+
 
 main: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) $(SRCS) -o "$@"
+	$(CC) $(CFLAGS) $(SRCS) -o "$@"	
 
 main-debug: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) -O0 $(SRCS) -o "$@"
+	$(CC) -c $(CFLAGS) -O0 $(SRCS) -o "$@"
 
 clean:
 	rm -f main main-debug

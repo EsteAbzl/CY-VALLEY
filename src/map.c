@@ -6,12 +6,12 @@
 void res_Print(Print* pPrint){
   sprintf(pPrint->caractere, "  ");
   
-  sprintf(pPrint->back_color, "\e[48;2;%d;%d;%dm", 100, 200, 100);
+  sprintf(pPrint->back_color, "\e[48;2;%d;%d;%dm", 100, 200, 100); 
   sprintf(pPrint->font_color, "\e[38;2;%d;%d;%dm", 10, 10, 10);
-
+ 
   pPrint->isLoaded = 0;
 }
-
+ 
 void res_CaseMap(CaseMap* pCaseMap){
   pCaseMap->biome = VOID;
   pCaseMap->ressource = EMPTY;
