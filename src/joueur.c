@@ -18,37 +18,60 @@ void modifatk(int buff, Entitee* entitee){
   entitee->atk += buff;
 }
 
+
+
 void iniInventaire(Inventaire* pInv, int size){
-  pInv->inv[size];
   pInv->stockagePris = 0;
   pInv->stockageTotal = size;
+
   for (int n; n<size ; n++){
-    pInv->inv[n].nbobj = 0;
-    pInv->inv[n].nbmax = 0;
-    pInv->inv[n].nbact = 0;
-    pInv->inv[n].stats.buffpv = 0;
-    pInv->inv[n].stats.buffatk = 0;
-    pInv->inv[n].stats.heal = 0;
-    for (int n; n<30 , n++){
-          pInv->inv[n].tab[n] = 0
-      }
+    res_Obj(&(pInv->inv[n]));
   }
 }
 
-void mainInventaire(Inventaire* Inv, Entitee entitee){ // ajt les stats mais comment faire pr pas quelle s'ajt plusieurs fois
+void iniEntitee(Entitee* pEnt){
+  pEnt->pJoueur.x = 10;
+  pEnt->pJoueur.y = 10;
+  pEnt->pvTotal = 0;
+  pEnt->pvActuelle = 0;
+  pEnt->atk = 0;
+  iniInventaire(&(pEnt->inventaire), 0);
+}
+
+void mainInventaire(Inventaire* Inv, Entitee entitee){ 
   for(int n; n<5;n++){
-    if(Inv->inv[n].stats.pvbuff != 0){
-      modifpvTT(Inv[n].stats.pvbuff,  *entitee);
+    if(Inv->inv[n].buffObj.pv_Buff != 0){
+      modifpvTT(Inv->inv[n].buffObj.pv_Buff,  &entitee);
     }
-    if(Inv->inv[n].stats.buffobj.atkbuff != 0){
-      modifatk(Inv[n].stats.atkbuff,  *entitee);
+    if(Inv->inv[n].buffObj.atk_Buff != 0){
+      modifatk(Inv->inv[n].buffObj.atk_Buff,  &entitee);
+    }
+  Inv->inv[n].buffObj.estEquipe = 1;
+
   }
 }
 
+void afficherStats(Entitee* entitee){
+    printf("position x: %d  y: %d\n Pv total %d\n Pv actuelle %d\n Atk %d \n", entitee->pJoueur.x, entitee->pJoueur.y, entitee->pvTotal, entitee->pvActuelle, entitee->atk);
+}
+
+void testStats(Entitee* pEntitee){ // on pourra envoyé une entitée plus tard
+    printf("test stats. \n");
+  iniEntitee(pEntitee);
+  printf("initialisez les statistiques\n");
+  int x = 0;
+  printf("pos x / pos y / pv TT / pv Actuelle / ATK\n");
+  scanf("%d", &x);
+  pEntitee->pJoueur.x = x;
+  scanf("%d", &x);
+  pEntitee->pJoueur.y = x;
+  scanf("%d", &x);
+  pEntitee->pvTotal = x;
+  scanf("%d", &x);
+  pEntitee->pvActuelle = x;
+  scanf("%d", &x);
+  pEntitee->atk = x;
+  afficherStats(pEntitee);
+}
 
 
-//manque prendre un item dans l'inv
-// la barre main inventaire de ce que le mec utilise
-// fonction qui enlève et ajt l'atk / pv en fonction de si l'obj est équipé ou pas
-//fonction consommation d'un obj?
-//

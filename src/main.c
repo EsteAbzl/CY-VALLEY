@@ -1,7 +1,21 @@
 #include "main.h"
 
-int main(void) {
-  //system("chcp 65001"); A mettre sur windows
+int main() {
+int x=0;
+Entitee entitee;
+testStats(&entitee);
+printf("ATK / PV TT / PV ACTUELLE \n");
+scanf("%d", &x);
+modifatk(x , &entitee);
+scanf("%d", &x);
+modifpvTT(x , &entitee);
+scanf("%d" , &x);
+modifpvA(x , &entitee);
+afficherStats(&entitee);
+return 0;
+  }
+ 
+/*  //system("chcp 65001"); A mettre sur windows
   
   Pos test;
   test.x = 10;
@@ -27,11 +41,9 @@ int main(void) {
     test.x++;
     test.y++;
     printf("%d / %d", test.x, test.y);
-  }*/
+  }
 
 
   free_Cam(pCam);
   free_Map(pMap);
-  
-  return 0;
-}
+  */

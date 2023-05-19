@@ -11,17 +11,24 @@ typedef struct{
 }Pos;
 //stats des objet, si nourritures heal cbm de vie, le reste est logique.
 typedef struct{
-  int pvbuff;
-  int atkbuff;
+  int pv_Buff;
+  int atk_Buff;
   int heal;
-}buffobj;
+  int estEquipe;
+}BuffObj;
 
 typedef struct{
-  int idobj;
-  char tab[30];
-  int nbmax;
-  int nbact;
-  buffobj stats;
+  int id_Obj;
+  int nb_Max;
+  int nb;
+  
+  BuffObj buffObj;
+  
+  char nom[30];
 }Obj;
+
+
+void res_BuffObj(BuffObj* pBuffObj);
+void res_Obj(Obj* pObj);
 
 #endif
