@@ -21,7 +21,7 @@ typedef struct{
   int id_Obj;
   int nb_Max;
   int nb;
-  
+  int placeinv;
   BuffObj buffObj;
   
   char nom[30];

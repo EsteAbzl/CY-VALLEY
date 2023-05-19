@@ -5,11 +5,11 @@
 
 //entitee peux etre utilisé pour les mobs avec posibilité de laisser leurs inv au sol qd ils meurent?
 void mort(Entitee* mort){
-  printf("mort du joueur")
+  printf("mort du joueur");
 }
 
 void modifpvA(int dmg_Heal, Entitee* pEntitee){
-  pEntite->pvActuelle += dmg_Heal;
+  pEntitee->pvActuelle += dmg_Heal;
   if(pEntitee->pvActuelle > pEntitee->pvTotal){
     pEntitee->pvActuelle = pEntitee->pvTotal;
   }
@@ -49,7 +49,16 @@ void iniEntitee(Entitee* pEnt){
   iniInventaire(&(pEnt->inventaire), 0);
 }
 
-void mainInventaire(Inventaire* Inv, Entitee entitee){ 
+void equiperobjet(Obj* pRemplacé, Obj* pNouvomain){
+  int x;
+  int y;
+  x = pRemplacé->placeinv;
+  y = pNouvomain->placeinv;
+  pNouvomain->placeinv = x;
+  pRemplacé->placeinv = y;
+}
+
+void mainInventaire(Inventaire* Inv, Entitee entitee){
   for(int n; n<5;n++){
     if(Inv->inv[n].buffObj.pv_Buff != 0){
       modifpvTT(Inv->inv[n].buffObj.pv_Buff,  &entitee);
@@ -58,7 +67,6 @@ void mainInventaire(Inventaire* Inv, Entitee entitee){
       modifatk(Inv->inv[n].buffObj.atk_Buff,  &entitee);
     }
   Inv->inv[n].buffObj.estEquipe = 1;
-
   }
 }
 

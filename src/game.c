@@ -12,6 +12,7 @@ void res_Obj(Obj* pObj){
   pObj->id_Obj = 0;
   pObj->nb_Max = 0;
   pObj->nb = 0;
+  pObj->placeinv = 0;
 
   //for(int n; n<30 , n++){
   //  sprintf(pObj->nom, "");
