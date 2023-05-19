@@ -22,6 +22,8 @@ typedef struct{
   Inventaire inventaire;
 }Entitee;
 
+void mort(Entitee* mort);
+
 void iniEntitee(Entitee* pEnt);
 
 void modifatk(int buff, Entitee* entitee);

@@ -19,6 +19,7 @@ TREE,LEAF,EMPTY
 }Ressource;
 
 
+
 typedef struct{
   char caractere[10]; // permet d'afficher des caractère utf-8: sprintf(caractere, "🌳");
 

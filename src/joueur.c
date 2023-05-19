@@ -4,14 +4,25 @@
 
 
 //entitee peux etre utilisé pour les mobs avec posibilité de laisser leurs inv au sol qd ils meurent?
-
-
-void modifpvA(int dmg_Heal, Entitee* entitee){
-  entitee->pvActuelle += dmg_Heal;
+void mort(Entitee* mort){
+  printf("mort du joueur")
 }
 
-void modifpvTT(int dmg_Heal, Entitee* entitee){
-  entitee->pvTotal += dmg_Heal;
+void modifpvA(int dmg_Heal, Entitee* pEntitee){
+  pEntite->pvActuelle += dmg_Heal;
+  if(pEntitee->pvActuelle > pEntitee->pvTotal){
+    pEntitee->pvActuelle = pEntitee->pvTotal;
+  }
+  if(pEntitee->pvActuelle < 0){
+    mort(pEntitee);
+  }
+}
+
+void modifpvTT(int dmg_Heal, Entitee* pEntitee){
+  pEntitee->pvTotal += dmg_Heal;
+  if(pEntitee->pvTotal < pEntitee->pvActuelle){
+    pEntitee->pvActuelle = pEntitee->pvTotal;
+  }
 }
 
 void modifatk(int buff, Entitee* entitee){
