@@ -1,7 +1,7 @@
 all: main
 
 CC = clang
-override CFLAGS += -g -Wno-everything -pthread -lm
+override CFLAGS += -g -Wno-everything -pthread -lm -lncursesw
 
 ##ajout pour compiler les fichier de src directement
 DIR_SRC = src/

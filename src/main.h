@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
+#include <ncurses.h>
 
 #include "map.h"
 #include "game.h"

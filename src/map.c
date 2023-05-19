@@ -1,41 +1,36 @@
 #include "affichage.h"
 
 
-/*RESET des structures*/
-
-void res_Print(Print* pPrint){
-  sprintf(pPrint->caractere, "  ");
-  
-  sprintf(pPrint->back_color, "\e[48;2;%d;%d;%dm", 100, 200, 100); 
-  sprintf(pPrint->font_color, "\e[38;2;%d;%d;%dm", 10, 10, 10);
- 
-  pPrint->isLoaded = 0;
-}
+//
+//RESET DES STRUCTURES
+//
  
 void res_CaseMap(CaseMap* pCaseMap){
   pCaseMap->biome = VOID;
   pCaseMap->ressource = EMPTY;
 
-  res_Print(&(pCaseMap->print));
 }
 
-void res_Map_tab(Map* pMap){
-  for(int x=0; x < pMap->width; x++){
-    for(int y=0; y < pMap->height; y++){
-      res_CaseMap(&(pMap->tab[x][y]));
+void res_Map_tab(Donnees_Map* pDonnees_Map){
+  for(int x=0; x < pDonnees_Map->width; x++){
+    for(int y=0; y < pDonnees_Map->height; y++){
+      res_CaseMap(&(pDonnees_Map->tab[x][y]));
     }
   }
 }
 
-void res_Map(Map* pMap){
-  pMap->width = 0;
-  pMap->height = 0;
-  pMap->tab = NULL;
+void res_Map(Donnees_Map* pDonnees_Map){
+  pDonnees_Map->width = 0;
+  pDonnees_Map->height = 0;
+  pDonnees_Map->tab = NULL;
 }
 
-/*CONSTRUCTEURS des stuctures*/
 
-CaseMap** constructor_Map_tab(int width, int height){
+//
+//CONSTRUCTEURS DES STRUCTURES
+//
+
+CaseMap** constructor_Donnees_Map_tab(int width, int height){
   CaseMap** tab = NULL;
 
   if( !(tab = calloc(width, width * sizeof(CaseMap *)))) {
@@ -51,68 +46,58 @@ CaseMap** constructor_Map_tab(int width, int height){
   return tab;
 }
 
-Map* constructor_Map(int width, int height){
+Donnees_Map* constructor_Donnees_Map(int width, int height){
   
-  Map* pMap = NULL;
-  if( !(pMap = malloc(sizeof(Map)))){
+  Donnees_Map* pDonnees_Map = NULL;
+  if( !(pDonnees_Map = malloc(sizeof(Donnees_Map)))){
     printf("ERREUR: pb avec le malloc de pMap");
   }
 
-  res_Map(pMap);
+  res_Map(pDonnees_Map);
   
-  pMap->width = width;
-  pMap->height = height;
+  pDonnees_Map->width = width;
+  pDonnees_Map->height = height;
   
-  pMap->tab = constructor_Map_tab(width, height);
-  res_Map_tab(pMap);
+  pDonnees_Map->tab = constructor_Donnees_Map_tab(width, height);
+  res_Map_tab(pDonnees_Map);
 
-  return pMap;
+  return pDonnees_Map;
 }
 
-void free_Map(Map* pMap){
-  for (int x = 0; x < pMap->width; x++) {
-    free(pMap->tab[x]);
+void free_Donnees_Map(Donnees_Map* pDonnees_Map){
+  for (int x = 0; x < pDonnees_Map->width; x++) {
+    free(pDonnees_Map->tab[x]);
   }
-  free(pMap->tab);
-  free(pMap);
+  free(pDonnees_Map->tab);
+  free(pDonnees_Map);
 }
 
-/*AUTRES fonctions*/
 
-void generateMap(Map* pMap){
+//
+//AUTRES FONCTIONS
+//
+
+void generateMap(Donnees_Map* pDonnees_Map){
   srand(time(NULL));
 
-  for (int y = 0; y < pMap->height; y++) {
-    for (int x = 0; x < pMap->width; x++) {
-      if((x < 10 || pMap->width - x < 10) || (y < 10 || pMap->height - y < 10)){
-        pMap->tab[x][y].biome = WATER;
+  for (int y = 0; y < pDonnees_Map->height; y++) {
+    for (int x = 0; x < pDonnees_Map->width; x++) {
+      if((x < 10 || pDonnees_Map->width - x < 10) || (y < 10 || pDonnees_Map->height - y < 10)){
+        pDonnees_Map->tab[x][y].biome = WATER;
       }
-      else if((x < 15 || pMap->width - x < 15) || (y < 15 || pMap->height - y < 15)){
-        pMap->tab[x][y].biome = SAND;
+      else if((x < 15 || pDonnees_Map->width - x < 15) || (y < 15 || pDonnees_Map->height - y < 15)){
+        pDonnees_Map->tab[x][y].biome = SAND;
         if( !(rand() % 50)){
-          pMap->tab[x][y].ressource = LEAF;
+          pDonnees_Map->tab[x][y].ressource = LEAF;
         }
       }
       else{
-        pMap->tab[x][y].biome = GRASS;
+        pDonnees_Map->tab[x][y].biome = GRASS;
         if( !(rand() % 20)){
-          pMap->tab[x][y].ressource = TREE;
+          pDonnees_Map->tab[x][y].ressource = TREE;
         }
-        
       }
       
-    }
-  }
+    }// x
+  }// y
 }
-
-void printMap(Map* pMap){
-  printf("\e[f");
-  for (int y = 0; y < pMap->height; y++) {
-    for (int x = 0; x < pMap->width; x++) {
-      printf("%s%s%s", pMap->tab[x][y].print.back_color, pMap->tab[x][y].print.font_color, pMap->tab[x][y].print.caractere);
-    }
-    printf("\n");
-  }
-  printf("\e[0m ");
-}
-
