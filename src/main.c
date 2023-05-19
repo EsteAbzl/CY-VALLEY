@@ -44,7 +44,7 @@ printw("%d\n1: %d, %d, %d", COLORS, r, g, b);
   
   Donnees_Map* pInfoMap = constructor_Donnees_Map(70, 60);
   Affichage_Map* pAffiMap = constructor_Affichage_Map(70, 60);
-  Info_Cam* pCam = constructor_Info_Cam(16*3, 9*3); //la caméra est en 16/9 du coup (48/27)
+  Info_Cam* pCam = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
    
   generateMap(pInfoMap);
   loadMapPrint(pInfoMap, pAffiMap); 
@@ -55,15 +55,15 @@ printw("%d\n1: %d, %d, %d", COLORS, r, g, b);
 
   printMap(pAffiMap);
   
-  /*  
+  
   int a; 
-  scanf("%d", &a);
-  for(int i = 0; i<40; i++){
-    printCam(test, pMap, pCam);
+  getch();
+  for(int i = 0; i<50; i++){
+    printCam(test, pAffiMap, pCam);
     test.x++;
     test.y++;
-    printf("%d / %d", test.x, test.y);
-  }*/
+    refresh();
+  }
 
   refresh();
   getch();

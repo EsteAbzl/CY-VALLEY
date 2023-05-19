@@ -25,12 +25,6 @@ void init_Brush(){
   init_pair(BRUSH_WATER, COLOR_WATER, COLOR_WATER);
   init_pair(BRUSH_SAND, COLOR_VOID, COLOR_SAND);
   init_pair(BRUSH_GRASS, COLOR_VOID, COLOR_GRASS);
-
-  int f, b;
-  for(int i = 0; i<4; i++){
-    pair_content(i, &f, &b);
-    printf("%d: f:%d, b:%d\n", i, f, b);
-}
 }
 
 
@@ -178,67 +172,73 @@ void loadMapPrint(Donnees_Map* pDonnees_Map, Affichage_Map* pAffichage_Map){
 }
 
 
-/*
 void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){  
   // coordonnées du coin haut gauche de la caméra
   int xCam = -1;
   int yCam = -1;
-  
-  printf("x = %d/y = %d\n", coordonnee.x, coordonnee.y);
 
   // on place la caméra en fonction de la position du joueur par raport aux bords de la map
   // on vérifie s'il n'est pas trop proche)
   // xCam
   if((coordonnee.x - (pCam->width/2)) < 0) // trop a gauche
     xCam = 0;
-  else if((coordonnee.x + (pCam->width/2) - pMap->width) > 0) // trop a droite
-    xCam = pMap->width - (pCam->width);
+  else if((coordonnee.x + (pCam->width/2) - pAffichage_Map->width) > 0) // trop a droite
+    xCam = pAffichage_Map->width - (pCam->width);
   else
     xCam = coordonnee.x - (pCam->width/2);
 
   // yCam
   if((coordonnee.y - (pCam->height/2)) < 0)
     yCam = 0;
-  else if((coordonnee.y + (pCam->height/2) - pMap->height) > 0)
-    yCam = pMap->height - (pCam->height);
+  else if((coordonnee.y + (pCam->height/2) - pAffichage_Map->height) > 0)
+    yCam = pAffichage_Map->height - (pCam->height);
   else
     yCam = coordonnee.y - (pCam->height/2);
 
 
-  printf("\e[f"); //met le curseur au début
-  printf("\e[0m");
+  getch();
+  move(0, 0);
 
   //affichage du contour haut de l'écran
-  printf("╔");
+  printw("╔");
   for(int i = 0; i<pCam->width*2; i++){
-    printf("═");
+    printw("═");
   }
-  printf("╗\n");
+  printw("╗\n");
 
   
-  for(int j = 0; j<pCam->height; j++){ // y
-    printf("║");
-    for(int i = 0; i<pCam->width; i++){ // x
+  for(int j = yCam; j<yCam + pCam->height; j++){ // y
+    printw("║");
+    for(int i = xCam; i<xCam + pCam->width; i++){ // x
 
       // affichage d'une case de la mapv
-      printf("%s%s%s", pMap->tab[xCam+i][yCam+j].print.back_color, pMap->tab[xCam+i][yCam+j].print.font_color, pMap->tab[xCam+i][yCam+j].print.caractere);
+      attron(COLOR_PAIR(pAffichage_Map->tab[i][j].brush));
+      printw("%s", pAffichage_Map->tab[i][j].caractere);
+      attroff(COLOR_PAIR(pAffichage_Map->tab[i][j].brush));
     }
     
     //affichage des contours gauche et droit de l'écran
-    printf("\e[0m");
-    printf("║\n");
+    printw("║\n");
   }
 
   //affichage du contour bas de l'écran
-  printf("╚");
+  printw("╚");
   for(int i = 0; i<pCam->width*2; i++){
-    printf("═");
+    printw("═");
   }
-  printf("╝\n");
+  printw("╝\n");
 
   //affichage d'infos sur la position de la caméra
-  printf("xCam = %d/yCam = %d\n", xCam, yCam);
-}*/
+
+  mvprintw((coordonnee.y - yCam) + 1, (coordonnee.x - xCam) *2 + 1, "😀");
+  move(pCam->height+2, 0);
+  
+  printw("\n*coin superieur gauche: xCam = %d/yCam = %d", xCam, yCam);
+  printw("\n*joueur: x = %d/y = %d", coordonnee.x, coordonnee.y);
+  printw("\n|joueur dans cam: x = %d/ y = %d", coordonnee.x - xCam, coordonnee.y - yCam);
+  
+  refresh();
+}
 
 void printMap(Affichage_Map* pAffichage_Map){
   move(0, 0);
@@ -251,4 +251,6 @@ void printMap(Affichage_Map* pAffichage_Map){
     }// x
     printw("\n");
   }// y
+
+  refresh();
 }
