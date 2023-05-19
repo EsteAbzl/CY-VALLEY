@@ -1,40 +1,41 @@
 #include "main.h"
 
-int main(void) {
+WINDOW* init_Curses(){
   setlocale(LC_ALL, "");
-
+  
   WINDOW* pWin = NULL;
   if( !(pWin = initscr())){
     printf("Erreur lors de initscr() !");
     exit(1);
   }
 
+  // Paramétrage de la récupération des touches
+  //noecho();
+  curs_set(0);
+  if(nodelay(pWin, TRUE) == ERR){
+    printf("erreur lors de l'activation de halfdelay");
+    endwin();
+    exit(4);
+  }
+
+    
+  // Création des couleurs
   start_color();
   init_Brush();
-  /*
-  //init_color(1, 200, 100, 100);
-  init_color(2, 100, 200, 100);
+
+  return pWin;
+}
+
+int main(void) {
+
   
-short r, g, b;
-  color_content(1, &r, &g, &b);
-printw("%d\n1: %d, %d, %d", COLORS, r, g, b);
-  init_pair(0, 1, 2);*/
-  /*int i;
-  printw("\n");
-  for(i = 0; i < 250; i++){
-    //init_color(1, 2, i*4, i*4);
-    init_pair(i, 2, 1);
-    attron(COLOR_PAIR(i));
-    printw("XX");
-    if(!(i%15)) printw("\n");
-    refresh();
-    
-  }
-  
-    
-  
-  printw("Le terminal actuel comporte %d lignes et %d colonnes\n", LINES, COLS);
-  printw(" 😂 ❤♥💘💝💝");*/
+  WINDOW* pWin = init_Curses();
+
+  unsigned long startTime = 0;
+  unsigned long endTime   = 0;
+  unsigned long frameTime = 0;
+
+  startTime = getTimeMicros();
   
   
   Pos test;
@@ -53,22 +54,43 @@ printw("%d\n1: %d, %d, %d", COLORS, r, g, b);
   //printCam(test, pAffiMap, pCam);
   //printf("%d / %d", test.x, test.y);
 
-  printMap(pAffiMap);
+  //printMap(pAffiMap);
   
   
-  int a; 
+  int a, b, e; 
+  
+  int i = 0;
   getch();
-  for(int i = 0; i<50; i++){
+  while(i<40){// future boucle de jeu
+    while((e = getch()) != ERR ){
+      a = e;
+      b = 1;
+    }
+    if(b){
+      b = 0;
+      if(a == 'a'){  
+        test.x++;
+        test.y++;
+        i++;
+        printw("\n%d", i);
+      }
+    }
     printCam(test, pAffiMap, pCam);
-    test.x++;
-    test.y++;
     refresh();
+  
+    endTime   = getTimeMicros();
+    frameTime = endTime - startTime; 
+    startTime = endTime;
+    // Wait to achieve 60FPS
+    
+    if(frameTime <= (1000000/2)){
+      usleep((1000000/2)-frameTime);
+    }
   }
 
-  refresh();
-  getch();
+  
+  echo();
   endwin();
-
 
   free(pCam); 
   free_Donnees_Map(pInfoMap);

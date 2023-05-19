@@ -140,6 +140,9 @@ void loadMapPrint(Donnees_Map* pDonnees_Map, Affichage_Map* pAffichage_Map){
     for(int x = 0; x < pDonnees_Map->width; x++){
       
       switch(pDonnees_Map->tab[x][y].biome){
+        case VOID:
+          pAffichage_Map->tab[x][y].brush = BRUSH_GRASS;
+        break;
         case WATER: // eau
           
           pAffichage_Map->tab[x][y].brush = BRUSH_WATER;
@@ -155,15 +158,15 @@ void loadMapPrint(Donnees_Map* pDonnees_Map, Affichage_Map* pAffichage_Map){
       }
 
       switch(pDonnees_Map->tab[x][y].ressource){
-          case LEAF:
-            sprintf(pAffichage_Map->tab[x][y].caractere, "🌾");
-          break;
-          case TREE:
-            sprintf(pAffichage_Map->tab[x][y].caractere, "🌳");
-          break;
-          default:
-            sprintf(pAffichage_Map->tab[x][y].caractere, "  ");
-          break;
+        case EMPTY:
+          sprintf(pAffichage_Map->tab[x][y].caractere, "  ");
+        break;
+        case LEAF:
+          sprintf(pAffichage_Map->tab[x][y].caractere, "🌾");
+        break;
+        case TREE:
+          sprintf(pAffichage_Map->tab[x][y].caractere, "🌳");
+        break;
         }
       
       pAffichage_Map->tab[x][y].isLoaded = 1;
@@ -196,7 +199,6 @@ void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){
     yCam = coordonnee.y - (pCam->height/2);
 
 
-  getch();
   move(0, 0);
 
   //affichage du contour haut de l'écran
@@ -230,7 +232,9 @@ void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){
 
   //affichage d'infos sur la position de la caméra
 
-  mvprintw((coordonnee.y - yCam) + 1, (coordonnee.x - xCam) *2 + 1, "😀");
+  attron(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
+  mvprintw((coordonnee.y - yCam) + 1, (coordonnee.x - xCam) *2 + 1, "🧍");
+  attroff(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
   move(pCam->height+2, 0);
   
   printw("\n*coin superieur gauche: xCam = %d/yCam = %d", xCam, yCam);
