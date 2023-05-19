@@ -5,26 +5,32 @@
 //INIT COULEUR ET BROSSES
 //
 
-void put_rgb_color(short id, int r, int g, int b){
-  init_color(id, r, g, b);  
-  printf("%d, %d, %d:", r*4, g*4, b*4);
-  color_content(id, &r, &g, &b);
-  printf("%d, %d, %d\n", r*4, g*4, b*4);
-  
+void setColor(unsigned char id, unsigned char r, unsigned char g, unsigned char b){
+  int rr = (1000*r)/255;
+  int gg = (1000*g)/255;
+  int bb = (1000*b)/255;
+  init_color(id, rr, gg, bb);
 }
 
 void init_Colors(){
-  put_rgb_color(COLOR_VOID, 10, 10, 10);
-  put_rgb_color(COLOR_WATER, 27, 113, 207);
-  put_rgb_color(COLOR_SAND, 226, 231, 50);
-  put_rgb_color(COLOR_GRASS, 34, 177, 76);
+  setColor(COLOR_VOID, 10, 10, 10);
+  setColor(COLOR_WATER, 27, 113, 207);
+  setColor(COLOR_SAND, 226, 231, 50);
+  setColor(COLOR_GRASS, 34, 177, 76);
 }
 
 void init_Brush(){
+  init_Colors();
   init_pair(BRUSH_VOID, COLOR_VOID, COLOR_VOID);
   init_pair(BRUSH_WATER, COLOR_WATER, COLOR_WATER);
   init_pair(BRUSH_SAND, COLOR_VOID, COLOR_SAND);
   init_pair(BRUSH_GRASS, COLOR_VOID, COLOR_GRASS);
+
+  int f, b;
+  for(int i = 0; i<4; i++){
+    pair_content(i, &f, &b);
+    printf("%d: f:%d, b:%d\n", i, f, b);
+}
 }
 
 
@@ -240,7 +246,7 @@ void printMap(Affichage_Map* pAffichage_Map){
   for (int y = 0; y < pAffichage_Map->height; y++) {
     for (int x = 0; x < pAffichage_Map->width; x++) {
       attron(COLOR_PAIR(pAffichage_Map->tab[x][y].brush));
-      printw("%d,%s", pAffichage_Map->tab[x][y].brush, pAffichage_Map->tab[x][y].caractere);
+      printw("%s", pAffichage_Map->tab[x][y].caractere);
       attroff(COLOR_PAIR(pAffichage_Map->tab[x][y].brush));
     }// x
     printw("\n");

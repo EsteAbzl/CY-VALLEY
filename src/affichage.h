@@ -53,7 +53,7 @@ typedef struct{
 //
 
 // permet de changer des couleurs avec des valeurs entre 0 ett 255
-void put_rgb_color(short id, int r, int g, int b);
+void setColor(unsigned char id, unsigned char r, unsigned char g, unsigned char b);
 // initialise toutes les couleurs
 void init_Colors();
 // initialise toutes les brush

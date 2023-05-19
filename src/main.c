@@ -10,7 +10,7 @@ int main(void) {
   }
 
   start_color();
-  init_Colors();
+  init_Brush();
   /*
   //init_color(1, 200, 100, 100);
   init_color(2, 100, 200, 100);
