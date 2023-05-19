@@ -32,18 +32,22 @@ static struct termios oldt, newt;
     case 'Z':
       pJoueur->posJoueur.y = pJoueur->posJoueur.y - 1;
       a = 0;
+      pJoueur->regardJoueur = HAUT;
       break;
     case 'S':
       pJoueur->posJoueur.y = pJoueur->posJoueur.y + 1;
       a = 0;
+      pJoueur->regardJoueur = BAS;
       break;
     case 'Q':
       pJoueur->posJoueur.x = pJoueur->posJoueur.x - 1;
       a = 0;
+      pJoueur->regardJoueur = GAUCHE;
       break;
     case 'D':
       pJoueur->posJoueur.x = pJoueur->posJoueur.x + 1;
       a = 0;
+      pJoueur->regardJoueur = DROITE;
       break;
     default:
       a = 1;

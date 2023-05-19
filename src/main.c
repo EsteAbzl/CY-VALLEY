@@ -4,9 +4,9 @@ int main(void) {
   //system("chcp 65001"); A mettre sur windows
   
   Pos test;
-  test.x = 10;
+  test.x = 10; 
   test.y = 10;
-  
+   
   
   Map* pMap = constructor_Map(70, 70);
   Info_Cam* pCam = constructor_Info_Cam(16*3, 9*3); //la caméra est en 16/9 du coup (48/27)
