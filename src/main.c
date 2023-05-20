@@ -1,5 +1,59 @@
 #include "main.h"
 
+void res_Info_Fenetre(Info_Fenetre* pFenetre){
+  pFenetre->pWin = NULL;
+  
+  pFenetre->startTime = 0;
+  pFenetre->endTime = 0;
+  pFenetre->frameTime = 0;
+  
+  pFenetre->fps = 2;
+}
+
+void res_Info_Jeu(Info_Jeu* pJeu){
+  pJeu->ecran = JEU;
+
+  pJeu->event = 0;
+}
+
+
+void res_Map(Map* pMap){
+  pMap->width = 0;
+  pMap->height = 0;
+
+  pMap->pDonnees = NULL;
+  pMap->pAffichage = NULL;
+}
+
+
+//
+//CONSTRUCTEURS DES STRUCTURES
+//
+
+Map* constructor_Map(int width, int height){
+  Map* pMap = NULL;
+  if( !(pMap = malloc(sizeof(Map)))){
+    printf("ERREUR: pb avec le malloc de pMap");
+  }
+
+  res_Map(pMap);
+  
+  pMap->width = width;
+  pMap->height = height;
+  
+  pMap->pDonnees = constructor_Donnees_Map(width, height);
+  pMap->pAffichage = constructor_Affichage_Map(width, height);
+
+  return pMap;
+}
+
+void free_Map(Map* pMap){
+  free_Donnees_Map(pMap->pDonnees);
+  free_Affichage_Map(pMap->pAffichage);
+  free(pMap);
+}
+
+
 WINDOW* init_Curses(){
   setlocale(LC_ALL, "");
   
@@ -13,7 +67,7 @@ WINDOW* init_Curses(){
   //noecho();
   curs_set(0);
   if(nodelay(pWin, TRUE) == ERR){
-    printf("erreur lors de l'activation de halfdelay");
+    printf("erreur lors de l'activation de nodelay");
     endwin();
     exit(4);
   }
@@ -28,14 +82,24 @@ WINDOW* init_Curses(){
 
 int main(void) {
 
+  Info_Fenetre* pFenetre = NULL;
+  if( !(pFenetre = malloc(sizeof(Info_Fenetre)))){
+    printf("Erreur malloc Info_Fenetre");
+    exit(5);
+  }
+  res_Info_Fenetre(pFenetre);
+
+  Info_Jeu* pJeu = NULL;
+  if( !(pJeu = malloc(sizeof(Info_Jeu)))){
+    printf("Erreur malloc Info_Jeu");
+    exit(6);
+  }
+  res_Info_Jeu(pJeu);
   
-  WINDOW* pWin = init_Curses();
+  
+  pFenetre->pWin = init_Curses();
 
-  unsigned long startTime = 0;
-  unsigned long endTime   = 0;
-  unsigned long frameTime = 0;
-
-  startTime = getTimeMicros();
+  pFenetre->startTime = getTimeMicros();
   
   
   Pos test;
@@ -43,12 +107,11 @@ int main(void) {
   test.y = 10; 
   
   
-  Donnees_Map* pInfoMap = constructor_Donnees_Map(70, 60);
-  Affichage_Map* pAffiMap = constructor_Affichage_Map(70, 60);
+  Map* pMap = constructor_Map(70, 60);
   Info_Cam* pCam = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
    
-  generateMap(pInfoMap);
-  loadMapPrint(pInfoMap, pAffiMap); 
+  generateMap(pMap->pDonnees);
+  loadMapPrint(pMap); 
   
   //printMap(pMap);
   //printCam(test, pAffiMap, pCam);
@@ -75,16 +138,16 @@ int main(void) {
         printw("\n%d", i);
       }
     }
-    printCam(test, pAffiMap, pCam);
+    printCam(test, pMap->pAffichage, pCam);
     refresh();
   
-    endTime   = getTimeMicros();
-    frameTime = endTime - startTime; 
-    startTime = endTime;
+    pFenetre->endTime   = getTimeMicros();
+    pFenetre->frameTime = pFenetre->endTime - pFenetre->startTime; 
+    pFenetre->startTime = pFenetre->endTime;
     // Wait to achieve 60FPS
     
-    if(frameTime <= (1000000/2)){
-      usleep((1000000/2)-frameTime);
+    if(pFenetre->frameTime <= (1000000/pFenetre->fps)){
+      usleep((1000000/pFenetre->fps) - pFenetre->frameTime);
     }
   }
 
@@ -93,8 +156,9 @@ int main(void) {
   endwin();
 
   free(pCam); 
-  free_Donnees_Map(pInfoMap);
-  free_Affichage_Map(pAffiMap);
+  free_Map(pMap);
+
+  free(pFenetre);
   
   return 0;
 }

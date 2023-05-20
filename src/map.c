@@ -11,7 +11,7 @@ void res_CaseMap(CaseMap* pCaseMap){
 
 }
 
-void res_Map_tab(Donnees_Map* pDonnees_Map){
+void res_Donnees_Map_tab(Donnees_Map* pDonnees_Map){
   for(int x=0; x < pDonnees_Map->width; x++){
     for(int y=0; y < pDonnees_Map->height; y++){
       res_CaseMap(&(pDonnees_Map->tab[x][y]));
@@ -19,7 +19,7 @@ void res_Map_tab(Donnees_Map* pDonnees_Map){
   }
 }
 
-void res_Map(Donnees_Map* pDonnees_Map){
+void res_Donnees_Map(Donnees_Map* pDonnees_Map){
   pDonnees_Map->width = 0;
   pDonnees_Map->height = 0;
   pDonnees_Map->tab = NULL;
@@ -50,16 +50,16 @@ Donnees_Map* constructor_Donnees_Map(int width, int height){
   
   Donnees_Map* pDonnees_Map = NULL;
   if( !(pDonnees_Map = malloc(sizeof(Donnees_Map)))){
-    printf("ERREUR: pb avec le malloc de pMap");
+    printf("ERREUR: pb avec le malloc de pDonnees_Map");
   }
 
-  res_Map(pDonnees_Map);
+  res_Donnees_Map(pDonnees_Map);
   
   pDonnees_Map->width = width;
   pDonnees_Map->height = height;
   
   pDonnees_Map->tab = constructor_Donnees_Map_tab(width, height);
-  res_Map_tab(pDonnees_Map);
+  res_Donnees_Map_tab(pDonnees_Map);
 
   return pDonnees_Map;
 }

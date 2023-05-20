@@ -88,7 +88,7 @@ void free_Affichage_Map(Affichage_Map* pAffichage_Map);
 //AUTRES FONCTIONS
 //
 
-void loadMapPrint(Donnees_Map* pDonnees_Map, Affichage_Map* pAffichage_Map);
+void loadMapPrint(Map* pMap);
 
 void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam);
 

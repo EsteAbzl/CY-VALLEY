@@ -87,7 +87,7 @@ Affichage_Map* constructor_Affichage_Map(int width, int height){
   
   Affichage_Map* pAffichage_Map = NULL;
   if( !(pAffichage_Map = malloc(sizeof(Affichage_Map)))){
-    printf("ERREUR: pb avec le malloc de pMap");
+    printf("ERREUR: pb avec le malloc de pAffichage_Map");
   }
 
   res_Affichage_Map(pAffichage_Map);
@@ -135,7 +135,10 @@ void free_Affichage_Map(Affichage_Map* pAffichage_Map){
 //AUTRES FONCTIONS
 //
 
-void loadMapPrint(Donnees_Map* pDonnees_Map, Affichage_Map* pAffichage_Map){
+void loadMapPrint(Map* pMap){
+  Donnees_Map* pDonnees_Map = pMap->pDonnees;
+  Affichage_Map* pAffichage_Map = pMap->pAffichage;
+  
   for(int y = 0; y < pDonnees_Map->height; y++){
     for(int x = 0; x < pDonnees_Map->width; x++){
       
