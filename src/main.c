@@ -1,72 +1,74 @@
 #include "main.h"
 
-void res_Info_Fenetre(Info_Fenetre* pFenetre){
+
+//
+//INIT DES STRUCTURES
+//
+
+Info_Fenetre* init_Info_Fenetre(){
+
+  Info_Fenetre* pFenetre = NULL;
+  if( !(pFenetre = malloc(sizeof(Info_Fenetre)))){
+    printf("Erreur malloc Info_Fenetre");
+    exit(5);
+  }
+  
   pFenetre->pWin = NULL;
+
+  pFenetre->ecran = JEU;
   
   pFenetre->startTime = 0;
   pFenetre->endTime = 0;
   pFenetre->frameTime = 0;
   
   pFenetre->fps = 2;
+
+  return pFenetre;
 }
 
-void res_Info_Jeu(Info_Jeu* pJeu){
-  pJeu->ecran = JEU;
+Info_Jeu* init_Info_Jeu(){
 
+  Info_Jeu* pJeu = NULL;
+  if( !(pJeu = malloc(sizeof(Info_Jeu)))){
+    printf("Erreur malloc Info_Jeu");
+    exit(6);
+  }
+  
+  pJeu->score = 0;
+  
+  pJeu->event = 0;
+
+  return pJeu;
+}
+
+
+//
+//RESET DES STRUCTURES
+//
+
+void res_Info_Jeu(Info_Jeu* pJeu){  
+  pJeu->score = 0;
+  
   pJeu->event = 0;
 }
 
 
-void res_Map(Map* pMap){
-  pMap->width = 0;
-  pMap->height = 0;
-
-  pMap->pDonnees = NULL;
-  pMap->pAffichage = NULL;
-}
-
-
 //
-//CONSTRUCTEURS DES STRUCTURES
+//AUTRES FONCTIONS
 //
 
-Map* constructor_Map(int width, int height){
-  Map* pMap = NULL;
-  if( !(pMap = malloc(sizeof(Map)))){
-    printf("ERREUR: pb avec le malloc de pMap");
-  }
-
-  res_Map(pMap);
-  
-  pMap->width = width;
-  pMap->height = height;
-  
-  pMap->pDonnees = constructor_Donnees_Map(width, height);
-  pMap->pAffichage = constructor_Affichage_Map(width, height);
-
-  return pMap;
-}
-
-void free_Map(Map* pMap){
-  free_Donnees_Map(pMap->pDonnees);
-  free_Affichage_Map(pMap->pAffichage);
-  free(pMap);
-}
-
-
-WINDOW* init_Curses(){
+void init_Curses(Info_Fenetre* pFenetre){
   setlocale(LC_ALL, "");
   
-  WINDOW* pWin = NULL;
-  if( !(pWin = initscr())){
+  if( !(pFenetre->pWin = initscr())){
     printf("Erreur lors de initscr() !");
     exit(1);
   }
 
   // Paramétrage de la récupération des touches
-  //noecho();
+  noecho();
   curs_set(0);
-  if(nodelay(pWin, TRUE) == ERR){
+  if(nodelay(pFenetre->pWin, TRUE) == ERR){
     printf("erreur lors de l'activation de nodelay");
     endwin();
     exit(4);
@@ -77,29 +79,19 @@ WINDOW* init_Curses(){
   start_color();
   init_Brush();
 
-  return pWin;
+  // début du temps du jeu
+  pFenetre->startTime = getTimeMicros();
 }
 
-int main(void) {
 
-  Info_Fenetre* pFenetre = NULL;
-  if( !(pFenetre = malloc(sizeof(Info_Fenetre)))){
-    printf("Erreur malloc Info_Fenetre");
-    exit(5);
-  }
-  res_Info_Fenetre(pFenetre);
+int main(int argc, char* argv[]){
 
-  Info_Jeu* pJeu = NULL;
-  if( !(pJeu = malloc(sizeof(Info_Jeu)))){
-    printf("Erreur malloc Info_Jeu");
-    exit(6);
-  }
-  res_Info_Jeu(pJeu);
+  Info_Fenetre* pFenetre = init_Info_Fenetre();
+
+  Info_Jeu* pJeu = init_Info_Jeu();  
   
-  
-  pFenetre->pWin = init_Curses();
+  init_Curses(pFenetre);
 
-  pFenetre->startTime = getTimeMicros();
   
   
   Pos test;
@@ -123,7 +115,6 @@ int main(void) {
   int a, b, e; 
   
   int i = 0;
-  getch();
   while(i<40){// future boucle de jeu
     while((e = getch()) != ERR ){
       a = e;
@@ -151,6 +142,8 @@ int main(void) {
     }
   }
 
+
+  // DESALLOCATION
   
   echo();
   endwin();
@@ -159,6 +152,7 @@ int main(void) {
   free_Map(pMap);
 
   free(pFenetre);
+  free(pJeu);
   
   return 0;
 }

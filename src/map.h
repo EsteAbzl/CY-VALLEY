@@ -5,6 +5,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "brush.h"
+
+//
+//ENUM ET STRUCTURES
+//
+
+// DONNEES
 typedef enum{
   WATER,SAND,GRASS,VOID
 }Biome;
@@ -12,7 +19,6 @@ typedef enum{
 typedef enum{
   TREE,LEAF,EMPTY
 }Ressource;
-
 
 //Structure qui va contenir les information de chaques cases de la map.
 typedef struct{
@@ -31,6 +37,34 @@ typedef struct{
 }Donnees_Map;
 
 
+// AFFICHAGE
+typedef struct{
+  char caractere[10]; // permet d'afficher des caractère utf-8: sprintf(caractere, "🌳");
+  Brush brush; // 'Pinceau' qui contient la couleur de fond et de caractère
+
+  int isLoaded;
+}Print;
+
+//Structure qui permet l'affichage d'une map.
+typedef struct{
+  int width;
+  int height;
+
+  Print **tab;
+
+}Affichage_Map;
+
+
+// MAP
+typedef struct{
+  int width;
+  int height;
+
+  Donnees_Map* pDonnees;
+  Affichage_Map* pAffichage;
+}Map;
+
+
 //
 //RESET DES STRUCTURES
 //
@@ -38,9 +72,19 @@ typedef struct{
 // C'est à dire que toutes leurs valeurs sont mis à zero/la valeur décidée comme neutre.
 // /!\ Il faut modifier ces fonctions dès que l'on modifie la dite structure.
 
+
+// DONNEES
 void res_CaseMap(CaseMap* pCaseMap);
 void res_Donnees_Map_tab(Donnees_Map* pDonnees_Map);
 void res_Donnees_Map(Donnees_Map* pDonnees_Map);
+
+// AFFICHAGE
+void res_Print(Print* pPrint);
+void res_Affichage_Map_tab(Affichage_Map* pAffichage_Map);
+void res_Affichage_Map(Affichage_Map* pAffichage_Map);
+
+// MAP
+void res_Map(Map* pMap);
 
 
 //
@@ -51,23 +95,34 @@ void res_Donnees_Map(Donnees_Map* pDonnees_Map);
 // et par la même occasion d'affecter certaines valeurs.
 
   
-//Retourne un pointeur sur un tableau a deux dimention de type CaseMap.
-//Le tableau se lit: tab[x][y]
+//  Retourne un pointeur sur un tableau a deux dimention du type souhaité.
+//  Le tableau se lit: tab[x][y]
+// DONNEES
 CaseMap** constructor_Donnees_Map_tab(int width, int height);
+// AFFICHAGE
+Print** constructor_Affichage_Map_tab(int width, int height);
 
-//Retourne un pointeur sur un objet de type Map.
+//  Retourne un pointeur sur un objet de type souhaité.
+// DONNEES
 Donnees_Map* constructor_Donnees_Map(int width, int height);
+// AFFICHAGE
+Affichage_Map* constructor_Affichage_Map(int width, int height);
+// MAP
+Map* constructor_Map(int width, int height);
 
 
-//Libère la mémoire prise par une map passée en paramètre.
-//IMPORTANT de le faire pour toutes les maps créées
+//
+//  DESALLOCATION
+//
+//  Libère la mémoire prise par une map passée en paramètre.
+//  IMPORTANT de le faire pour toutes les maps créées
+// DONNEES
 void free_Donnees_Map(Donnees_Map* pDonnees_Map);
+// AFFICHAGE
+void free_Affichage_Map(Affichage_Map* pAffichage_Map);
+// MAP
+void free_Map(Map* pMap);
 
 
-//
-//AUTRES FONCTIONS
-//
-
-void generateMap(Donnees_Map* pDonnees_Map);
 
 #endif

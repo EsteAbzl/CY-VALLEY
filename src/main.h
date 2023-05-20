@@ -10,6 +10,7 @@
 #include "map.h"
 #include "game.h"
 #include "affichage.h"
+#include "donnees.h"
 
 typedef enum{
   ACCUEIL, JEU, MENU
@@ -17,6 +18,11 @@ typedef enum{
 
 typedef struct{
   WINDOW* pWin;
+
+  // informe du mode d'affichage (qui est différent si on est en jeu de si on est dans le menu)
+  Ecran ecran;
+
+  // camJeu, camAccueil, camMaison..
 
   int fps;
   unsigned long startTime;
@@ -26,42 +32,42 @@ typedef struct{
 
 
 typedef struct{
-  Ecran ecran;
+  // Info_joueur
+      // pos
+      // inventaire
+
+  // liste_Enemis (tableau dynamique)
+
+  // etat du jeu
+  // quête en cour?
+  // vitesse? 
+
+  // mapJeu, mapAcceuil, mapMenu, mapGrotte...
+
+  int score;
 
   int event;
 }Info_Jeu;
 
-typedef struct{
-  int width;
-  int height;
+//
+//INIT DES STRUCTURES
+//
 
-  Donnees_Map* pDonnees;
-  Affichage_Map* pAffichage;
-}Map;
-
-
+Info_Fenetre* init_Info_Fenetre();
+Info_Jeu* init_Info_Jeu();
 
 
 //
 //RESET DES STRUCTURES
 //
 
-void res_Map(Map* pMap);
-
-
-//
-//CONSTRUCTEURS DES STRUCTURES
-//
-
-Map* constructor_Map(int width, int height);
-
-void free_Map(Map* pMap);
+void res_Info_Jeu(Info_Jeu* pJeu);
 
 
 //
 //AUTRES FONCTIONS
 //
 
-WINDOW* init_Curses();
+void init_Curses(Info_Fenetre* pFenetre);
 
 #endif 

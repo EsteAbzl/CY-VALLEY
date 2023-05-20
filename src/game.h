@@ -4,12 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <sys/time.h>
-
-typedef struct{
-  int x;
-  int y;
-}Pos;
+#include <time.h>
 
 unsigned long getTimeMicros();
 

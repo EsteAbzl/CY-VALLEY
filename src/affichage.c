@@ -32,29 +32,6 @@ void init_Brush(){
 //RESET DES STRUCTURES
 //
 
-void res_Print(Print* pPrint){
-  sprintf(pPrint->caractere, "  ");
-  
-  pPrint->brush = BRUSH_VOID;
- 
-  pPrint->isLoaded = 0;
-}
-
-void res_Affichage_Map_tab(Affichage_Map* pAffichage_Map){
-  for(int x=0; x < pAffichage_Map->width; x++){
-    for(int y=0; y < pAffichage_Map->height; y++){
-      res_Print(&(pAffichage_Map->tab[x][y]));
-    }
-  }
-}
-
-void res_Affichage_Map(Affichage_Map* pAffichage_Map){
-  pAffichage_Map->width = 0;
-  pAffichage_Map->height = 0;
-  pAffichage_Map->tab = NULL;
-}
-
-
 void res_Info_Cam(Info_Cam* pCam){
   pCam->width = 0;
   pCam->height = 0;
@@ -66,41 +43,6 @@ void res_Info_Cam(Info_Cam* pCam){
 //
 //CONSTRUCTEURS DES STRUCTURES
 //
-
-Print** constructor_Affichage_Map_tab(int width, int height){
-  Print** tab = NULL;
-
-  if( !(tab = calloc(width, width * sizeof(Print *)))) {
-    printf("ERREUR: pb avec le malloc de tab");
-  }
-
-  for(int x = 0; x < width; x++) {
-    if( !(tab[x] = calloc(height, height * sizeof(Print)))) {
-      printf("ERREUR: pb avec le malloc de tab[x]");
-    }
-  }
-
-  return tab;
-}
-
-Affichage_Map* constructor_Affichage_Map(int width, int height){
-  
-  Affichage_Map* pAffichage_Map = NULL;
-  if( !(pAffichage_Map = malloc(sizeof(Affichage_Map)))){
-    printf("ERREUR: pb avec le malloc de pAffichage_Map");
-  }
-
-  res_Affichage_Map(pAffichage_Map);
-  
-  pAffichage_Map->width = width;
-  pAffichage_Map->height = height;
-  
-  pAffichage_Map->tab = constructor_Affichage_Map_tab(width, height);
-  res_Affichage_Map_tab(pAffichage_Map);
-
-  return pAffichage_Map;
-}
-
 
 Info_Cam* constructor_Info_Cam(int width, int height){
   Info_Cam* pCam = NULL;
@@ -119,15 +61,6 @@ Info_Cam* constructor_Info_Cam(int width, int height){
   }
 
   return pCam;
-}
-
-
-void free_Affichage_Map(Affichage_Map* pAffichage_Map){
-  for (int x = 0; x < pAffichage_Map->width; x++) {
-    free(pAffichage_Map->tab[x]);
-  }
-  free(pAffichage_Map->tab);
-  free(pAffichage_Map);
 }
 
 
@@ -246,6 +179,7 @@ void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){
   
   refresh();
 }
+
 
 void printMap(Affichage_Map* pAffichage_Map){
   move(0, 0);
