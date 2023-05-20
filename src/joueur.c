@@ -31,21 +31,33 @@ static struct termios oldt, newt;
     switch (deplacement) {
     case 'Z':
       pJoueur->posJoueur.y = pJoueur->posJoueur.y - 1;
+      if(pJoueur->caseJoueur.ressource == OBSTACLE){
+        pJoueur->posJoueur.y = pJoueur->posJoueur.y + 1;
+      }
       a = 0;
       pJoueur->regardJoueur = HAUT;
       break;
     case 'S':
       pJoueur->posJoueur.y = pJoueur->posJoueur.y + 1;
+      if(pJoueur->caseJoueur.ressource == OBSTACLE){
+        pJoueur->posJoueur.y = pJoueur->posJoueur.y - 1;
+      }
       a = 0;
       pJoueur->regardJoueur = BAS;
       break;
     case 'Q':
       pJoueur->posJoueur.x = pJoueur->posJoueur.x - 1;
+      if(pJoueur->caseJoueur.ressource == OBSTACLE){
+        pJoueur->posJoueur.y = pJoueur->posJoueur.x + 1;
+      }
       a = 0;
       pJoueur->regardJoueur = GAUCHE;
       break;
     case 'D':
       pJoueur->posJoueur.x = pJoueur->posJoueur.x + 1;
+      if(pJoueur->caseJoueur.ressource == OBSTACLE){
+        pJoueur->posJoueur.y = pJoueur->posJoueur.x - 1;
+      }
       a = 0;
       pJoueur->regardJoueur = DROITE;
       break;

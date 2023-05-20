@@ -9,6 +9,10 @@
 //
 //ENUMS, STRUCTURES
 //
+typedef struct{
+  int x;
+  int y;
+}POSITION;
 
 typedef enum{
 WATER,SAND,GRASS,VOID
@@ -30,9 +34,10 @@ typedef struct{
 
 //Structure qui va contenir les information de chaques cases de la map.
 typedef struct{
+  POSITION posCase;
   Biome biome;
   Ressource ressource;
-
+  int estTraversable;
   Print print;
 }CaseMap;
 
