@@ -15,7 +15,7 @@ WATER,SAND,GRASS,VOID
 }Biome;
 
 typedef enum{
-TREE,LEAF,EMPTY
+TREE,LEAF,EMPTY,OBSTACLE
 }Ressource;
 
 
