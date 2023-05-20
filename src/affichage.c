@@ -111,7 +111,7 @@ void loadMapPrint(Map* pMap){
 }
 
 
-void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){  
+void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){  
   // coordonnées du coin haut gauche de la caméra
   int xCam = -1;
   int yCam = -1;

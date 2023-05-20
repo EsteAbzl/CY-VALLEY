@@ -52,7 +52,7 @@ Info_Cam* constructor_Info_Cam(int width, int height);
 
 void loadMapPrint(Map* pMap);
 
-void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam);
+void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam);
 
 //Affiche le contenu du tableau d'une Map en entier
 void printMap(Affichage_Map* pAffichage_Map);

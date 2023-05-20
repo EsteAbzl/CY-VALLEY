@@ -16,6 +16,8 @@ Info_Fenetre* init_Info_Fenetre(){
   pFenetre->pWin = NULL;
 
   pFenetre->ecran = JEU;
+
+  pFenetre->camJeu = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
   
   pFenetre->startTime = 0;
   pFenetre->endTime = 0;
@@ -33,7 +35,14 @@ Info_Jeu* init_Info_Jeu(){
     printf("Erreur malloc Info_Jeu");
     exit(6);
   }
+
+  pJeu->pJoueur = init_Entitee();
+  // ! \\ déplacement en fonction d'une donnée de temps: toutes les 0.5 seconde
+
   
+  pJeu->mapJeu = constructor_Map(70, 60);;
+
+  pJeu->enJeu = 0;
   pJeu->score = 0;
   
   pJeu->event = 0;
@@ -47,6 +56,13 @@ Info_Jeu* init_Info_Jeu(){
 //
 
 void res_Info_Jeu(Info_Jeu* pJeu){  
+  generateMap(pJeu->mapJeu->pDonnees);
+  loadMapPrint(pJeu->mapJeu);
+
+  pJeu->pJoueur->coordonnees.x = 10;
+  pJeu->pJoueur->coordonnees.y = 10;
+
+  pJeu->enJeu = 1;
   pJeu->score = 0;
   
   pJeu->event = 0;
@@ -86,25 +102,18 @@ void init_Curses(Info_Fenetre* pFenetre){
 
 int main(int argc, char* argv[]){
 
+  // structures réunissants les informations importantes du programme
   Info_Fenetre* pFenetre = init_Info_Fenetre();
-
   Info_Jeu* pJeu = init_Info_Jeu();  
-  
+
+  // active les fonctionnalitées de curses
   init_Curses(pFenetre);
 
+
+  // charge les infos de base avant chages partie (dont la map)
+  res_Info_Jeu(pJeu); 
   
-  
-  Pos test;
-  test.x = 10; 
-  test.y = 10; 
-  
-  
-  Map* pMap = constructor_Map(70, 60);
-  Info_Cam* pCam = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
    
-  generateMap(pMap->pDonnees);
-  loadMapPrint(pMap); 
-  
   //printMap(pMap);
   //printCam(test, pAffiMap, pCam);
   //printf("%d / %d", test.x, test.y);
@@ -112,26 +121,18 @@ int main(int argc, char* argv[]){
   //printMap(pAffiMap);
   
   
-  int a, b, e; 
-  
-  int i = 0;
-  while(i<40){// future boucle de jeu
-    while((e = getch()) != ERR ){
-      a = e;
-      b = 1;
-    }
-    if(b){
-      b = 0;
-      if(a == 'a'){  
-        test.x++;
-        test.y++;
-        i++;
-        printw("\n%d", i);
-      }
-    }
-    printCam(test, pMap->pAffichage, pCam);
+
+  while(pJeu->enJeu){// boucle du jeu
+
+    action(pFenetre, pJeu);
+    
+    printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
+    printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
+    
     refresh();
-  
+
+
+    // gestion des fps
     pFenetre->endTime   = getTimeMicros();
     pFenetre->frameTime = pFenetre->endTime - pFenetre->startTime; 
     pFenetre->startTime = pFenetre->endTime;
@@ -148,9 +149,11 @@ int main(int argc, char* argv[]){
   echo();
   endwin();
 
-  free(pCam); 
-  free_Map(pMap);
-
+  free(pFenetre->camJeu); 
+  free_Map(pJeu->mapJeu);
+  
+  free(pJeu->pJoueur);
+  
   free(pFenetre);
   free(pJeu);
   

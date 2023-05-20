@@ -22,6 +22,7 @@ typedef struct{
   Ecran ecran;
 
   // camJeu, camAccueil, camMaison..
+  Info_Cam* camJeu;
 
   int fps;
   unsigned long startTime;
@@ -31,18 +32,20 @@ typedef struct{
 
 
 typedef struct{
+  Entitee* pJoueur;
   // Info_joueur
       // pos
       // inventaire
 
   // liste_Enemis (tableau dynamique)
 
-  // etat du jeu
   // quête en cour?
   // vitesse? 
 
   // mapJeu, mapAcceuil, mapMenu, mapGrotte...
+  Map* mapJeu;
 
+  int enJeu;
   int score;
 
   int event;
@@ -68,5 +71,7 @@ void res_Info_Jeu(Info_Jeu* pJeu);
 //
 
 void init_Curses(Info_Fenetre* pFenetre);
+
+#include "event.h"
 
 #endif 
