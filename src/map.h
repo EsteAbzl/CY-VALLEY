@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "brush.h"
 
@@ -13,11 +12,16 @@
 
 // DONNEES
 typedef enum{
-  WATER,SAND,GRASS,VOID
+  VOID,
+  WATER,
+  SAND,
+  GRASS,
 }Biome;
 
 typedef enum{
-  TREE,LEAF,EMPTY
+  EMPTY,
+  TREE,
+  LEAF
 }Ressource;
 
 //Structure qui va contenir les information de chaques cases de la map.

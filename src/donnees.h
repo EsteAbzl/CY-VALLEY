@@ -12,6 +12,8 @@ typedef struct{
   int y;
 }Pos;
 
+unsigned long getTimeMicros();
+
 void generateMap(Donnees_Map* pDonnees_Map);
 
 #endif
