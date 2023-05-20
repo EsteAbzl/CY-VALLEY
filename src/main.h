@@ -8,7 +8,6 @@
 #include <ncurses.h>
 
 #include "map.h"
-#include "game.h"
 #include "affichage.h"
 #include "donnees.h"
 

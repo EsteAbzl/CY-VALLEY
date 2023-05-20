@@ -1,5 +1,13 @@
 #include "donnees.h"
 
+
+unsigned long getTimeMicros(){
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec*1000000) + (tv.tv_usec/1);
+} 
+
+
 void generateMap(Donnees_Map* pDonnees_Map){
   srand(time(NULL));
 
