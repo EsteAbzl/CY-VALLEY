@@ -4,20 +4,32 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "main.h"
+#include <ncurses.h>
+
+
 #include "map.h"
+#include "brush.h"
+#include "donnees.h"
 
-
-//
-//ENUMS, STRUCTURES
-//
 
 typedef struct{
   int width; // largeur
   int height; // hauteur
 
-  FILE* fAffichage;
+  FILE* pAffichage;
 }Info_Cam;
+
+
+//
+//INIT COULEUR ET BROSSES
+//
+
+// permet de changer des couleurs avec des valeurs entre 0 ett 255
+void setColor(unsigned char id, unsigned char r, unsigned char g, unsigned char b);
+// initialise toutes les couleurs
+void init_Colors();
+// initialise toutes les brush
+void init_Brush();
 
 
 //
@@ -32,7 +44,7 @@ void res_Info_Cam(Info_Cam* pCam);
 //
 
 Info_Cam* constructor_Info_Cam(int width, int height);
-void free_Cam(Info_Cam* pCam);
+
 
 //
 //AUTRES FONCTIONS
@@ -40,6 +52,9 @@ void free_Cam(Info_Cam* pCam);
 
 void loadMapPrint(Map* pMap);
 
-void printCam(Pos coordonnee, Map* pMap, Info_Cam* pCam);
+void printCam(Pos coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam);
+
+//Affiche le contenu du tableau d'une Map en entier
+void printMap(Affichage_Map* pAffichage_Map);
 
 #endif
