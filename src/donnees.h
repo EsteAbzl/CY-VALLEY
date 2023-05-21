@@ -65,6 +65,8 @@ unsigned long getTimeMicros();
 void generateMap(Donnees_Map* pDonnees_Map);
 
 
+//res et ini
+void res_Vide(Obj* pObj, int n);
 
 void res_Obj(Obj* pObj);
 
@@ -77,6 +79,7 @@ void res_Entitee(Entitee* pEnt);
 void free_Entitee(Entitee* pEnt);
 
 
+//fonctions
 
 void afficherStats(Entitee* entitee);
 
@@ -87,5 +90,7 @@ void modifpvTT(int dmg_Heal, Entitee* entitee);
 void modifpvA(int dmg_Heal, Entitee* entitee);
 
 int ramasser(Obj* pObj, Entitee* pJoueur);
+
+void test();
 
 #endif

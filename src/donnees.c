@@ -33,12 +33,26 @@ void generateMap(Donnees_Map* pDonnees_Map){
   }// y
 }
 
+void res_Vide(Obj* pObj, int n){
+  pObj->id_Obj = 0;
+  pObj->nb_Max = 0;
+  pObj->nb = 1;
+  pObj->placeinv = n;
+  sprintf(pObj->nom, "VIDE");
+
+  //for(int n; n<30 , n++){
+  //  sprintf(pObj->nom, "");
+  //  }
+
+  //res_BuffObj(&(pObj->buffObj));
+}
+
 void init_Inventaire(Inventaire* pInv, int size){
   pInv->stockagePris = 0;
   pInv->stockageTotal = size;
 
   for (int n; n<size ; n++){
-    res_Obj(&(pInv->inv[n]));
+    res_Vide(&(pInv->inv[n]), n);
   }
 }
 
@@ -77,7 +91,7 @@ void res_Entitee(Entitee* pEnt){
   pEnt->pvActuelle = 0;
   pEnt->atk = 0;
   
-  init_Inventaire(&(pEnt->inventaire), 0);
+  init_Inventaire(&(pEnt->inventaire), 30);
 }
 
 void modifpvA(int dmg_Heal, Entitee* pEntitee){
@@ -106,6 +120,7 @@ void res_Obj(Obj* pObj){
   pObj->nb_Max = 0;
   pObj->nb = 0;
   pObj->placeinv = -1;
+  sprintf(pObj->nom, "VIDE");
 
   //for(int n; n<30 , n++){
   //  sprintf(pObj->nom, "");
@@ -135,7 +150,7 @@ void testStats(Entitee* pEntitee){ // on pourra envoyé une entitée plus tard
 }
 
 int ramasser(Obj* pObj, Entitee* pJoueur){ //return 0 => pas ramassé return 1 => ramassé
-  for(int n = 0; n < 30 && pObj->placeinv != -1; n++){
+  for(int n = 0; n < pJoueur->inventaire.stockageTotal && pObj->placeinv == -1; n++){
     if(pJoueur->inventaire.inv[n].id_Obj == pObj->id_Obj){
       pJoueur->inventaire.inv[n].nb += 1;
       return 1;
@@ -154,5 +169,27 @@ int ramasser(Obj* pObj, Entitee* pJoueur){ //return 0 => pas ramassé return 1 =
     return 0;
     }
   }
+
+  return 0;
 }
 
+void test(){
+  printw("\n");
+  
+  Obj objet;
+  Entitee joueur;
+  //sprintf(joueur->inv[n].nom, "Blabla"); exemple de nomage
+  sprintf(objet.nom, "bonjour");
+  res_Entitee(&joueur);
+  res_Obj(&objet);
+  if(ramasser(&objet, &joueur)){
+    printw("ramassé");
+    for(int i = 0; i<30; i++){
+      printw("\nobjet %d = %s", i, joueur.inventaire.inv[i].nom );
+    }
+  }
+  else{
+    printw("pas ramassé");
+  }
+
+}

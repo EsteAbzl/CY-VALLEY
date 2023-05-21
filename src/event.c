@@ -98,8 +98,14 @@ void deplacer(Info_Jeu* pJeu){
       deplacementY = 0;
       break;
   }
-  if(peutPasser(pJeu->mapJeu->pDonnees->tab[pJoueur->coordonnees.x + deplacementX][pJoueur->coordonnees.y + deplacementY])){
-          pJoueur->coordonnees.x += deplacementX;
-          pJoueur->coordonnees.y += deplacementY;
-        }
+
+  if(getTimeMicros() - pJoueur->T_dernierDeplacement >= pJoueur->T_intervalleDeplacement){
+    if(peutPasser(pJeu->mapJeu->pDonnees->tab[pJoueur->coordonnees.x + deplacementX][pJoueur->coordonnees.y + deplacementY])){
+      pJoueur->coordonnees.x += deplacementX;
+      pJoueur->coordonnees.y += deplacementY;
+
+      pJoueur->T_dernierDeplacement = getTimeMicros();
+    }
+  }
+  
 }

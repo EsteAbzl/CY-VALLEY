@@ -72,6 +72,8 @@ void res_Info_Jeu(Info_Jeu* pJeu);
 
 void init_Curses(Info_Fenetre* pFenetre);
 
+void gestionFps(Info_Fenetre* pFenetre);
+
 #include "event.h"
 
 #endif 

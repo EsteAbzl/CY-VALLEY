@@ -101,6 +101,18 @@ void init_Curses(Info_Fenetre* pFenetre){
   pFenetre->startTime = getTimeMicros();
 }
 
+void gestionFps(Info_Fenetre* pFenetre){
+  // gestion des fps
+  pFenetre->endTime   = getTimeMicros();
+  pFenetre->frameTime = pFenetre->endTime - pFenetre->startTime; 
+  pFenetre->startTime = pFenetre->endTime;
+  // Wait to achieve 60FPS
+  
+  if(pFenetre->frameTime <= (1000000/pFenetre->fps)){
+    usleep((1000000/pFenetre->fps) - pFenetre->frameTime);
+  }
+}
+
 
 int main(int argc, char* argv[]){
 
@@ -127,21 +139,15 @@ int main(int argc, char* argv[]){
 
     action(pFenetre, pJeu);
     
-    printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
-    printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
+    //printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
+    //printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
+
+    test();
     
     refresh();
+usleep(100000000000);
 
-
-    // gestion des fps
-    pFenetre->endTime   = getTimeMicros();
-    pFenetre->frameTime = pFenetre->endTime - pFenetre->startTime; 
-    pFenetre->startTime = pFenetre->endTime;
-    // Wait to achieve 60FPS
-    
-    if(pFenetre->frameTime <= (1000000/pFenetre->fps)){
-      usleep((1000000/pFenetre->fps) - pFenetre->frameTime);
-    }
+    gestionFps(pFenetre);
   }
 
 
@@ -160,3 +166,25 @@ int main(int argc, char* argv[]){
   
   return 0;
 }
+
+
+/*
+int main() {
+  Obj objet;
+  Entitee joueur;
+  //sprintf(joueur->inv[n].nom, "Blabla"); exemple de nomage
+  sprintf(objet.nom, "objet");
+  res_Entitee(&joueur);
+  res_Obj(&objet);
+  if(ramasser(&objet, &joueur)){
+    printw("ramassé");
+    for(int i; i<10; i++){
+      printw("objet %d = %s", i, joueur.inventaire.inv[i].nom );
+    }
+  }
+  else{
+    printw("pas ramassé");
+  }
+
+  return 0;
+}*/
