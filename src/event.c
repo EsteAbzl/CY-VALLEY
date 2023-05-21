@@ -11,46 +11,31 @@ int getEvent(Info_Jeu* pJeu){
   return nouvelEvent;
 }
 
+
 void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   Entitee* pJoueur = pJeu->pJoueur;
   
   if(getEvent(pJeu)){
     switch (pJeu->event){
       case 'Z':
-        pJoueur->coordonnees.y--;
-        /*
-        if(pJoueur->caseJoueur.ressource == OBSTACLE){
-          pJoueur->posJoueur.y = pJoueur->posJoueur.y + 1;
-        }
-        a = 0;*/
         pJoueur->regard = HAUT;
+        
+        deplacer(pJeu);
         break;
       case 'S':
-        pJoueur->coordonnees.y++;
-        /*
-        if(pJoueur->caseJoueur.ressource == OBSTACLE){
-          pJoueur->posJoueur.y = pJoueur->posJoueur.y - 1;
-        }
-        a = 0;*/
         pJoueur->regard = BAS;
+
+        deplacer(pJeu);
         break;
       case 'Q':
-        pJoueur->coordonnees.x--;
-        /*
-        if(pJoueur->caseJoueur.ressource == OBSTACLE){
-          pJoueur->posJoueur.y = pJoueur->posJoueur.x + 1;
-        }
-        a = 0;*/
         pJoueur->regard = GAUCHE;
+
+        deplacer(pJeu);
         break;
       case 'D':
-        pJoueur->coordonnees.x++;
-        /*
-        if(pJoueur->caseJoueur.ressource == OBSTACLE){
-          pJoueur->posJoueur.y = pJoueur->posJoueur.x - 1;
-        }
-        a = 0;*/
         pJoueur->regard = DROITE;
+
+        deplacer(pJeu);
         break;
       case 'A':
         pJeu->enJeu = 0;
@@ -58,4 +43,63 @@ void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
     }
     
   }
+}
+
+
+
+int peutPasser(CaseMap caseMap){
+  int traversable = 1;
+  switch(caseMap.biome){
+    case VOID :
+      traversable = 0;
+      break;
+    case WATER :
+      traversable = 0;
+      break;
+  }
+  switch(caseMap.ressource){
+    case TREE :
+      traversable = 0;
+      break;
+    case LEAF :
+      traversable = 0;
+      break;
+    case MUR :
+      traversable = 0;
+      break;
+  }
+  return  traversable;
+}
+
+
+
+void deplacer(Info_Jeu* pJeu){
+  Entitee* pJoueur = pJeu->pJoueur;
+  Regard regard = pJoueur->regard;
+
+  int deplacementX = 0;
+  int deplacementY = 0;
+  
+  switch(regard){
+    case HAUT :
+      deplacementX = 0;
+      deplacementY = -1;
+      break;
+    case BAS :
+      deplacementX = 0;
+      deplacementY = 1;
+      break;
+    case DROITE :
+      deplacementX = 1;
+      deplacementY = 0;
+      break;
+    case GAUCHE :
+      deplacementX = -1;
+      deplacementY = 0;
+      break;
+  }
+  if(peutPasser(pJeu->mapJeu->pDonnees->tab[pJoueur->coordonnees.x + deplacementX][pJoueur->coordonnees.y + deplacementY])){
+          pJoueur->coordonnees.x += deplacementX;
+          pJoueur->coordonnees.y += deplacementY;
+        }
 }

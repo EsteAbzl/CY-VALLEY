@@ -21,7 +21,8 @@ typedef enum{
 typedef enum{
   EMPTY,
   TREE,
-  LEAF
+  LEAF,
+  MUR,
 }Ressource;
 
 //Structure qui va contenir les information de chaques cases de la map.
@@ -36,7 +37,7 @@ typedef struct{
   int width;
   int height;
 
-  CaseMap **tab;
+  CaseMap **tab; // tab[x][y] = type CaseMa
 
 }Donnees_Map;
 

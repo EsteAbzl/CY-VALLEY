@@ -14,5 +14,9 @@ int getEvent(Info_Jeu* pJeu);
 
 void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
+int peutPasser(CaseMap caseMap);
+
+void deplacer(Info_Jeu* pJeu);
+
 
 #endif

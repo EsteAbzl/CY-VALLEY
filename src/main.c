@@ -40,7 +40,7 @@ Info_Jeu* init_Info_Jeu(){
   // ! \\ déplacement en fonction d'une donnée de temps: toutes les 0.5 seconde
 
   
-  pJeu->mapJeu = constructor_Map(70, 60);;
+  pJeu->mapJeu = constructor_Map(70, 60);
 
   pJeu->enJeu = 0;
   pJeu->score = 0;
@@ -61,6 +61,8 @@ void res_Info_Jeu(Info_Jeu* pJeu){
 
   pJeu->pJoueur->coordonnees.x = 10;
   pJeu->pJoueur->coordonnees.y = 10;
+
+  pJeu->pJoueur->T_intervalleDeplacement = 500000; // Temps nécessaire entre chaques déplacement (1s = 1 000 000) 
 
   pJeu->enJeu = 1;
   pJeu->score = 0;
@@ -114,11 +116,10 @@ int main(int argc, char* argv[]){
   res_Info_Jeu(pJeu); 
   
    
-  //printMap(pMap);
-  //printCam(test, pAffiMap, pCam);
-  //printf("%d / %d", test.x, test.y);
 
-  //printMap(pAffiMap);
+  //affiche la map entière
+  //printMap(pJeu->mapJeu->pAffichage);
+
   
   
 

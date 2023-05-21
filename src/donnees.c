@@ -52,6 +52,11 @@ Entitee* init_Entitee(){
   
   pEnt->coordonnees.x = 0;
   pEnt->coordonnees.y = 0;
+
+  pEnt->regard = DROITE;
+
+  pEnt->T_dernierDeplacement = 0;
+  pEnt->T_intervalleDeplacement = 0;
   
   pEnt->pvTotal = 0;
   pEnt->pvActuelle = 0;
@@ -65,6 +70,8 @@ Entitee* init_Entitee(){
 void res_Entitee(Entitee* pEnt){
   pEnt->coordonnees.x = 0;
   pEnt->coordonnees.y = 0;
+
+  pEnt->T_dernierDeplacement = getTimeMicros();
   
   pEnt->pvTotal = 0;
   pEnt->pvActuelle = 0;
@@ -148,3 +155,4 @@ int ramasser(Obj* pObj, Entitee* pJoueur){ //return 0 => pas ramassé return 1 =
     }
   }
 }
+

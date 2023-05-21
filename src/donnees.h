@@ -16,7 +16,7 @@ typedef struct{
 
 
 typedef enum{
-  DROITE, GAUCHE, BAS, HAUT
+  HAUT, DROITE, BAS, GAUCHE
 }Regard;
 
 
@@ -47,6 +47,9 @@ typedef struct{
 typedef struct{
   Coordonnees coordonnees;
   Regard regard;
+
+  long T_dernierDeplacement;
+  long T_intervalleDeplacement; // Temps nécessaire entre chaques déplacement (1s = 1 000 000) 
 
   int pvActuelle;
   int pvTotal;
@@ -82,5 +85,7 @@ void testStats(Entitee* entitee);
 void modifpvTT(int dmg_Heal, Entitee* entitee);
 
 void modifpvA(int dmg_Heal, Entitee* entitee);
+
+int ramasser(Obj* pObj, Entitee* pJoueur);
 
 #endif
