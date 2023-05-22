@@ -17,7 +17,7 @@ Info_Fenetre* init_Info_Fenetre(){
 
   pFenetre->ecran = JEU;
 
-  pFenetre->camJeu = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
+  pFenetre->camJeu = constructor_Info_Cam(16*1, 9*1); //la caméra est en 16/9 du coup (48/27)
   
   pFenetre->startTime = 0;
   pFenetre->endTime = 0;
@@ -76,7 +76,7 @@ void res_Info_Jeu(Info_Jeu* pJeu){
 //
 
 void init_Curses(Info_Fenetre* pFenetre){
-  setlocale(LC_ALL, "");
+  printf("Locale: %s\n", setlocale(LC_ALL, "en_US.UTF-8"));
   
   if( !(pFenetre->pWin = initscr())){
     printf("Erreur lors de initscr() !");
@@ -139,13 +139,13 @@ int main(int argc, char* argv[]){
 
     action(pFenetre, pJeu);
     
-    //printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
-    //printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
+    printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
+    printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
 
-    test();
+    //test();
     
     refresh();
-usleep(100000000000);
+//usleep(100000000000);
 
     gestionFps(pFenetre);
   }

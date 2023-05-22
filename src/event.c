@@ -40,6 +40,8 @@ void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
       case 'A':
         pJeu->enJeu = 0;
         break;
+      /*case 'E':
+          interagir */        
     }
     
   }
@@ -107,5 +109,13 @@ void deplacer(Info_Jeu* pJeu){
       pJoueur->T_dernierDeplacement = getTimeMicros();
     }
   }
+  
+}
+
+
+void interagir(Info_Jeu* pJeu){
+  Entitee* pJoueur = pJeu->pJoueur;
+  Regard regard = pJoueur->regard;
+
   
 }

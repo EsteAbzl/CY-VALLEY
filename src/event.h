@@ -18,5 +18,6 @@ int peutPasser(CaseMap caseMap);
 
 void deplacer(Info_Jeu* pJeu);
 
+void interagir(Info_Jeu* pJeu);
 
 #endif

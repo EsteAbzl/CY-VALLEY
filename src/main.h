@@ -6,6 +6,7 @@
 
 #include <locale.h>
 #include <ncurses.h>
+#include <unistd.h>
 
 #include "map.h"
 #include "affichage.h"
