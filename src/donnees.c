@@ -35,12 +35,14 @@ void generateMap(Donnees_Map* pDonnees_Map){
 
 void res_Vide(Obj* pObj, int n){
   pObj->id_Obj = O_VIDE;
+  
   pObj->nb_Max = 1;
   pObj->nb = 1;
+  
   pObj->placeinv = n;
+  
   sprintf(pObj->nom, "VIDE");
   
-
   //res_BuffObj(&(pObj->buffObj));
 }
 
