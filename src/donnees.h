@@ -39,6 +39,12 @@ typedef struct{
 }Obj;
 
 typedef struct{
+  Obj baton;
+  Obj caillou;
+  Obj hache;
+}ListeObj;
+
+typedef struct{
   Obj inv[30];
   int stockagePris;
   int stockageTotal;
@@ -47,6 +53,7 @@ typedef struct{
 
 typedef struct{
   Coordonnees coordonnees;
+  Coordonnees initial;
   Regard regard;
 
   long T_dernierDeplacement;
@@ -79,6 +86,9 @@ void res_Entitee(Entitee* pEnt);
 
 void free_Entitee(Entitee* pEnt);
 
+Obj constructor_Obj(Id_Obj O_nom, int nb_Max, char nom[30]);
+
+ListeObj init_ListeObj();
 
 //fonctions
 

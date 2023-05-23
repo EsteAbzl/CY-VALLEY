@@ -22,7 +22,10 @@ typedef enum{
   EMPTY,
   TREE,
   LEAF,
-  MUR,
+  ROCHER,
+  BATON,
+  HACHE,
+  CAILLOU
 }Ressource;
 
 //Structure qui va contenir les information de chaques cases de la map.

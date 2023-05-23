@@ -34,15 +34,12 @@ void generateMap(Donnees_Map* pDonnees_Map){
 }
 
 void res_Vide(Obj* pObj, int n){
-  pObj->id_Obj = 0;
-  pObj->nb_Max = 0;
+  pObj->id_Obj = O_VIDE;
+  pObj->nb_Max = 1;
   pObj->nb = 1;
   pObj->placeinv = n;
   sprintf(pObj->nom, "VIDE");
-
-  //for(int n; n<30 , n++){
-  //  sprintf(pObj->nom, "");
-  //  }
+  
 
   //res_BuffObj(&(pObj->buffObj));
 }
@@ -51,7 +48,7 @@ void init_Inventaire(Inventaire* pInv, int size){
   pInv->stockagePris = 0;
   pInv->stockageTotal = size;
 
-  for (int n; n<size ; n++){
+  for(int n = 0; n<size ; n++){
     res_Vide(&(pInv->inv[n]), n);
   }
 }
@@ -76,7 +73,7 @@ Entitee* init_Entitee(){
   pEnt->pvActuelle = 0;
   pEnt->atk = 0;
   
-  init_Inventaire(&(pEnt->inventaire), 0);
+  init_Inventaire(&(pEnt->inventaire), 30); //changer le size si besoin
 
   return pEnt;
 }
@@ -116,17 +113,38 @@ void afficherStats(Entitee* entitee){
 }
 
 void res_Obj(Obj* pObj){
-  pObj->id_Obj = 0;
+  pObj->id_Obj = O_VIDE;
   pObj->nb_Max = 0;
   pObj->nb = 0;
   pObj->placeinv = -1;
-  sprintf(pObj->nom, "VIDE");
+  sprintf(pObj->nom, "VIDE1");
 
   //for(int n; n<30 , n++){
   //  sprintf(pObj->nom, "");
   //  }
 
   //res_BuffObj(&(pObj->buffObj)); (pas encore de stats pr les objets)
+}
+
+Obj constructor_Obj(Id_Obj O_nom, int nb_Max, char nom[30]){
+  Obj objet;
+  res_Obj(&objet);
+  objet.nb_Max = nb_Max;
+  objet.id_Obj = O_nom;
+  
+  sprintf(objet.nom, "%s", nom);
+  
+  return objet;  
+}
+
+ListeObj init_ListeObj(){
+  ListeObj listObj;
+  
+  listObj.baton = constructor_Obj(O_BATON, 100, "Baton" );
+  listObj.caillou = constructor_Obj(O_CAILLOU, 100, "caillou");
+  listObj.hache = constructor_Obj(O_HACHEP, 1, "hache");
+
+  return listObj;
 }
 
 
@@ -150,27 +168,33 @@ void testStats(Entitee* pEntitee){ // on pourra envoyé une entitée plus tard
 }
 
 int ramasser(Obj* pObj, Entitee* pJoueur){ //return 0 => pas ramassé return 1 => ramassé
-  for(int n = 0; n < pJoueur->inventaire.stockageTotal && pObj->placeinv == -1; n++){
-    if(pJoueur->inventaire.inv[n].id_Obj == pObj->id_Obj){
-      pJoueur->inventaire.inv[n].nb += 1;
-      return 1;
-      if(pJoueur->inventaire.inv[n].nb > pJoueur->inventaire.inv[n].nb_Max){
-        pJoueur->inventaire.inv[n].nb -= 1;
+  int estRamasse = 0;
+  
+  if(pObj->placeinv != -1){
+      if(pObj->nb < pObj->nb_Max){
+        pObj->nb += 1;
+        estRamasse = 1;
+      }
+      else{
         printw("Tu as déjà le nombre maximum pour cette ressource.");
-        return 0;
       }
     }
-    else if(pJoueur->inventaire.inv[n].id_Obj != O_VIDE ){
-      pJoueur->inventaire.inv[n].id_Obj = pObj->id_Obj;
-      return 1;
+  else{
+    for(int n = 0; n < pJoueur->inventaire.stockageTotal && pObj->placeinv == -1; n++){
+      if(pJoueur->inventaire.inv[n].id_Obj == O_VIDE ){
+        pJoueur->inventaire.inv[n] = *pObj;
+        pObj->placeinv = n;
+        estRamasse = 1;
+      }
+      if(estRamasse == 1){
+        printw("place %d\n", n);
+      }
     }
-    else{
-      printw("Tu n'as plus de place dans ton inventaire.");
-    return 0;
+    if(estRamasse == 0){
+      printw("Tu n'as plus de place dans ton inventaire.\n");
     }
   }
-
-  return 0;
+  return estRamasse;
 }
 
 void test(){
@@ -179,9 +203,10 @@ void test(){
   Obj objet;
   Entitee joueur;
   //sprintf(joueur->inv[n].nom, "Blabla"); exemple de nomage
-  sprintf(objet.nom, "bonjour");
   res_Entitee(&joueur);
   res_Obj(&objet);
+  sprintf(objet.nom, "bonjour");
+  objet.id_Obj = O_BATON;
   if(ramasser(&objet, &joueur)){
     printw("ramassé");
     for(int i = 0; i<30; i++){
@@ -193,3 +218,5 @@ void test(){
   }
 
 }
+
+

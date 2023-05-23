@@ -24,6 +24,7 @@ typedef struct{
 
   // camJeu, camAccueil, camMaison..
   Info_Cam* camJeu;
+  Info_Cam* camAccueil;
 
   int fps;
   unsigned long startTime;
@@ -34,16 +35,15 @@ typedef struct{
 
 typedef struct{
   Entitee* pJoueur;
-  // Info_joueur
-      // pos
-      // inventaire
-
   // liste_Enemis (tableau dynamique)
 
+  ListeObj listeObj;
+  char dialogue[300];
+
   // quête en cour?
-  // vitesse? 
 
   // mapJeu, mapAcceuil, mapMenu, mapGrotte...
+
   Map* mapJeu;
 
   int enJeu;

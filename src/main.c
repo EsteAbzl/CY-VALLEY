@@ -6,7 +6,7 @@
 //
 
 Info_Fenetre* init_Info_Fenetre(){
-
+  
   Info_Fenetre* pFenetre = NULL;
   if( !(pFenetre = malloc(sizeof(Info_Fenetre)))){
     printf("Erreur malloc Info_Fenetre");
@@ -17,7 +17,8 @@ Info_Fenetre* init_Info_Fenetre(){
 
   pFenetre->ecran = JEU;
 
-  pFenetre->camJeu = constructor_Info_Cam(16*1, 9*1); //la caméra est en 16/9 du coup (48/27)
+  pFenetre->camJeu = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
+  pFenetre->camAccueil = constructor_Info_Cam(16*2 , 9*2);
   
   pFenetre->startTime = 0;
   pFenetre->endTime = 0;
@@ -39,6 +40,7 @@ Info_Jeu* init_Info_Jeu(){
   pJeu->pJoueur = init_Entitee();
   // ! \\ déplacement en fonction d'une donnée de temps: toutes les 0.5 seconde
 
+  sprintf(pJeu->dialogue, "");
   
   pJeu->mapJeu = constructor_Map(70, 60);
 
@@ -59,8 +61,14 @@ void res_Info_Jeu(Info_Jeu* pJeu){
   generateMap(pJeu->mapJeu->pDonnees);
   loadMapPrint(pJeu->mapJeu);
 
-  pJeu->pJoueur->coordonnees.x = 10;
-  pJeu->pJoueur->coordonnees.y = 10;
+  pJeu->pJoueur->initial.x = 10;
+  pJeu->pJoueur->initial.y = 10;
+  pJeu->pJoueur->coordonnees.x = pJeu->pJoueur->initial.x;
+  pJeu->pJoueur->coordonnees.y = pJeu->pJoueur->initial.y;
+
+
+  pJeu->listeObj = init_ListeObj();
+  sprintf(pJeu->dialogue, "");
 
   pJeu->pJoueur->T_intervalleDeplacement = 500000; // Temps nécessaire entre chaques déplacement (1s = 1 000 000) 
 
@@ -139,13 +147,13 @@ int main(int argc, char* argv[]){
 
     action(pFenetre, pJeu);
     
-    printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
-    printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
+    //printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
+   // printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
 
-    //test();
+    test();
     
     refresh();
-//usleep(100000000000);
+usleep(100000000000);
 
     gestionFps(pFenetre);
   }

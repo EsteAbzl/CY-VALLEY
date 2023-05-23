@@ -20,4 +20,11 @@ void deplacer(Info_Jeu* pJeu);
 
 void interagir(Info_Jeu* pJeu);
 
+void death(Entitee* pEntitee, Info_Jeu* pJeu);
+
+int peutRamasser(CaseMap caseMap);
+
+int peutCasser(CaseMap caseMap);
+
+
 #endif
