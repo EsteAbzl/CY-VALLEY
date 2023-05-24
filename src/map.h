@@ -15,17 +15,27 @@ typedef enum{
   VOID,
   WATER,
   SAND,
-  GRASS
+  GRASS,
+
+  BOUTON
 }Biome;
 
 typedef enum{
-  EMPTY,
-  TREE,
-  LEAF,
-  ROCHER,
-  BATON,
-  HACHE,
-  CAILLOU
+  EMPTY,  //
+  TREE,   //🌳
+  BATON,  //▂
+  LEAF,   //🍃    
+  ROCHER, //⛰ 
+  CAILLOU,//☁
+  PNG_PAUL,//🕺
+  PNG_BOAT,//⛵
+
+  HACHE,  //🪓
+  PIOCHE, //⛏
+
+  NOUVEAU_JEU,
+  REPRENDRE_JEU,
+  QUITTER_JEU
 }Ressource;
 
 //Structure qui va contenir les information de chaques cases de la map.

@@ -21,28 +21,37 @@ void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
       case 'Z':
         pJoueur->regard = HAUT;
         
-        deplacer(pJeu);
+        deplacer(pFenetre, pJeu);
         break;
       case 'S':
         pJoueur->regard = BAS;
 
-        deplacer(pJeu);
+        deplacer(pFenetre, pJeu);
         break;
       case 'Q':
         pJoueur->regard = GAUCHE;
 
-        deplacer(pJeu);
+        deplacer(pFenetre, pJeu);
         break;
       case 'D':
         pJoueur->regard = DROITE;
 
-        deplacer(pJeu);
+        deplacer(pFenetre, pJeu);
         break;
       case 'A':
+        pFenetre->ecran = ACCUEIL;
+        pJoueur->coordonnees.x = 10;
+        pJoueur->coordonnees.y = 10;
+        break;
+      case 'E':
+        interagir(pFenetre, pJeu);
+        break;
+      case ' ':
         pJeu->enJeu = 0;
         break;
-      /*case 'E':
-          interagir */        
+      /*case 'I' :
+          inventaire
+          break; */
     }
     
   }
@@ -64,10 +73,13 @@ int peutPasser(CaseMap caseMap){
     case TREE :
       traversable = 0;
       break;
-    case LEAF :
+    case ROCHER :
       traversable = 0;
       break;
-    case ROCHER :
+    case PNG_BOAT :
+      traversable = 0;
+      break;
+    case PNG_PAUL :
       traversable = 0;
       break;
   }
@@ -76,9 +88,10 @@ int peutPasser(CaseMap caseMap){
 
 
 
-void deplacer(Info_Jeu* pJeu){
+void deplacer(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   Entitee* pJoueur = pJeu->pJoueur;
   Regard regard = pJoueur->regard;
+  Map* pMapUtilise = NULL;
 
   int regardX = 0;
   int regardY = 0;
@@ -102,25 +115,53 @@ void deplacer(Info_Jeu* pJeu){
       break;
   }
 
-  if(getTimeMicros() - pJoueur->T_dernierDeplacement >= pJoueur->T_intervalleDeplacement){
-    if(peutPasser(pJeu->mapJeu->pDonnees->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY])){
-      pJoueur->coordonnees.x += regardX;
-      pJoueur->coordonnees.y += regardY;
-
-      pJoueur->T_dernierDeplacement = getTimeMicros();
-    }
+  switch(pFenetre->ecran){
+    case ACCUEIL:
+      pMapUtilise = pJeu->mapAccueil;
+      break;
+    case JEU:
+      pMapUtilise = pJeu->mapJeu;
+      break;
   }
+
+  if((pJoueur->coordonnees.x + regardX >= 0 && pJoueur->coordonnees.x + regardX < pMapUtilise->width)
+    && (pJoueur->coordonnees.y + regardY >= 0 && pJoueur->coordonnees.y + regardY < pMapUtilise->height)){
     
+    if(getTimeMicros() - pJoueur->T_dernierDeplacement >= pJoueur->T_intervalleDeplacement){
+      
+      if(peutPasser(pMapUtilise->pDonnees->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY])){
+        pJoueur->coordonnees.x += regardX;
+        pJoueur->coordonnees.y += regardY;
   
+        pJoueur->T_dernierDeplacement = getTimeMicros();
+      }
+    }
+    printw("\n                ");
+  }
+  else{
+    printw("\nHORS DE LA MAP");
+  }
 }
 
 
-void interagir(Info_Jeu* pJeu){
+
+void interagir(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   Entitee* pJoueur = pJeu->pJoueur;
   Regard regard = pJoueur->regard;
-  ListeObj listeObj = pJeu->listeObj;
-  Ressource ressource = 0;
+  CaseMap* pCaseMap = NULL;
+  int* pIsLoaded = NULL;
 
+  Map* pMap = NULL;
+  switch(pFenetre->ecran){
+    case ACCUEIL:
+      pMap = pJeu->mapAccueil;
+      break;
+    case JEU:
+      pMap = pJeu->mapJeu;
+      break;
+  }
+
+  
   int regardX = 0;
   int regardY = 0;
   
@@ -143,33 +184,101 @@ void interagir(Info_Jeu* pJeu){
       break;
   }
 
-  //ressource = pJeu->mapJeu->pDonnees->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY].ressource;
-
-  if(peutRamasser(pJeu->mapJeu->pDonnees->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY])){
-    ramasser(Obj *pObj, pJoueur)
-    ressource = EMPTY;
-  }
-  else if(peutCasser(pJeu->mapJeu->pDonnees->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY])){
-    switch(ressource){
-      case TREE :
-        ressource = BATON;
-        break;
-      case LEAF :
-        ressource = ????;
-        break;
-      case ROCHER :
-        ressource = CAILLOU;
-        break;
+  pCaseMap = &pMap->pDonnees->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY];
+  pIsLoaded = &pMap->pAffichage->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY].isLoaded;
+  
+  switch(pFenetre->ecran){
+    case ACCUEIL:
+      switch(pCaseMap->ressource){
+        case NOUVEAU_JEU:
+          debutJeu(pFenetre, pJeu);
+          break;
+        case REPRENDRE_JEU:
+          reprendreJeu(pFenetre, pJeu);
+          break;
+        case QUITTER_JEU:
+          pJeu->enJeu = 0;
+          break; 
+      }
+      break;
+    case JEU:
+      if(ramasser(pJeu, *pCaseMap)){
+        pCaseMap->ressource = EMPTY;
+        *pIsLoaded = 0;
+      }
+      else if(peutCasser(pJeu, *pCaseMap)){
+        switch(pCaseMap->ressource){
+          case TREE :
+            pCaseMap->ressource = BATON;
+            *pIsLoaded = 0;
+            break;
+          case ROCHER :
+            pCaseMap->ressource = CAILLOU;
+            *pIsLoaded = 0;
+            break;
+        }
+      }
+      else{
+        switch(pCaseMap->ressource){
+          case PNG_PAUL:
+            
+            break;
+          case PNG_BOAT:
+            quete_Radeau(pJeu->pQ_Radeau, &pJeu->listeObj);
+            break;
+      }
+      break;
     }
   }
-    
+  
+}
+
+int ramasser(Info_Jeu *pJeu, CaseMap caseMap){
+  int ramassable = 0;
+  Entitee* pJoueur = pJeu->pJoueur;
+  ListeObj* pListeObj = &(pJeu->listeObj);
+  switch(caseMap.ressource){
+    case BATON :
+      ramassable = 1;
+      ramasserObjet(&pListeObj->baton, pJoueur);
+      break;
+    case CAILLOU :
+      ramassable = 1;
+      ramasserObjet(&pListeObj->caillou, pJoueur);
+      break;
+    case LEAF :
+      ramassable = 1;
+      ramasserObjet(&pListeObj->feuille, pJoueur);
+        break;
+    case HACHE :
+      ramassable = 1;
+      ramasserObjet(&pListeObj->hache, pJoueur);
+      break;
+    case PIOCHE :
+      ramassable = 1;
+      ramasserObjet(&pListeObj->pioche, pJoueur);
+      break;
+  }
+  return  ramassable;
 }
 
 
-
-
-
-
+int peutCasser(Info_Jeu* pJeu, CaseMap caseMap){
+  int cassable = 0;
+  switch(caseMap.ressource){
+    case TREE :
+      if(pJeu->listeObj.hache.nb){
+        cassable = 1;
+      }
+      break;
+    case ROCHER :
+      if(pJeu->listeObj.pioche.nb){
+        cassable = 1;
+      }
+      break;
+  }
+  return  cassable;
+}
 
 
 void death(Entitee* pEntitee, Info_Jeu* pJeu){
@@ -179,43 +288,4 @@ void death(Entitee* pEntitee, Info_Jeu* pJeu){
       pJeu->score = 0;
   }
   printw("tu es mort................miskin");
-}
-
-
-
-
-
-
-
-int peutRamasser(CaseMap caseMap){
-  int ramassable = 0;
-  switch(caseMap.ressource){
-    case HACHE :
-      ramassable = 1;
-      break;
-    case BATON :
-      ramassable = 1;
-      break;
-    case CAILLOU :
-      ramassable = 1;
-      break;
-  }
-  return  ramassable;
-}
-
-
-int peutCasser(CaseMap caseMap){
-  int cassable = 0;
-  switch(caseMap.ressource){
-    case TREE :
-      cassable = 1;
-      break;
-    case ROCHER :
-      cassable = 1;
-      break;
-    case LEAF :
-      cassable = 1;
-      break;
-  }
-  return  cassable;
 }

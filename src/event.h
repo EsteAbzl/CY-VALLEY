@@ -16,15 +16,15 @@ void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 int peutPasser(CaseMap caseMap);
 
-void deplacer(Info_Jeu* pJeu);
+void deplacer(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
-void interagir(Info_Jeu* pJeu);
+void interagir(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 void death(Entitee* pEntitee, Info_Jeu* pJeu);
 
-int peutRamasser(CaseMap caseMap);
+int ramasser(Info_Jeu *pJeu, CaseMap caseMap);
 
-int peutCasser(CaseMap caseMap);
+int peutCasser(Info_Jeu* pJeu, CaseMap caseMap);
 
 
 #endif

@@ -17,6 +17,10 @@ void init_Colors(){
   setColor(COLOR_WATER, 27, 113, 207);
   setColor(COLOR_SAND, 226, 231, 50);
   setColor(COLOR_GRASS, 34, 177, 76);
+
+  setColor(COLOR_NOUVEAU_JEU, 104, 159, 136);
+  setColor(COLOR_REPRENDRE_JEU, 104, 159, 136);
+  setColor(COLOR_QUITTER_JEU, 104, 159, 136);
 }
 
 void init_Brush(){
@@ -25,6 +29,10 @@ void init_Brush(){
   init_pair(BRUSH_WATER, COLOR_WATER, COLOR_WATER);
   init_pair(BRUSH_SAND, COLOR_VOID, COLOR_SAND);
   init_pair(BRUSH_GRASS, COLOR_VOID, COLOR_GRASS);
+
+  init_pair(BRUSH_NOUVEAU_JEU, COLOR_VOID, COLOR_NOUVEAU_JEU);
+  init_pair(BRUSH_REPRENDRE_JEU, COLOR_VOID, COLOR_REPRENDRE_JEU);
+  init_pair(BRUSH_QUITTER_JEU, COLOR_VOID, COLOR_QUITTER_JEU);
 }
 
 
@@ -68,6 +76,63 @@ Info_Cam* constructor_Info_Cam(int width, int height){
 //AUTRES FONCTIONS
 //
 
+void loadPrint(CaseMap caseMap, Print* pPrint){
+  if(pPrint->isLoaded == 0){
+    switch(caseMap.biome){
+      case VOID:
+        pPrint->brush = BRUSH_GRASS;
+      break;
+      case WATER: // eau
+        
+        pPrint->brush = BRUSH_WATER;
+      break;
+  
+      case SAND: // sable
+        pPrint->brush = BRUSH_SAND;
+      break;
+      case GRASS: // herbe
+        pPrint->brush = BRUSH_GRASS;
+      break;
+    }
+  
+    switch(caseMap.ressource){
+      case EMPTY:
+        sprintf(pPrint->caractere, "  ");
+      break;
+      case TREE:
+        sprintf(pPrint->caractere, "🌳");
+      break;
+      case BATON:
+        sprintf(pPrint->caractere, "▂ ");
+      break;
+      case LEAF:
+        sprintf(pPrint->caractere, "🍃");
+      break;
+      case ROCHER:
+        sprintf(pPrint->caractere, "⛰");
+      break;
+      case CAILLOU:
+        sprintf(pPrint->caractere, "☁");
+      break;
+      case PNG_PAUL:
+        sprintf(pPrint->caractere, "🕺");
+      break;
+      case PNG_BOAT:
+        sprintf(pPrint->caractere, "⛵");
+      break;
+      case HACHE:
+        sprintf(pPrint->caractere, "🪓");
+      break;
+      case PIOCHE:
+        sprintf(pPrint->caractere, "⛏ ");
+      break;
+    }
+    
+    pPrint->isLoaded = 1;
+  }
+  
+}
+
 void loadMapPrint(Map* pMap){
   Donnees_Map* pDonnees_Map = pMap->pDonnees;
   Affichage_Map* pAffichage_Map = pMap->pAffichage;
@@ -75,43 +140,48 @@ void loadMapPrint(Map* pMap){
   for(int y = 0; y < pDonnees_Map->height; y++){
     for(int x = 0; x < pDonnees_Map->width; x++){
       
-      switch(pDonnees_Map->tab[x][y].biome){
-        case VOID:
-          pAffichage_Map->tab[x][y].brush = BRUSH_GRASS;
-        break;
-        case WATER: // eau
-          
-          pAffichage_Map->tab[x][y].brush = BRUSH_WATER;
-          sprintf(pAffichage_Map->tab[x][y].caractere, "  ");
-        break;
+      loadPrint(pDonnees_Map->tab[x][y], &(pAffichage_Map->tab[x][y]));
+    }
+  }
+}
 
-        case SAND: // sable
-          pAffichage_Map->tab[x][y].brush = BRUSH_SAND;
-        break;
-        case GRASS: // herbe
-          pAffichage_Map->tab[x][y].brush = BRUSH_GRASS;
-        break;
-      }
+void loadCamPrint(Coordonnees coordonnee, Map* pMap, Info_Cam* pCam){  
+  Donnees_Map* pDonnees_Map = pMap->pDonnees;
+  Affichage_Map* pAffichage_Map = pMap->pAffichage;
+  // coordonnées du coin haut gauche de la caméra
+  int xCam = -1;
+  int yCam = -1;
 
-      switch(pDonnees_Map->tab[x][y].ressource){
-        case EMPTY:
-          sprintf(pAffichage_Map->tab[x][y].caractere, "  ");
-        break;
-        case LEAF:
-          sprintf(pAffichage_Map->tab[x][y].caractere, "🌾");
-        break;
-        case TREE:
-          sprintf(pAffichage_Map->tab[x][y].caractere, "🌳");
-        break;
-        }
-      
-      pAffichage_Map->tab[x][y].isLoaded = 1;
+  // on place la caméra en fonction de la position du joueur par raport aux bords de la map
+  // on vérifie s'il n'est pas trop proche)
+  // xCam
+  if((coordonnee.x - (pCam->width/2)) < 0) // trop a gauche
+    xCam = 0;
+  else if((coordonnee.x + (pCam->width/2) - pAffichage_Map->width) > 0) // trop a droite
+    xCam = pAffichage_Map->width - (pCam->width);
+  else
+    xCam = coordonnee.x - (pCam->width/2);
+
+  // yCam
+  if((coordonnee.y - (pCam->height/2)) < 0)
+    yCam = 0;
+  else if((coordonnee.y + (pCam->height/2) - pAffichage_Map->height) > 0)
+    yCam = pAffichage_Map->height - (pCam->height);
+  else
+    yCam = coordonnee.y - (pCam->height/2);
+
+  for(int j = yCam; j<yCam + pCam->height; j++){ // y
+    for(int i = xCam; i<xCam + pCam->width; i++){ // x
+
+      loadPrint(pDonnees_Map->tab[i][j], &(pAffichage_Map->tab[i][j]));
     }
   }
 }
 
 
 void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){  
+  int ligne = 0;
+  
   // coordonnées du coin haut gauche de la caméra
   int xCam = -1;
   int yCam = -1;
@@ -135,18 +205,20 @@ void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* p
     yCam = coordonnee.y - (pCam->height/2);
 
 
-  move(0, 0);
+  move(ligne, 0);
 
   //affichage du contour haut de l'écran
   printw("╔");
   for(int i = 0; i<pCam->width*2; i++){
     printw("═");
   }
-  printw("╗\n");
+  printw("╗");
+
+  ligne++;
 
   
   for(int j = yCam; j<yCam + pCam->height; j++){ // y
-    printw("║");
+    mvprintw(ligne, 0, "║");
     for(int i = xCam; i<xCam + pCam->width; i++){ // x
 
       // affichage d'une case de la mapv
@@ -156,22 +228,24 @@ void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* p
     }
     
     //affichage des contours gauche et droit de l'écran
-    printw("║\n");
+    printw("║");
+    ligne++;
   }
 
+  move(ligne, 0);
   //affichage du contour bas de l'écran
   printw("╚");
   for(int i = 0; i<pCam->width*2; i++){
     printw("═");
   }
-  printw("╝\n");
+  printw("╝");
 
   //affichage d'infos sur la position de la caméra
 
   attron(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
   mvprintw((coordonnee.y - yCam) + 1, (coordonnee.x - xCam) *2 + 1, "🧍");
   attroff(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
-  move(pCam->height+2, 0);
+  move(pCam->height+5, 0);
   
   printw("\n*coin superieur gauche: xCam = %d/yCam = %d", xCam, yCam);
   printw("\n*joueur: x = %d/y = %d", coordonnee.x, coordonnee.y);
@@ -195,3 +269,4 @@ void printMap(Affichage_Map* pAffichage_Map){
 
   refresh();
 }
+

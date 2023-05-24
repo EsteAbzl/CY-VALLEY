@@ -49,12 +49,19 @@ Info_Cam* constructor_Info_Cam(int width, int height);
 //
 //AUTRES FONCTIONS
 //
-
+// Charge l'affichage d'une case
+void loadPrint(CaseMap caseMap, Print* pPrint);
+// Charge l'affichage de toutes les cases de la map
 void loadMapPrint(Map* pMap);
+// Charge l'affichage des cases présentes sur la caméra
+void loadCamPrint(Coordonnees coordonnee, Map* pMap, Info_Cam* pCam);
 
+// affiche une portion de la map relative a la caméra passée en paramètre
 void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam);
 
-//Affiche le contenu du tableau d'une Map en entier
+//Affiche le contenu d'une Map en entier
 void printMap(Affichage_Map* pAffichage_Map);
+
+
 
 #endif

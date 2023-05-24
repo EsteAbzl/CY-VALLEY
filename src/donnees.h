@@ -3,7 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <sys/time.h>
 #include <time.h>
+#include <string.h>
 #include <ncurses.h>
 
 #include "map.h"
@@ -23,9 +26,18 @@ typedef enum{
 
 typedef enum{
 O_VIDE,
+//ressources
 O_BATON,
+O_FEUILLE,
 O_CAILLOU,
-O_HACHEP
+
+//obj quetes
+O_CORDE,
+O_VOILE,
+
+//outils
+O_HACHE,
+O_PIOCHE
 }Id_Obj;
 
 typedef struct{
@@ -36,13 +48,22 @@ typedef struct{
   //BuffObj buffObj;
   
   char nom[30];
+  char symbole[10];
 }Obj;
 
 typedef struct{
   Obj baton;
+  Obj feuille;
   Obj caillou;
+
+  Obj corde;
+  Obj voile;
+
   Obj hache;
+  Obj pioche;
 }ListeObj;
+
+
 
 typedef struct{
   Obj inv[30];
@@ -70,38 +91,36 @@ typedef struct{
 
 unsigned long getTimeMicros();
 
+int percent(int nb, int percent);
+int alea(int min, int max);
+
 void generateMap(Donnees_Map* pDonnees_Map);
+
+void createBouton(Map* pMap, int coordX, int coordY, int heigh, int width, Ressource ressource, Brush brush, char text[30]);
+void createMapAccueil(Map* pMap);
 
 
 //res et ini
-void res_Vide(Obj* pObj, int n);
-
 void res_Obj(Obj* pObj);
-
 void init_Inventaire(Inventaire* pInv, int size);
 
 Entitee* init_Entitee();
-
 void res_Entitee(Entitee* pEnt);
 
-void free_Entitee(Entitee* pEnt);
-
-Obj constructor_Obj(Id_Obj O_nom, int nb_Max, char nom[30]);
+Obj constructor_Obj(Id_Obj O_nom, int nb_Max, char nom[30], char symbole[10]);
 
 ListeObj init_ListeObj();
 
 //fonctions
 
-void afficherStats(Entitee* entitee);
-
-void testStats(Entitee* entitee);
 
 void modifpvTT(int dmg_Heal, Entitee* entitee);
-
 void modifpvA(int dmg_Heal, Entitee* entitee);
 
-int ramasser(Obj* pObj, Entitee* pJoueur);
+int ramasserObjet(Obj* pObj, Entitee* pJoueur);
 
+void afficherStats(Entitee* entitee);
+void testStats(Entitee* entitee);
 void test();
 
 #endif

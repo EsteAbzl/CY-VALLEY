@@ -15,11 +15,12 @@ Info_Fenetre* init_Info_Fenetre(){
   
   pFenetre->pWin = NULL;
 
-  pFenetre->ecran = JEU;
+  pFenetre->ecran = ACCUEIL;
 
   pFenetre->camJeu = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
-  pFenetre->camAccueil = constructor_Info_Cam(16*2 , 9*2);
-  
+  pFenetre->camAccueil = constructor_Info_Cam(16*2, 9*2);
+
+  pFenetre->initialTime = 0;
   pFenetre->startTime = 0;
   pFenetre->endTime = 0;
   pFenetre->frameTime = 0;
@@ -40,9 +41,22 @@ Info_Jeu* init_Info_Jeu(){
   pJeu->pJoueur = init_Entitee();
   // ! \\ déplacement en fonction d'une donnée de temps: toutes les 0.5 seconde
 
+  if( !(pJeu->pQ_Radeau = malloc(sizeof(Quete)))){
+    printf("Erreur malloc pQ_Radeau");
+    exit(7);
+  }
+  if( !(pJeu->pQ_Survivant = malloc(sizeof(Quete)))){
+    printf("Erreur malloc pQ_Survivant");
+    exit(7);
+  }
+
+  pJeu->listeObj = init_ListeObj();
   sprintf(pJeu->dialogue, "");
   
   pJeu->mapJeu = constructor_Map(70, 60);
+  pJeu->mapAccueil = constructor_Map(16*2, 9*2);
+  createMapAccueil(pJeu->mapAccueil);
+  loadMapPrint(pJeu->mapAccueil);
 
   pJeu->enJeu = 0;
   pJeu->score = 0;
@@ -58,13 +72,14 @@ Info_Jeu* init_Info_Jeu(){
 //
 
 void res_Info_Jeu(Info_Jeu* pJeu){  
-  generateMap(pJeu->mapJeu->pDonnees);
-  loadMapPrint(pJeu->mapJeu);
-
+  
   pJeu->pJoueur->initial.x = 10;
   pJeu->pJoueur->initial.y = 10;
   pJeu->pJoueur->coordonnees.x = pJeu->pJoueur->initial.x;
   pJeu->pJoueur->coordonnees.y = pJeu->pJoueur->initial.y;
+
+  res_Quete(pJeu->pQ_Radeau);
+  res_Quete(pJeu->pQ_Survivant);
 
 
   pJeu->listeObj = init_ListeObj();
@@ -76,6 +91,32 @@ void res_Info_Jeu(Info_Jeu* pJeu){
   pJeu->score = 0;
   
   pJeu->event = 0;
+}
+
+void debutJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+  res_Info_Jeu(pJeu);
+  pFenetre->ecran = JEU;
+
+  // Début du temps du jeu
+  pFenetre->initialTime = getTimeMicros();
+  pFenetre->startTime = getTimeMicros();
+  
+  pJeu->listeObj = init_ListeObj();
+  
+  generateMap(pJeu->mapJeu->pDonnees);
+  loadMapPrint(pJeu->mapJeu);
+
+  
+}
+
+void reprendreJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+  res_Info_Jeu(pJeu);
+  pFenetre->ecran = JEU;
+
+  pJeu->listeObj = init_ListeObj();
+  
+  generateMap(pJeu->mapJeu->pDonnees);
+  loadMapPrint(pJeu->mapJeu);
 }
 
 
@@ -104,9 +145,101 @@ void init_Curses(Info_Fenetre* pFenetre){
   // Création des couleurs
   start_color();
   init_Brush();
+}
 
-  // début du temps du jeu
-  pFenetre->startTime = getTimeMicros();
+void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+  echo();
+  endwin();
+
+  free(pFenetre->camJeu); 
+  free_Map(pJeu->mapJeu);
+  free(pFenetre->camAccueil); 
+  free_Map(pJeu->mapAccueil);
+ 
+  free(pJeu->pJoueur);
+  free(pJeu->pQ_Radeau);
+  free(pJeu->pQ_Survivant);
+  
+  free(pFenetre);
+  free(pJeu);
+}
+
+
+
+void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+  Info_Cam* pCam = NULL;
+  Map* pMap = NULL;
+  
+  switch(pFenetre->ecran){
+    case ACCUEIL:
+      pCam = pFenetre->camAccueil;
+      pMap = pJeu->mapAccueil;
+      break;
+    case JEU:
+      pCam = pFenetre->camJeu;
+      pMap = pJeu->mapJeu;
+      break;
+  }
+
+  
+  
+  loadCamPrint(pJeu->pJoueur->coordonnees, pMap, pCam);
+  printCam(pJeu->pJoueur->coordonnees, pMap->pAffichage, pCam);
+  if(pFenetre->ecran == JEU){
+    printStat(pFenetre, pJeu);
+    move(pCam->height+3, 2);
+    printw("%s", pJeu->pQ_Radeau->dialogue);
+  }
+
+  gestionFps(pFenetre);
+  refresh();
+
+}
+
+void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+  int colonne = pFenetre->camJeu->width*2 + 2;
+  int ligne = 0;
+
+  move(ligne, colonne); 
+
+  for(int i = 0; i<15; i++){
+    printw("═");
+  }
+  printw("╗");
+
+  ligne++;
+
+  mvprintw(ligne, colonne, "Timer: %.5d", (int)(pFenetre->endTime - pFenetre->initialTime) /1000000);
+  ligne += 2;
+
+  mvprintw(ligne, colonne, "Score: %.5d", pJeu->score);
+  ligne +=2;
+
+  mvprintw(ligne, colonne, "PV: %d", pJeu->pJoueur->pvActuelle);
+  ligne += 2;
+
+  mvprintw(ligne, colonne, "Quête 1: %d", pJeu->pQ_Radeau->e_Dialogue);
+  ligne += 1;
+  mvprintw(ligne, colonne, "Quête 2: %d", pJeu->pQ_Radeau->etape);
+  ligne += 1;
+  mvprintw(ligne, colonne, "NB hache: %d", pJeu->listeObj.hache.nb);
+  ligne += 1;
+  mvprintw(ligne, colonne, "place inv: %d", pJeu->listeObj.hache.placeinv);
+  ligne += 1;
+  mvprintw(ligne, colonne, "place inv: %d", pJeu->listeObj.baton.nb);
+  ligne += 1;
+  
+  for(int i = 1; i<15; i++){
+    mvprintw(i, colonne+15, "║");
+  }
+
+  move(ligne, colonne);
+
+  for(int i = 0; i<15; i++){
+    printw("═");
+  }
+  printw("╝");
+  
 }
 
 void gestionFps(Info_Fenetre* pFenetre){
@@ -122,8 +255,11 @@ void gestionFps(Info_Fenetre* pFenetre){
 }
 
 
-int main(int argc, char* argv[]){
 
+
+int main(int argc, char* argv[]){
+  
+  
   // structures réunissants les informations importantes du programme
   Info_Fenetre* pFenetre = init_Info_Fenetre();
   Info_Jeu* pJeu = init_Info_Jeu();  
@@ -131,68 +267,31 @@ int main(int argc, char* argv[]){
   // active les fonctionnalitées de curses
   init_Curses(pFenetre);
 
-
   // charge les infos de base avant chages partie (dont la map)
   res_Info_Jeu(pJeu); 
-  
-   
 
+  
   //affiche la map entière
   //printMap(pJeu->mapJeu->pAffichage);
 
-  
-  
 
   while(pJeu->enJeu){// boucle du jeu
 
     action(pFenetre, pJeu);
-    
-    //printCam(pJeu->pJoueur->coordonnees, pJeu->mapJeu->pAffichage, pFenetre->camJeu);
-   // printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
 
-    test();
-    
-    refresh();
-usleep(100000000000);
+    affiche_jeu(pFenetre, pJeu);
+    //printw("\n*Orientation du joueur: %d", pJeu->pJoueur->regard);
 
-    gestionFps(pFenetre);
+    //test();
+    
+    //usleep(1000000);
+
   }
 
 
   // DESALLOCATION
   
-  echo();
-  endwin();
-
-  free(pFenetre->camJeu); 
-  free_Map(pJeu->mapJeu);
-  
-  free(pJeu->pJoueur);
-  
-  free(pFenetre);
-  free(pJeu);
+  freeGame(pFenetre, pJeu);
   
   return 0;
 }
-
-
-/*
-int main() {
-  Obj objet;
-  Entitee joueur;
-  //sprintf(joueur->inv[n].nom, "Blabla"); exemple de nomage
-  sprintf(objet.nom, "objet");
-  res_Entitee(&joueur);
-  res_Obj(&objet);
-  if(ramasser(&objet, &joueur)){
-    printw("ramassé");
-    for(int i; i<10; i++){
-      printw("objet %d = %s", i, joueur.inventaire.inv[i].nom );
-    }
-  }
-  else{
-    printw("pas ramassé");
-  }
-
-  return 0;
-}*/

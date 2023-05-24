@@ -11,9 +11,10 @@
 #include "map.h"
 #include "affichage.h"
 #include "donnees.h"
+#include "quete.h"
 
 typedef enum{
-  ACCUEIL, JEU, MENU
+  ACCUEIL, JEU
 }Ecran;
 
 typedef struct{
@@ -21,21 +22,25 @@ typedef struct{
 
   // informe du mode d'affichage (qui est différent si on est en jeu de si on est dans le menu)
   Ecran ecran;
+  int refreshMap;
 
   // camJeu, camAccueil, camMaison..
   Info_Cam* camJeu;
   Info_Cam* camAccueil;
 
-  int fps;
+  unsigned long initialTime;
   unsigned long startTime;
   unsigned long endTime;
   unsigned long frameTime;
+  int fps;
 }Info_Fenetre;
 
 
 typedef struct{
   Entitee* pJoueur;
-  // liste_Enemis (tableau dynamique)
+  Quete* pQ_Radeau;
+  Quete* pQ_Survivant;
+
 
   ListeObj listeObj;
   char dialogue[300];
@@ -45,6 +50,7 @@ typedef struct{
   // mapJeu, mapAcceuil, mapMenu, mapGrotte...
 
   Map* mapJeu;
+  Map* mapAccueil;
 
   int enJeu;
   int score;
@@ -65,14 +71,17 @@ Info_Jeu* init_Info_Jeu();
 //
 
 void res_Info_Jeu(Info_Jeu* pJeu);
-
+void debutJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 //
 //AUTRES FONCTIONS
 //
 
 void init_Curses(Info_Fenetre* pFenetre);
+void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
+void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 void gestionFps(Info_Fenetre* pFenetre);
 
 #include "event.h"
