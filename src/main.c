@@ -202,11 +202,6 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
 
   move(ligne, colonne); 
 
-  for(int i = 0; i<15; i++){
-    printw("═");
-  }
-  printw("╗");
-
   ligne++;
 
   mvprintw(ligne, colonne, "Timer: %.5d", (int)(pFenetre->endTime - pFenetre->initialTime) /1000000);
@@ -228,13 +223,22 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   ligne += 1;
   mvprintw(ligne, colonne, "place inv: %d", pJeu->listeObj.baton.nb);
   ligne += 1;
+
+
+  // encadré
+  move(0, colonne - 1);
+  printw("╦");
+  for(int i = 0; i<15; i++){
+    printw("═");
+  }
+  printw("╗");
   
   for(int i = 1; i<15; i++){
     mvprintw(i, colonne+15, "║");
   }
 
-  move(ligne, colonne);
-
+  move(ligne, colonne - 1);
+  printw("╠");
   for(int i = 0; i<15; i++){
     printw("═");
   }

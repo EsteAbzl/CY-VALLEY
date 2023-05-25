@@ -130,9 +130,9 @@ Obj constructor_Obj(Id_Obj O_nom, int nb_Max, char nom[30], char symbole[10]){
 ListeObj init_ListeObj(){
   ListeObj listObj;
   
-  listObj.baton = constructor_Obj(O_BATON, 100, "Baton", "˥˦˧");
-  listObj.feuille = constructor_Obj(O_FEUILLE, 100, "Feuille", "🍃");
-  listObj.caillou = constructor_Obj(O_CAILLOU, 100, "Caillou", "☁");
+  listObj.baton = constructor_Obj(O_BATON, 3, "Baton", "▂");
+  listObj.feuille = constructor_Obj(O_FEUILLE, 5, "Feuille", "🍃");
+  listObj.caillou = constructor_Obj(O_CAILLOU, 5, "Caillou", "☁");
 
   listObj.corde = constructor_Obj(O_CORDE, 2, "Corde", "➰");
   listObj.voile = constructor_Obj(O_VOILE, 1, "Voile", "🏴");

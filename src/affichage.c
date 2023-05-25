@@ -18,9 +18,13 @@ void init_Colors(){
   setColor(COLOR_SAND, 226, 231, 50);
   setColor(COLOR_GRASS, 34, 177, 76);
 
+  setColor(COLOR_BOIS, 128, 64, 0);
+
   setColor(COLOR_NOUVEAU_JEU, 104, 159, 136);
   setColor(COLOR_REPRENDRE_JEU, 104, 159, 136);
-  setColor(COLOR_QUITTER_JEU, 104, 159, 136);
+  setColor(COLOR_QUITTER_JEU, 200, 100, 95);
+  
+  setColor(COLOR_TERMINAL, 255, 180, 100);
 }
 
 void init_Brush(){
@@ -29,6 +33,8 @@ void init_Brush(){
   init_pair(BRUSH_WATER, COLOR_WATER, COLOR_WATER);
   init_pair(BRUSH_SAND, COLOR_VOID, COLOR_SAND);
   init_pair(BRUSH_GRASS, COLOR_VOID, COLOR_GRASS);
+
+  init_pair(BRUSH_BOIS, COLOR_BOIS, COLOR_GRASS);
 
   init_pair(BRUSH_NOUVEAU_JEU, COLOR_VOID, COLOR_NOUVEAU_JEU);
   init_pair(BRUSH_REPRENDRE_JEU, COLOR_VOID, COLOR_REPRENDRE_JEU);
@@ -104,6 +110,7 @@ void loadPrint(CaseMap caseMap, Print* pPrint){
       break;
       case BATON:
         sprintf(pPrint->caractere, "▂ ");
+        pPrint->brush = BRUSH_BOIS;
       break;
       case LEAF:
         sprintf(pPrint->caractere, "🍃");
@@ -206,6 +213,7 @@ void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* p
 
 
   move(ligne, 0);
+  attron(COLOR_PAIR(COLOR_VOID));
 
   //affichage du contour haut de l'écran
   printw("╔");
@@ -251,7 +259,6 @@ void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* p
   printw("\n*joueur: x = %d/y = %d", coordonnee.x, coordonnee.y);
   printw("\n|joueur dans cam: x = %d/ y = %d", coordonnee.x - xCam, coordonnee.y - yCam);
   
-  refresh();
 }
 
 

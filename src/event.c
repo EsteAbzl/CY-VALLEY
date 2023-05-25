@@ -239,24 +239,19 @@ int ramasser(Info_Jeu *pJeu, CaseMap caseMap){
   ListeObj* pListeObj = &(pJeu->listeObj);
   switch(caseMap.ressource){
     case BATON :
-      ramassable = 1;
-      ramasserObjet(&pListeObj->baton, pJoueur);
+      ramassable = ramasserObjet(&pListeObj->baton, pJoueur);
       break;
     case CAILLOU :
-      ramassable = 1;
-      ramasserObjet(&pListeObj->caillou, pJoueur);
+      ramassable = ramasserObjet(&pListeObj->caillou, pJoueur);
       break;
     case LEAF :
-      ramassable = 1;
-      ramasserObjet(&pListeObj->feuille, pJoueur);
+      ramassable = ramasserObjet(&pListeObj->feuille, pJoueur);
         break;
     case HACHE :
-      ramassable = 1;
-      ramasserObjet(&pListeObj->hache, pJoueur);
+      ramassable = ramasserObjet(&pListeObj->hache, pJoueur);
       break;
     case PIOCHE :
-      ramassable = 1;
-      ramasserObjet(&pListeObj->pioche, pJoueur);
+      ramassable =  ramasserObjet(&pListeObj->pioche, pJoueur);
       break;
   }
   return  ramassable;
