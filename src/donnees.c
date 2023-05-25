@@ -193,6 +193,7 @@ void modifpvA(int dmg_Heal, Entitee* pEntitee){
   if(pEntitee->pvActuelle < 0){
     //mort(pEntitee);
   }
+  
 }
 
 void modifpvTT(int dmg_Heal, Entitee* pEntitee){
@@ -281,3 +282,6 @@ void test(){
 }
 
 
+int augmenterFaim(Entitee* entitee){
+  
+}

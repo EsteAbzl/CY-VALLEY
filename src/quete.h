@@ -32,8 +32,10 @@ void quete_Radeau_3(Quete* pQuete, ListeObj* pListe);
 
 void quete_Radeau_4(Quete* pQuete, ListeObj* pListe);
 
-void quete_Radeau(Quete* pQuete, ListeObj* pListe);
+void quete_RadeauR(Quete* pQuete, ListeObj* pListe);
 
-void ecran_Fin_Radeau();
+void ecran_Fin_Radeau(); // a faire
+
+void paul_Fin(); // à faire
 
 #endif

@@ -79,7 +79,7 @@ typedef struct{
 
   long T_dernierDeplacement;
   long T_intervalleDeplacement; // Temps nécessaire entre chaques déplacement (1s = 1 000 000) 
-
+  int faim;
   int pvActuelle;
   int pvTotal;
   int atk;
@@ -122,5 +122,5 @@ int ramasserObjet(Obj* pObj, Entitee* pJoueur);
 void afficherStats(Entitee* entitee);
 void testStats(Entitee* entitee);
 void test();
-
+int augmenterFaim(Entitee* entitee);
 #endif
