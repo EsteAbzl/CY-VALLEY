@@ -189,7 +189,7 @@ void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   printCam(pJeu->pJoueur->coordonnees, pMap->pAffichage, pCam);
   
   if(pFenetre->ecran == JEU){
-    printStat(pFenetre, pJeu, 15);
+    printStat(pFenetre, pJeu, 13);
     move(pCam->height+2, 2);
     printw("                                                                                \n");
     printw("                                                                                \n");
@@ -209,7 +209,8 @@ void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
 void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   int colonne = pFenetre->camJeu->width*2 + 2;
   int ligne = 0;
-
+  
+  attron(COLOR_PAIR(BRUSH_STAT));
   move(ligne, colonne); 
 
   ligne++;
@@ -234,6 +235,8 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   mvprintw(ligne, colonne, "place inv: %d", pJeu->listeObj.baton.nb);
   ligne += 1;
 
+  attroff(COLOR_PAIR(BRUSH_STAT));
+
 
   // encadré
   move(0, colonne - 1);
@@ -243,7 +246,7 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   }
   printw("╗");
   
-  for(int i = 1; i<15; i++){
+  for(int i = 1; i<height; i++){
     mvprintw(i, colonne+16, "║");
   }
 

@@ -21,6 +21,8 @@ void init_Colors(){
   setColor(COLOR_BOIS, 128, 64, 0);
   setColor(COLOR_STONE, 180, 180, 180);
 
+  setColor(COLOR_STAT, 205, 163, 75);
+
   setColor(COLOR_NOUVEAU_JEU, 104, 159, 136);
   setColor(COLOR_REPRENDRE_JEU, 104, 159, 136);
   setColor(COLOR_QUITTER_JEU, 200, 100, 95);
@@ -37,6 +39,8 @@ void init_Brush(){
 
   init_pair(BRUSH_BOIS, COLOR_BOIS, COLOR_GRASS);
   init_pair(BRUSH_STONE, COLOR_STONE, COLOR_GRASS);
+
+  init_pair(BRUSH_STAT, COLOR_STAT, COLOR_VOID);
 
   init_pair(BRUSH_NOUVEAU_JEU, COLOR_VOID, COLOR_NOUVEAU_JEU);
   init_pair(BRUSH_REPRENDRE_JEU, COLOR_VOID, COLOR_REPRENDRE_JEU);
@@ -118,7 +122,7 @@ void loadPrint(CaseMap caseMap, Print* pPrint){
         sprintf(pPrint->caractere, "🍃");
       break;
       case ROCHER:
-        sprintf(pPrint->caractere, "A ");
+        sprintf(pPrint->caractere, "⛰ ");
         pPrint->brush = BRUSH_STONE;
       break;
       case CAILLOU:

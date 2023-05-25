@@ -11,6 +11,7 @@
 #include "map.h"
 #include "donnees.h"
 #include "affichage.h"
+#include "brush.h"
 
 typedef enum{
   ACCUEIL, JEU
@@ -82,7 +83,6 @@ void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height);
 void gestionFps(Info_Fenetre* pFenetre);
-
 #include "event.h"
 
 #endif 
