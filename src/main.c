@@ -78,6 +78,8 @@ void res_Info_Jeu(Info_Jeu* pJeu){
   pJeu->pJoueur->coordonnees.x = pJeu->pJoueur->initial.x;
   pJeu->pJoueur->coordonnees.y = pJeu->pJoueur->initial.y;
 
+  pJeu->pJoueur->pvActuelle = 100;
+
   res_Quete(pJeu->pQ_Radeau);
   res_Quete(pJeu->pQ_Survivant);
 
@@ -181,14 +183,22 @@ void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
       break;
   }
 
-  
-  
+  // actualise la partie affichage de la map
   loadCamPrint(pJeu->pJoueur->coordonnees, pMap, pCam);
+  
   printCam(pJeu->pJoueur->coordonnees, pMap->pAffichage, pCam);
+  
   if(pFenetre->ecran == JEU){
-    printStat(pFenetre, pJeu);
-    move(pCam->height+3, 2);
-    printw("%s", pJeu->pQ_Radeau->dialogue);
+    printStat(pFenetre, pJeu, 15);
+    move(pCam->height+2, 2);
+    printw("                                                                                \n");
+    printw("                                                                                \n");
+    printw("                                                                                \n");
+    printw("                                                                                \n");
+
+    move(pCam->height+2, 2);
+    printw("%s\n", pJeu->pQ_Radeau->dialogue);
+    printw("%s", pJeu->pQ_Survivant->dialogue);
   }
 
   gestionFps(pFenetre);
@@ -196,7 +206,7 @@ void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
 
 }
 
-void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   int colonne = pFenetre->camJeu->width*2 + 2;
   int ligne = 0;
 
@@ -213,13 +223,13 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   mvprintw(ligne, colonne, "PV: %d", pJeu->pJoueur->pvActuelle);
   ligne += 2;
 
-  mvprintw(ligne, colonne, "Quête 1: %d", pJeu->pQ_Radeau->e_Dialogue);
+  mvprintw(ligne, colonne, "Quête 1 dial: %d", pJeu->pQ_Radeau->e_Dialogue);
   ligne += 1;
-  mvprintw(ligne, colonne, "Quête 2: %d", pJeu->pQ_Radeau->etape);
+  mvprintw(ligne, colonne, "Quête 2 dial: %d", pJeu->pQ_Survivant->e_Dialogue);
+  ligne += 1;
+  mvprintw(ligne, colonne, "Quête 2 etap: %d", pJeu->pQ_Survivant->etape);
   ligne += 1;
   mvprintw(ligne, colonne, "NB hache: %d", pJeu->listeObj.hache.nb);
-  ligne += 1;
-  mvprintw(ligne, colonne, "place inv: %d", pJeu->listeObj.hache.placeinv);
   ligne += 1;
   mvprintw(ligne, colonne, "place inv: %d", pJeu->listeObj.baton.nb);
   ligne += 1;
@@ -228,18 +238,18 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   // encadré
   move(0, colonne - 1);
   printw("╦");
-  for(int i = 0; i<15; i++){
+  for(int i = 0; i<16; i++){
     printw("═");
   }
   printw("╗");
   
   for(int i = 1; i<15; i++){
-    mvprintw(i, colonne+15, "║");
+    mvprintw(i, colonne+16, "║");
   }
 
   move(ligne, colonne - 1);
   printw("╠");
-  for(int i = 0; i<15; i++){
+  for(int i = 0; i<16; i++){
     printw("═");
   }
   printw("╝");

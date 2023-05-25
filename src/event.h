@@ -9,6 +9,8 @@
 
 #include "main.h"
 #include "map.h"
+#include "quete.h"
+#include "donnees.h"
 
 int getEvent(Info_Jeu* pJeu);
 

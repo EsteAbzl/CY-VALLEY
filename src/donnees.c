@@ -37,12 +37,16 @@ void generateMap(Donnees_Map* pDonnees_Map){
         if( !(rand() % 20)){
           pDonnees_Map->tab[x][y].ressource = TREE;
         }
+        if( !(rand() % 20)){
+          pDonnees_Map->tab[x][y].ressource = ROCHER;
+        }
       }
       
     }// x
   }// y
 
   pDonnees_Map->tab[alea(10, 13)][alea(10, 15)].ressource = PNG_BOAT;
+  pDonnees_Map->tab[alea(12, 15)][alea(10, 15)].ressource = PNG_PAUL;
   pDonnees_Map->tab[alea(10, 13)][alea(15, 20)].ressource = HACHE;
   pDonnees_Map->tab[alea(10, 13)][alea(15, 20)].ressource = PIOCHE;
   
@@ -130,9 +134,9 @@ Obj constructor_Obj(Id_Obj O_nom, int nb_Max, char nom[30], char symbole[10]){
 ListeObj init_ListeObj(){
   ListeObj listObj;
   
-  listObj.baton = constructor_Obj(O_BATON, 3, "Baton", "▂");
-  listObj.feuille = constructor_Obj(O_FEUILLE, 5, "Feuille", "🍃");
-  listObj.caillou = constructor_Obj(O_CAILLOU, 5, "Caillou", "☁");
+  listObj.baton = constructor_Obj(O_BATON, 20, "Baton", "▂");
+  listObj.feuille = constructor_Obj(O_FEUILLE, 30, "Feuille", "🍃");
+  listObj.caillou = constructor_Obj(O_CAILLOU, 20, "Caillou", "☁");
 
   listObj.corde = constructor_Obj(O_CORDE, 2, "Corde", "➰");
   listObj.voile = constructor_Obj(O_VOILE, 1, "Voile", "🏴");
@@ -269,7 +273,7 @@ void test(){
   res_Obj(&objet);
   sprintf(objet.nom, "bonjour");
   objet.id_Obj = O_BATON;
-  if(ramasser(&objet, &joueur)){
+  if(ramasserObjet(&objet, &joueur)){
     printw("ramassé");
     for(int i = 0; i<30; i++){
       printw("\nobjet %d = %s", i, joueur.inventaire.inv[i].nom );
@@ -279,9 +283,4 @@ void test(){
     printw("pas ramassé");
   }
 
-}
-
-
-int augmenterFaim(Entitee* entitee){
-  
 }

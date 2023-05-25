@@ -7,35 +7,30 @@
 
 #include <ncurses.h>
 
-#include "map.h"
-#include "affichage.h"
 #include "donnees.h"
-
-typedef struct{
-  Entitee npc;
-  int etape;
-  int e_Dialogue;
-
-  char dialogue[100];
-
-}Quete;
-
-void res_Quete(Quete* pQuete);
-
-void quete_Dialogue(Quete* pQuete);
-
-void quete_Radeau_1(Quete* pQuete, ListeObj* pListe);
-
-void quete_Radeau_2(Quete* pQuete, ListeObj* pListe);
-
-void quete_Radeau_3(Quete* pQuete, ListeObj* pListe);
-
-void quete_Radeau_4(Quete* pQuete, ListeObj* pListe);
-
-void quete_RadeauR(Quete* pQuete, ListeObj* pListe);
 
 void ecran_Fin_Radeau(); // a faire
 
 void paul_Fin(); // à faire
+
+
+void res_Quete(Quete* pQuete);
+
+void dialogue_Radeau(Quete* pQuete);
+
+void quete_Radeau(Quete* pQuete, ListeObj* pListe);
+void quete_Radeau_1(Quete* pQuete, ListeObj* pListe);
+void quete_Radeau_2(Quete* pQuete, ListeObj* pListe);
+void quete_Radeau_3(Quete* pQuete, ListeObj* pListe);
+void quete_Radeau_4(Quete* pQuete, ListeObj* pListe);
+
+void dialogue_Paul(Quete* pQuete);
+
+void quete_Paul_1(Quete* pQuete, ListeObj* pListe);
+void quete_Paul_2(Quete* pQuete, ListeObj* pListe);
+void quete_Paul_3(Quete* pQuete, ListeObj* pListe);
+void quete_Paul_4(Quete* pQuete, ListeObj* pListe);
+void quete_Paul(Quete* pQuete, ListeObj* pListe, int eDQuete_Radeau);
+
 
 #endif

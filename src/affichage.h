@@ -6,12 +6,6 @@
 
 #include <ncurses.h>
 
-
-#include "map.h"
-#include "brush.h"
-#include "donnees.h"
-
-
 typedef struct{
   int width; // largeur
   int height; // hauteur
@@ -19,6 +13,10 @@ typedef struct{
   FILE* pAffichage;
 }Info_Cam;
 
+
+#include "map.h"
+#include "brush.h"
+#include "donnees.h"
 
 //
 //INIT COULEUR ET BROSSES

@@ -9,9 +9,8 @@
 #include <unistd.h>
 
 #include "map.h"
-#include "affichage.h"
 #include "donnees.h"
-#include "quete.h"
+#include "affichage.h"
 
 typedef enum{
   ACCUEIL, JEU
@@ -81,7 +80,7 @@ void init_Curses(Info_Fenetre* pFenetre);
 void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
-void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height);
 void gestionFps(Info_Fenetre* pFenetre);
 
 #include "event.h"

@@ -16,6 +16,7 @@ typedef enum{
   TERMINAL, // l'id de la couleur du terminal est 7
 
   COLOR_BOIS,
+  COLOR_STONE,
 
   COLOR_STAT,
   COLOR_INVENTAIRE_NEUTRE,
@@ -30,6 +31,7 @@ typedef enum{
   BRUSH_GRASS,
 
   BRUSH_BOIS,
+  BRUSH_STONE,
 
   BRUSH_NOUVEAU_JEU,
   BRUSH_REPRENDRE_JEU,

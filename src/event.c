@@ -1,5 +1,4 @@
 #include "event.h"
-#include "donnees.h"
 
 int getEvent(Info_Jeu* pJeu){
   int nouvelEvent = 0;
@@ -204,27 +203,30 @@ void interagir(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
     case JEU:
       if(ramasser(pJeu, *pCaseMap)){
         pCaseMap->ressource = EMPTY;
+        pJeu->score = pJeu->score + 50;
         *pIsLoaded = 0;
       }
       else if(peutCasser(pJeu, *pCaseMap)){
         switch(pCaseMap->ressource){
           case TREE :
             pCaseMap->ressource = BATON;
+            pJeu->score = pJeu->score + 100;
             *pIsLoaded = 0;
             break;
           case ROCHER :
             pCaseMap->ressource = CAILLOU;
+            pJeu->score = pJeu->score + 100;
             *pIsLoaded = 0;
             break;
         }
       }
       else{
         switch(pCaseMap->ressource){
-          case PNG_PAUL:
-            
-            break;
           case PNG_BOAT:
             quete_Radeau(pJeu->pQ_Radeau, &pJeu->listeObj);
+            break;
+          case PNG_PAUL:
+            quete_Paul(pJeu->pQ_Survivant, &pJeu->listeObj, pJeu->pQ_Radeau->e_Dialogue);
             break;
       }
       break;

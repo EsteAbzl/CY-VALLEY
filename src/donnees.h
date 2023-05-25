@@ -9,9 +9,6 @@
 #include <string.h>
 #include <ncurses.h>
 
-#include "map.h"
-
-
 typedef struct{
   int x;
   int y;
@@ -88,6 +85,19 @@ typedef struct{
 }Entitee;
 
 
+typedef struct{
+  Entitee npc;
+  int etape;
+  int e_Dialogue;
+
+  char dialogue[200];
+
+}Quete;
+
+// INCLUDE:
+#include "map.h"
+#include "main.h"
+//
 
 unsigned long getTimeMicros();
 
@@ -122,5 +132,5 @@ int ramasserObjet(Obj* pObj, Entitee* pJoueur);
 void afficherStats(Entitee* entitee);
 void testStats(Entitee* entitee);
 void test();
-int augmenterFaim(Entitee* entitee);
+
 #endif
