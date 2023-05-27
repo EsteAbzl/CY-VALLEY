@@ -132,12 +132,13 @@ void debutJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
 void reprendreJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   // charge la derniere partie en cour
   res_Info_Jeu(pJeu);
-  pFenetre->ecran = JEU;
-
-  pJeu->listeObj = init_ListeObj();
+  if(load_Game(pFenetre, pJeu)){
+    pFenetre->ecran = JEU;
+    pJeu->listeObj = init_ListeObj();
+    loadMapPrint(pJeu->mapJeu);
+  }
   
-  generateMap(pJeu->mapJeu);
-  loadMapPrint(pJeu->mapJeu);
+
 }
 
 
@@ -145,9 +146,91 @@ void reprendreJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
 //AUTRES FONCTIONS
 //
 
-void save_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+void save_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+  FILE* fS = pJeu->fSauvegarde;
+  fprintf(fS, "1:%d:%d\n", pJeu->mapJeu->height, pJeu->mapJeu->width); // jeu sauvegardé
+  for(int y = 0; y<pJeu->mapJeu->height; y++){
+    for(int x = 0; x<pJeu->mapJeu->width; x++){
+      fprintf(fS, "%d:%d/",pJeu->mapJeu->pDonnees->tab[x][y].biome, pJeu->mapJeu->pDonnees->tab[x][y].ressource);
+    }
+    fprintf(fS, "\n");
+  }
 
-void load_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+  fprintf(fS, "%d:%d\n",pJeu->pJoueur->coordonnees.x,pJeu->pJoueur->coordonnees.y);
+  fprintf(fS, "%d\n",pJeu->pJoueur->pvActuelle);
+
+  fprintf(fS, "%d:%d\n",pJeu->pQ_Survivant->etape,pJeu->pQ_Survivant->e_Dialogue);
+  fprintf(fS, "%d:%d\n",pJeu->pQ_Radeau->etape,pJeu->pQ_Radeau->e_Dialogue);
+  
+  fprintf(fS, "%d\n",pJeu->pJoueur->inventaire.stockagePris);
+  for(int i = 0; i < pJeu->pJoueur->inventaire.stockagePris; i++){
+    fprintf(fS, "%d/%d/%d/%s\n",pJeu->pJoueur->inventaire.inv[i].id_Obj, pJeu->pJoueur->inventaire.inv[i].nb, pJeu->pJoueur->inventaire.inv[i].nb_Max, pJeu->pJoueur->inventaire.inv[i].symbole);
+  }
+
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.coco.nb, pJeu->listeObj.coco.placeinv, pJeu->listeObj.coco.nb_Max);
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.baton.nb, pJeu->listeObj.baton.placeinv, pJeu->listeObj.baton.nb_Max);
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.feuille.nb, pJeu->listeObj.feuille.placeinv, pJeu->listeObj.feuille.nb_Max);
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.caillou.nb, pJeu->listeObj.caillou.placeinv, pJeu->listeObj.caillou.nb_Max);
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.corde.nb, pJeu->listeObj.corde.placeinv, pJeu->listeObj.corde.nb_Max);
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.voile.nb, pJeu->listeObj.voile.placeinv, pJeu->listeObj.voile.nb_Max);
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.hache.nb, pJeu->listeObj.hache.placeinv, pJeu->listeObj.hache.nb_Max);
+  fprintf(fS, "%d/%d/%d\n",pJeu->listeObj.pioche.nb, pJeu->listeObj.pioche.placeinv, pJeu->listeObj.pioche.nb_Max);
+  
+
+
+  fclose(pJeu->fSauvegarde);
+  pJeu->fSauvegarde = NULL;
+  if( !(pJeu->fSauvegarde = fopen("data/sauvegarde.txt", "r+"))){
+    printf("Erreur ouverture de data/sauvegarde.txt");
+    exit(8);
+  }
+}
+
+int load_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
+  FILE* fS = pJeu->fSauvegarde;
+  if(getc(fS) != '1'){
+    printw("il n'y a pas de partie sauvegardée");
+    return 0;
+  }
+  else{
+    fscanf(fS, ":%d:%d\n", &pJeu->mapJeu->height, &pJeu->mapJeu->width);
+    for(int y = 0; y<pJeu->mapJeu->height; y++){
+      for(int x = 0; x<pJeu->mapJeu->width; x++){
+        fscanf(fS, "%d:%d/", &pJeu->mapJeu->pDonnees->tab[x][y].biome, &pJeu->mapJeu->pDonnees->tab[x][y].ressource);
+      }
+      getc(fS);
+    }
+
+    fscanf(fS, "%d:%d\n", &pJeu->pJoueur->coordonnees.x, &pJeu->pJoueur->coordonnees.y);
+    fscanf(fS, "%d\n", &pJeu->pJoueur->pvActuelle);
+  
+    fscanf(fS, "%d:%d\n", &pJeu->pQ_Survivant->etape, &pJeu->pQ_Survivant->e_Dialogue);
+    fscanf(fS, "%d:%d\n", &pJeu->pQ_Radeau->etape, &pJeu->pQ_Radeau->e_Dialogue);
+
+    fscanf(fS, "%d\n",&pJeu->pJoueur->inventaire.stockagePris);
+    for(int i = 0; i < pJeu->pJoueur->inventaire.stockagePris; i++){
+      fscanf(fS, "%d/%d/%d/%s\n",&pJeu->pJoueur->inventaire.inv[i].id_Obj, &pJeu->pJoueur->inventaire.inv[i].nb, &pJeu->pJoueur->inventaire.inv[i].nb_Max, pJeu->pJoueur->inventaire.inv[i].symbole);
+    }
+  
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.coco.nb, &pJeu->listeObj.coco.placeinv, &pJeu->listeObj.coco.nb_Max);
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.baton.nb, &pJeu->listeObj.baton.placeinv, &pJeu->listeObj.baton.nb_Max);
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.feuille.nb, &pJeu->listeObj.feuille.placeinv, &pJeu->listeObj.feuille.nb_Max);
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.caillou.nb, &pJeu->listeObj.caillou.placeinv, &pJeu->listeObj.caillou.nb_Max);
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.corde.nb, &pJeu->listeObj.corde.placeinv, &pJeu->listeObj.corde.nb_Max);
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.voile.nb, &pJeu->listeObj.voile.placeinv, &pJeu->listeObj.voile.nb_Max);
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.hache.nb, &pJeu->listeObj.hache.placeinv, &pJeu->listeObj.hache.nb_Max);
+    fscanf(fS, "%d/%d/%d\n",&pJeu->listeObj.pioche.nb, &pJeu->listeObj.pioche.placeinv, &pJeu->listeObj.pioche.nb_Max);
+
+    
+    fclose(pJeu->fSauvegarde);
+    pJeu->fSauvegarde = NULL;
+    if( !(pJeu->fSauvegarde = fopen("data/sauvegarde.txt", "r+"))){
+      printf("Erreur ouverture de data/sauvegarde.txt");
+      exit(8);
+    }
+    return 1;
+  }
+}
 
 
 

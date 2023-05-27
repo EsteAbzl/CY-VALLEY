@@ -82,8 +82,8 @@ void quete_Radeau(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe, int e_Paul)
 
 void quete_Radeau_1(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ //si le joueur veut finir la quete.
   //condition de quête
-  if(pListe->baton.nb >= 1){ // a remodifier
-    pListe->baton.nb -= 2; // a remodifier
+  if(pListe->baton.nb >= 15){ // a remodifier
+    pListe->baton.nb -= 16; // a remodifier
     ramasserObjet(&pListe->baton, pJoueur);
     
     sprintf(pQuete->dialogue, " *Tu as réparé le radeau à 25%%* \n RADEAU : Merci! Mais ce ne sera pas suffisant...");
@@ -238,8 +238,8 @@ void quete_Paul_1(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ //si le jo
 }
 
 void quete_Paul_2(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ 
-  if(pListe->caillou.nb >= 1){ //remplacer avec viande de poule si fais 
-    pListe->caillou.nb -= 2;// a remodifier
+  if(pListe->caillou.nb >= 10){ //remplacer avec viande de poule si fais 
+    pListe->caillou.nb -= 11;// a remodifier
     ramasserObjet(&pListe->caillou, pJoueur);
     ramasserObjet(&pListe->corde, pJoueur);
     ramasserObjet(&pListe->corde, pJoueur);
@@ -254,8 +254,8 @@ void quete_Paul_2(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){
 }
 
 void quete_Paul_3(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ 
-  if(pListe->feuille.nb >= 1){ // a remodifier
-    pListe->feuille.nb -= 2;// a remodifier
+  if(pListe->feuille.nb >= 12){ // a remodifier
+    pListe->feuille.nb -= 13;// a remodifier
     ramasserObjet(&pListe->feuille, pJoueur);
     ramasserObjet(&pListe->voile, pJoueur);
     

@@ -42,6 +42,7 @@ void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
         score = score + 5;
         break;
       case 'A':
+        save_Game(pFenetre, pJeu);
         clear();
         pFenetre->ecran = ACCUEIL;
         pJoueur->coordonnees.x = 10;

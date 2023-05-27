@@ -83,7 +83,7 @@ void debutJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 //
 
 void save_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
-void load_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+int load_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 void init_Curses(Info_Fenetre* pFenetre);
 void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
