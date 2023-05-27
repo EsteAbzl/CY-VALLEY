@@ -126,8 +126,6 @@ Affichage_Map* constructor_Affichage_Map(int width, int height){
   if( !(pAffichage_Map = malloc(sizeof(Affichage_Map)))){
     printf("ERREUR: pb avec le malloc de pAffichage_Map");
   }
-
-  res_Affichage_Map(pAffichage_Map);
   
   pAffichage_Map->width = width;
   pAffichage_Map->height = height;

@@ -16,10 +16,11 @@ int alea(int min, int max){
 }
 
 
-void generateMap(Donnees_Map* pDonnees_Map){
+void generateMap(Map* pMap){
   srand(time(NULL));
-
-  int spawnRadau = 0;
+  Donnees_Map* pDonnees_Map = pMap->pDonnees;
+  Affichage_Map* pAffichage_Map = pMap->pAffichage;
+  
 
   for (int y = 0; y < pDonnees_Map->height; y++) {
     for (int x = 0; x < pDonnees_Map->width; x++) {
@@ -34,13 +35,15 @@ void generateMap(Donnees_Map* pDonnees_Map){
       }
       else{
         pDonnees_Map->tab[x][y].biome = GRASS;
-        if( !(rand() % 20)){
+        if( !(rand() % 17)){
           pDonnees_Map->tab[x][y].ressource = TREE;
         }
-        if( !(rand() % 20)){
+        if( !(rand() % 60)){
           pDonnees_Map->tab[x][y].ressource = ROCHER;
         }
       }
+
+      pAffichage_Map->tab[x][y].isLoaded = 0;
       
     }// x
   }// y
@@ -105,6 +108,25 @@ void createMapAccueil(Map* pMap){
   createBouton(pMap, percent(pDonnees_Map->width, 50) - 7, 3, 3, 14, NOUVEAU_JEU, BRUSH_NOUVEAU_JEU, "NOUVEAU JEU");
   createBouton(pMap, percent(pDonnees_Map->width, 50) - 7, 7, 3, 14, REPRENDRE_JEU, BRUSH_REPRENDRE_JEU, "REPRENDRE JEU");
   createBouton(pMap, percent(pDonnees_Map->width, 50) - 7, 12, 3, 14, QUITTER_JEU, BRUSH_QUITTER_JEU, "QUITER LE JEU");
+}
+
+
+void createMapOcean(Map* pMap){
+  srand(time(NULL));
+  Donnees_Map* pDonnees_Map = pMap->pDonnees;
+  Affichage_Map* pAffichage_Map = pMap->pAffichage;
+  
+  for (int y = 0; y < pDonnees_Map->height; y++) {
+    for (int x = 0; x < pDonnees_Map->width; x++) {
+      pDonnees_Map->tab[x][y].biome = WATER;
+
+      if( !(rand() % 50)){
+        sprintf(pAffichage_Map->tab[x][y].caractere, "🌊");
+      }
+          
+    }// x
+  }// y
+
 }
 
 
@@ -173,6 +195,8 @@ Entitee* init_Entitee(){
 void res_Entitee(Entitee* pEnt){
   pEnt->coordonnees.x = 0;
   pEnt->coordonnees.y = 0;
+  pEnt->derniereCoordonnees.x = 0;
+  pEnt->derniereCoordonnees.y = 0;
   pEnt->initial.x = 0;
   pEnt->initial.y = 0;
 
@@ -184,6 +208,7 @@ void res_Entitee(Entitee* pEnt){
   pEnt->pvTotal = 0;
   pEnt->pvActuelle = 0;
   pEnt->atk = 0;
+  pEnt->vie = 0;
   
   init_Inventaire(&(pEnt->inventaire), 30);
 }

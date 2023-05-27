@@ -9,19 +9,25 @@ typedef enum{
   COLOR_SAND, 
   COLOR_GRASS,
 
-  COLOR_NOUVEAU_JEU,
-  COLOR_REPRENDRE_JEU,
-  COLOR_QUITTER_JEU,
-
-  TERMINAL, // l'id de la couleur du terminal est 7
 
   COLOR_BOIS,
   COLOR_STONE,
 
+  
   COLOR_STAT,
+
+  TERMINAL, // l'id de la couleur du terminal est 7
+
+  COLOR_D_RADEAU,
+  COLOR_D_PAUL,
+
   COLOR_INVENTAIRE_NEUTRE,
   COLOR_INVENTAIRE_ACTIF,
-  COLOR_DIALOGUE
+  COLOR_DIALOGUE,
+
+  COLOR_NOUVEAU_JEU,
+  COLOR_REPRENDRE_JEU,
+  COLOR_QUITTER_JEU
 }Color;
 
 typedef enum{
@@ -34,6 +40,8 @@ typedef enum{
   BRUSH_STONE,
 
   BRUSH_STAT,
+  BRUSH_D_RADEAU,
+  BRUSH_D_PAUL,
 
   BRUSH_NOUVEAU_JEU,
   BRUSH_REPRENDRE_JEU,

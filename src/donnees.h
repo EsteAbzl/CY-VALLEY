@@ -71,6 +71,7 @@ typedef struct{
 
 typedef struct{
   Coordonnees coordonnees;
+  Coordonnees derniereCoordonnees;
   Coordonnees initial;
   Regard regard;
 
@@ -80,6 +81,7 @@ typedef struct{
   int pvActuelle;
   int pvTotal;
   int atk;
+  int vie;
 
   Inventaire inventaire;
 }Entitee;
@@ -104,10 +106,12 @@ unsigned long getTimeMicros();
 int percent(int nb, int percent);
 int alea(int min, int max);
 
-void generateMap(Donnees_Map* pDonnees_Map);
+void generateMap(Map* pMap);
 
 void createBouton(Map* pMap, int coordX, int coordY, int heigh, int width, Ressource ressource, Brush brush, char text[30]);
 void createMapAccueil(Map* pMap);
+
+void createMapOcean(Map* pMap);
 
 
 //res et ini

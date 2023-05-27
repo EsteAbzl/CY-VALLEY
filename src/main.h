@@ -14,7 +14,7 @@
 #include "brush.h"
 
 typedef enum{
-  ACCUEIL, JEU
+  ACCUEIL, JEU, OCEAN, MORT
 }Ecran;
 
 typedef struct{
@@ -43,7 +43,6 @@ typedef struct{
 
 
   ListeObj listeObj;
-  char dialogue[300];
 
   // quête en cour?
 
@@ -51,9 +50,12 @@ typedef struct{
 
   Map* mapJeu;
   Map* mapAccueil;
+  Map* mapOcean;
+  Map* mapMort;
 
   int enJeu;
   int score;
+  long temps;
 
   int event;
 }Info_Jeu;
@@ -82,6 +84,7 @@ void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height);
+void printDialogue(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height);
 void gestionFps(Info_Fenetre* pFenetre);
 #include "event.h"
 

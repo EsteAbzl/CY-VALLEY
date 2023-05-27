@@ -14,28 +14,32 @@ int getEvent(Info_Jeu* pJeu){
 
 void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   Entitee* pJoueur = pJeu->pJoueur;
-  
+  int score = pJeu->score;
   if(getEvent(pJeu)){
     switch (pJeu->event){
       case 'Z':
         pJoueur->regard = HAUT;
         
         deplacer(pFenetre, pJeu);
+        score = score + 5;
         break;
       case 'S':
         pJoueur->regard = BAS;
 
         deplacer(pFenetre, pJeu);
+        score = score + 5;
         break;
       case 'Q':
         pJoueur->regard = GAUCHE;
 
         deplacer(pFenetre, pJeu);
+        score = score + 5;
         break;
       case 'D':
         pJoueur->regard = DROITE;
 
         deplacer(pFenetre, pJeu);
+        score = score + 5;
         break;
       case 'A':
         pFenetre->ecran = ACCUEIL;
@@ -129,6 +133,9 @@ void deplacer(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
     if(getTimeMicros() - pJoueur->T_dernierDeplacement >= pJoueur->T_intervalleDeplacement){
       
       if(peutPasser(pMapUtilise->pDonnees->tab[pJoueur->coordonnees.x + regardX][pJoueur->coordonnees.y + regardY])){
+        pJoueur->derniereCoordonnees.x = pJoueur->coordonnees.x;
+        pJoueur->derniereCoordonnees.y = pJoueur->coordonnees.y;
+        
         pJoueur->coordonnees.x += regardX;
         pJoueur->coordonnees.y += regardY;
   
@@ -223,7 +230,7 @@ void interagir(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
       else{
         switch(pCaseMap->ressource){
           case PNG_BOAT:
-            quete_Radeau(pJeu->pQ_Radeau, &pJeu->listeObj);
+            quete_Radeau(pJeu->pQ_Radeau, &pJeu->listeObj, pJeu->pQ_Survivant->etape);
             break;
           case PNG_PAUL:
             quete_Paul(pJeu->pQ_Survivant, &pJeu->listeObj, pJeu->pQ_Radeau->e_Dialogue);
@@ -277,12 +284,55 @@ int peutCasser(Info_Jeu* pJeu, CaseMap caseMap){
   return  cassable;
 }
 
-
-void death(Entitee* pEntitee, Info_Jeu* pJeu){
-  if(pEntitee->pvActuelle <= 0){
-      pEntitee->coordonnees.x = pEntitee->initial.x;
-      pEntitee->coordonnees.y = pEntitee->initial.y;
-      pJeu->score = 0;
+void faim(Entitee* pJoueur, long temps){
+  //pJoueur->pvActuelle = 100;
+  static int dTemp;
+  if(!(temps % 5)){
+    if(temps != dTemp){
+      dTemp = temps;
+      pJoueur->pvActuelle-= 2;
+      //modifpvA(5, pJoueur);    
+    }
   }
-  printw("tu es mort................miskin");
+}
+
+
+void death(Entitee* pEntitee, Info_Jeu* pJeu, Info_Fenetre* pFenetre){
+  if(pEntitee->pvActuelle <= 0){
+    pEntitee->coordonnees.x = pEntitee->initial.x;
+    pEntitee->coordonnees.y = pEntitee->initial.y;
+    pJeu->score -= 1000;
+    pEntitee->vie --;
+
+    if(pEntitee->vie == 1){
+      printw("SYSTEME : Tu es mort, il te reste une vie.");
+      pEntitee->pvActuelle = 100;
+    }
+    else{
+      fin(pJeu, pFenetre, 3);
+    }
+  }
+ 
+}
+
+
+
+void limiteScore(Info_Jeu* pJeu, Info_Fenetre* pFenetre){
+  if(pJeu->score > 10000){
+    fin(pJeu, pFenetre, 2);
+  }
+}
+
+void fin(Info_Jeu* pJeu, Info_Fenetre* pFenetre, int nb_Fin){
+  switch(nb_Fin){
+    case 1:    // fin quête
+    pJeu->enJeu = 0;
+  break;
+    case 2:    // fin score
+    pJeu->enJeu = 0;
+  break;
+    case 3:    // fin vie / temps
+    pJeu->enJeu = 0;
+  break;
+  }
 }

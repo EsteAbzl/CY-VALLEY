@@ -141,6 +141,10 @@ void free_Affichage_Map(Affichage_Map* pAffichage_Map);
 // MAP
 void free_Map(Map* pMap);
 
+//quete
+void ocean_Affichage_Map_tab(Affichage_Map* pAffichage_Map);
+void ocean_Print(Print* pPrint);
+
 
 
 #endif

@@ -10,6 +10,9 @@ typedef struct{
   int width; // largeur
   int height; // hauteur
 
+  int xCam;
+  int yCam;
+
   FILE* pAffichage;
 }Info_Cam;
 
@@ -56,6 +59,7 @@ void loadCamPrint(Coordonnees coordonnee, Map* pMap, Info_Cam* pCam);
 
 // affiche une portion de la map relative a la caméra passée en paramètre
 void printCam(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam);
+void printFin_Radeau(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam);
 
 //Affiche le contenu d'une Map en entier
 void printMap(Affichage_Map* pAffichage_Map);

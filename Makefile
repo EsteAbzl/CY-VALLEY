@@ -1,6 +1,6 @@
 all: main
 
-CC = clang
+CC = gcc
 override CFLAGS += -g -Wno-everything -pthread -lm -lncursesw
 
 ##ajout pour compiler les fichier de src directement
@@ -11,10 +11,7 @@ HEADERS = $(wildcard $(DIR_INC)*.h)
 
 
 main: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) $(SRCS) -o "$@"	
-
-main-debug: $(SRCS) $(HEADERS)
-	$(CC) -c $(CFLAGS) -O0 $(SRCS) -o "$@"
+	$(CC) -o "$@" $(SRCS)	$(CFLAGS)
 
 clean:
 	rm -f main main-debug

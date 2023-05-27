@@ -22,11 +22,17 @@ void deplacer(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 void interagir(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
-void death(Entitee* pEntitee, Info_Jeu* pJeu);
 
 int ramasser(Info_Jeu *pJeu, CaseMap caseMap);
 
 int peutCasser(Info_Jeu* pJeu, CaseMap caseMap);
 
+void death(Entitee* pEntitee, Info_Jeu* pJeu, Info_Fenetre* pFenetre);
+
+void limiteScore(Info_Jeu* pJeu, Info_Fenetre* pFenetre);
+
+void faim(Entitee* pJoueur, long temps);
+
+void fin(Info_Jeu* pJeu, Info_Fenetre* pFenetre, int nb_Fin);
 
 #endif
