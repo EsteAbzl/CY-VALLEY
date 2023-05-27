@@ -52,7 +52,7 @@ Info_Jeu* init_Info_Jeu(){
 
   pJeu->listeObj = init_ListeObj();
   
-  pJeu->mapJeu = constructor_Map(70, 60);
+  pJeu->mapJeu = constructor_Map(100, 100);
   pJeu->mapAccueil = constructor_Map(16*2, 9*2);
   createMapAccueil(pJeu->mapAccueil);
   loadMapPrint(pJeu->mapAccueil);
@@ -68,6 +68,13 @@ Info_Jeu* init_Info_Jeu(){
   
   pJeu->event = 0;
 
+  pJeu->fSauvegarde = NULL;
+  if( !(pJeu->fSauvegarde = fopen("data/sauvegarde.txt", "r+"))){
+    printf("Erreur ouverture de data/sauvegarde.txt");
+    exit(8);
+  }
+  pJeu->partie_sauv = 0;
+
   return pJeu;
 }
 
@@ -77,15 +84,18 @@ Info_Jeu* init_Info_Jeu(){
 //
 
 void res_Info_Jeu(Info_Jeu* pJeu){  
-  
+
   pJeu->pJoueur->initial.x = 10;
   pJeu->pJoueur->initial.y = 10;
   pJeu->pJoueur->coordonnees.x = pJeu->pJoueur->initial.x;
   pJeu->pJoueur->coordonnees.y = pJeu->pJoueur->initial.y;
 
   pJeu->pJoueur->pvActuelle = 100;
+  pJeu->pJoueur->pvTotal = 100;
   pJeu->pJoueur->vie = 2;
 
+  init_Inventaire(&(pJeu->pJoueur->inventaire), 8);
+  
   res_Quete(pJeu->pQ_Radeau);
   res_Quete(pJeu->pQ_Survivant);
 
@@ -135,6 +145,12 @@ void reprendreJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
 //AUTRES FONCTIONS
 //
 
+void save_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+
+void load_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+
+
+
 void init_Curses(Info_Fenetre* pFenetre){
   printf("Locale: %s\n", setlocale(LC_ALL, "en_US.UTF-8"));
   
@@ -172,6 +188,8 @@ void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   free(pJeu->pJoueur);
   free(pJeu->pQ_Radeau);
   free(pJeu->pQ_Survivant);
+
+  fclose(pJeu->fSauvegarde);
   
   free(pFenetre);
   free(pJeu);
@@ -215,9 +233,10 @@ void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
     
     if(pFenetre->ecran == JEU){
       printStat(pFenetre, pJeu, 7);
+      printInv(pFenetre, pJeu, 11);
       printDialogue(pFenetre, pJeu, 6);
       
-      if(pJeu->pQ_Survivant->etape == 1){ // doit etre a 4
+      if(pJeu->pQ_Survivant->etape == 4){
         attron(COLOR_PAIR(pMap->pAffichage->tab[pJeu->pJoueur->derniereCoordonnees.x][pJeu->pJoueur->derniereCoordonnees.y].brush));
         mvprintw((pJeu->pJoueur->derniereCoordonnees.y - pFenetre->camJeu->yCam) + 1, (pJeu->pJoueur->derniereCoordonnees.x - pFenetre->camJeu->xCam) *2 + 1, "🕺");
         attroff(COLOR_PAIR(pMap->pAffichage->tab[pJeu->pJoueur->derniereCoordonnees.x][pJeu->pJoueur->derniereCoordonnees.y].brush));
@@ -249,7 +268,7 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   mvprintw(ligne, colonne + 1, "Score: %05d", pJeu->score);
   ligne +=2;
 
-  mvprintw(ligne, colonne + 1, "PV: %03d", pJeu->pJoueur->pvActuelle);
+  mvprintw(ligne, colonne + 1, "PV: %03d VIE: %d", pJeu->pJoueur->pvActuelle, pJeu->pJoueur->vie);
   ligne += 2;
 
 
@@ -273,8 +292,41 @@ void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   for(int i = 0; i<16; i++){
     printw("═");
   }
-  printw("╝");
+  printw("╣");
   
+}
+
+
+void printInv(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
+  int colonne = pFenetre->camJeu->width*2 + 2;
+  int ligne = 8;
+  
+  move(ligne + 1, colonne + 1); 
+
+  for(int i = 1; i < height; i++){
+    mvprintw(ligne + i, colonne + 1, "                 ");
+  }
+
+  attron(COLOR_PAIR(COLOR_INVENTAIRE_NEUTRE));
+  mvprintw(ligne, colonne + 1," INVENTAIRE:");
+  for(int i = 0; i < pJeu->pJoueur->inventaire.stockagePris; i++){
+    mvprintw(ligne + i + 2, colonne + 1, "%s : %d/%d", pJeu->pJoueur->inventaire.inv[i].symbole, pJeu->pJoueur->inventaire.inv[i].nb, pJeu->pJoueur->inventaire.inv[i].nb_Max);
+  }
+  attroff(COLOR_PAIR(COLOR_INVENTAIRE_NEUTRE));
+  
+
+  // encadré
+  
+  for(int i = 0; i<height; i++){
+    mvprintw(ligne + i, colonne+16, "║");
+  }
+
+  move(ligne + height, colonne - 1);
+  printw("╩");
+  for(int i = 0; i<16; i++){
+    printw("═");
+  }
+  printw("╣");
 }
 
 
@@ -284,11 +336,9 @@ void printDialogue(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   
   move(ligne + 1, colonne + 1); 
 
-  printw("                                                                                \n");
-  printw("                                                                                \n");
-  printw("                                                                                \n");
-  printw("                                                                                \n");
-  printw("                                                                                \n");
+  for(int i = 0; i < 5; i++){
+    printw("                                                                                \n");
+  }
 
   move(ligne + 1, colonne + 1);
   attron(COLOR_PAIR(BRUSH_D_RADEAU));
@@ -304,7 +354,6 @@ void printDialogue(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height){
   // encadré
   move(ligne, 0);
   printw("╠");
-  mvprintw(ligne, colonne + 82, "╣");
   for(int i = 1; i<height; i++){
     mvprintw(ligne + i, colonne, "║");
     mvprintw(ligne + i, colonne + 82, "║");
@@ -354,10 +403,18 @@ int main(int argc, char* argv[]){
 
   while(pJeu->enJeu){// boucle du jeu
 
-    pJeu->temps = (pFenetre->endTime - pFenetre->initialTime) / 1000000;
-    faim(pJeu->pJoueur, pJeu->temps);
-    death(pJeu->pJoueur, pJeu, pFenetre);
-    limiteScore(pJeu, pFenetre);
+    if(pFenetre->ecran == JEU){  
+      pJeu->temps = (pFenetre->endTime - pFenetre->initialTime) / 1000000;
+      faim(pJeu->pJoueur, pJeu->temps);
+      
+      death(pJeu, pFenetre);
+      
+      limiteScore(pJeu, pFenetre);
+
+      if(pJeu->pQ_Radeau->etape == 4){
+        fin(pJeu, pFenetre, 1);
+      }
+    }
     
     action(pFenetre, pJeu);
 

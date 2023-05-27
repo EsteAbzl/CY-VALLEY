@@ -16,18 +16,17 @@ void res_Quete(Quete* pQuete);
 
 void dialogue_Radeau(Quete* pQuete);
 
-void quete_Radeau(Quete* pQuete, ListeObj* pListe, int e_Paul);
-void quete_Radeau_1(Quete* pQuete, ListeObj* pListe);
-void quete_Radeau_2(Quete* pQuete, ListeObj* pListe);
-void quete_Radeau_3(Quete* pQuete, ListeObj* pListe);
-void quete_Radeau_4(Quete* pQuete, ListeObj* pListe, int e_Paul);
+void quete_Radeau(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe, int e_Paul);
+void quete_Radeau_1(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe);
+void quete_Radeau_2(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe);
+void quete_Radeau_3(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe);
 
 void dialogue_Paul(Quete* pQuete);
 
-void quete_Paul_1(Quete* pQuete, ListeObj* pListe);
-void quete_Paul_2(Quete* pQuete, ListeObj* pListe);
-void quete_Paul_3(Quete* pQuete, ListeObj* pListe);
-void quete_Paul(Quete* pQuete, ListeObj* pListe, int eDQuete_Radeau);
+void quete_Paul_1(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe);
+void quete_Paul_2(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe);
+void quete_Paul_3(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe);
+void quete_Paul(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe, int eDQuete_Radeau);
 
 
 #endif

@@ -24,22 +24,39 @@ void generateMap(Map* pMap){
 
   for (int y = 0; y < pDonnees_Map->height; y++) {
     for (int x = 0; x < pDonnees_Map->width; x++) {
-      if((x < alea(4, 9) || pDonnees_Map->width - x < alea(4, 9)) || (y < alea(4, 9)|| pDonnees_Map->height - y < alea(4, 9))){
+      if((x < alea(2, 4) || pDonnees_Map->width - x < alea(2, 4)) || (y < alea(2, 4)|| pDonnees_Map->height - y < alea(2, 4))){
+        pDonnees_Map->tab[x][y].biome = DEEP_WATER;
+        pDonnees_Map->tab[x][y].ressource = WAVE;
+      }
+      else if((x < alea(4, 9) || pDonnees_Map->width - x < alea(4, 9)) || (y < alea(4, 9)|| pDonnees_Map->height - y < alea(4, 9))){
         pDonnees_Map->tab[x][y].biome = WATER;
+        pDonnees_Map->tab[x][y].ressource = WAVE;
       }
       else if((x < alea(12, 15) || pDonnees_Map->width - x < alea(12, 15)) || (y < alea(12, 15) || pDonnees_Map->height - y < alea(12, 15))){
         pDonnees_Map->tab[x][y].biome = SAND;
-        if( !(rand() % 50)){
-          pDonnees_Map->tab[x][y].ressource = LEAF;
-        }        
+        if( !(rand() % 200)){
+          pDonnees_Map->tab[x][y].ressource = COCO;
+        }
       }
       else{
         pDonnees_Map->tab[x][y].biome = GRASS;
-        if( !(rand() % 17)){
+        if( !(rand() % 25)){
           pDonnees_Map->tab[x][y].ressource = TREE;
         }
-        if( !(rand() % 60)){
+        if( !(rand() % 100)){
           pDonnees_Map->tab[x][y].ressource = ROCHER;
+        }
+        if( !(rand() % 150)){
+          pDonnees_Map->tab[x][y].ressource = COCO;
+        }
+        if( !(rand() % 80)){
+          pDonnees_Map->tab[x][y].ressource = LEAF;
+        }
+        if( !(rand() % 110)){
+          pDonnees_Map->tab[x][y].ressource = BATON;
+        }
+        if( !(rand() % 110)){
+          pDonnees_Map->tab[x][y].ressource = CAILLOU;
         }
       }
 
@@ -55,21 +72,24 @@ void generateMap(Map* pMap){
   
 }
 
-void createBouton(Map* pMap, int coordX, int coordY, int heigh, int width, Ressource ressource, Brush brush, char text[30]){
+void createBouton(Map* pMap, int coordX, int coordY, int heigh, int width, int h_Affichage, Ressource ressource, Brush brush, char text[30]){
   Donnees_Map* pDonnees_Map = pMap->pDonnees;
   Affichage_Map* pAffichage_Map = pMap->pAffichage;
 
   int len = strlen(text);
-  int espace = (width - len) / 2;
+  int espace = 0;
+  if(width != len){
+    espace = (width - len) / 2;
+  }
   int ch = 0;
   
-  for (int y = 0; y < 3; y++) {
-    for (int x = 0; x < 14; x++) {
+  for (int y = 0; y < heigh; y++) {
+    for (int x = 0; x < width; x++) {
       pDonnees_Map->tab[x + coordX][y + coordY].biome = BOUTON;
       pDonnees_Map->tab[x + coordX][y + coordY].ressource = ressource;
       
       pAffichage_Map->tab[x + coordX][y + coordY].brush = brush;
-      if(y == 1 && (x >= espace + (len % 2) && x < width - espace)){          
+      if(y == h_Affichage && (x >= espace + (len % 2) && x < width - espace || width == len)){          
         sprintf(pAffichage_Map->tab[x + coordX][y + coordY].caractere, "%c ", text[ch]);
         ch++;
       }
@@ -87,10 +107,16 @@ void createMapAccueil(Map* pMap){
   
   for (int y = 0; y < pDonnees_Map->height; y++) {
     for (int x = 0; x < pDonnees_Map->width; x++) {
-      if((x < percent(pDonnees_Map->width, 7) || pDonnees_Map->width - x < percent(pDonnees_Map->width, 7)) || (y < percent(pDonnees_Map->height, 7) || pDonnees_Map->height - y < percent(pDonnees_Map->height, 7))){
-        pDonnees_Map->tab[x][y].biome = WATER;
+      if((x < percent(pDonnees_Map->width, 20))){
+        pDonnees_Map->tab[x][y].biome = DEEP_WATER;
+        pDonnees_Map->tab[x][y].ressource = WAVE;
       }
-      else if((x < percent(pDonnees_Map->width, 15) || pDonnees_Map->width - x < percent(pDonnees_Map->width, 15)) || (y < percent(pDonnees_Map->height, 15) || pDonnees_Map->height - y < percent(pDonnees_Map->height, 15))){
+      else if((x < percent(pDonnees_Map->width, 28) || pDonnees_Map->width - x < percent(pDonnees_Map->width, 7)) || (y < percent(pDonnees_Map->height, 7) || pDonnees_Map->height - y < percent(pDonnees_Map->height, 7))){
+        pDonnees_Map->tab[x][y].biome = WATER;
+        pDonnees_Map->tab[x][y].ressource = WAVE;
+
+      }
+      else if((x < percent(pDonnees_Map->width, 35) || pDonnees_Map->width - x < percent(pDonnees_Map->width, 15)) || (y < percent(pDonnees_Map->height, 15) || pDonnees_Map->height - y < percent(pDonnees_Map->height, 15))){
         pDonnees_Map->tab[x][y].biome = SAND;
         if( !(rand() % 50)){
           pDonnees_Map->tab[x][y].ressource = LEAF;
@@ -105,9 +131,23 @@ void createMapAccueil(Map* pMap){
     }// x
   }// y
 
-  createBouton(pMap, percent(pDonnees_Map->width, 50) - 7, 3, 3, 14, NOUVEAU_JEU, BRUSH_NOUVEAU_JEU, "NOUVEAU JEU");
-  createBouton(pMap, percent(pDonnees_Map->width, 50) - 7, 7, 3, 14, REPRENDRE_JEU, BRUSH_REPRENDRE_JEU, "REPRENDRE JEU");
-  createBouton(pMap, percent(pDonnees_Map->width, 50) - 7, 12, 3, 14, QUITTER_JEU, BRUSH_QUITTER_JEU, "QUITER LE JEU");
+  createBouton(pMap, percent(pDonnees_Map->width, 65) - 7, 3, 3, 14, 1, NOUVEAU_JEU, BRUSH_NOUVEAU_JEU, "NOUVEAU JEU");
+  createBouton(pMap, percent(pDonnees_Map->width, 65) - 7, 7, 3, 14, 1, REPRENDRE_JEU, BRUSH_REPRENDRE_JEU, "REPRENDRE JEU");
+  createBouton(pMap, percent(pDonnees_Map->width, 65) - 7, 12, 3, 14, 1, QUITTER_JEU, BRUSH_QUITTER_JEU, "QUITER LE JEU");
+
+  createBouton(pMap, 2, 1, 1, 1, 0, TOUCHE, BRUSH_TOUCHE, "Z");
+  createBouton(pMap, 1, 2, 1, 1, 0, TOUCHE, BRUSH_TOUCHE, "Q");
+  createBouton(pMap, 2, 2, 1, 1, 0, TOUCHE, BRUSH_TOUCHE, "S");
+  createBouton(pMap, 3, 2, 1, 1, 0, TOUCHE, BRUSH_TOUCHE, "D");
+  
+  createBouton(pMap, 2, 5, 1, 1, 0, TOUCHE, BRUSH_TOUCHE, "E");
+  createBouton(pMap, 0, 6, 1, 7, 0, TOUCHE, BRUSH_TOUCHE, "INTERAC");
+
+  createBouton(pMap, 2, 8, 1, 1, 0, TOUCHE, BRUSH_TOUCHE, "A");
+  createBouton(pMap, 0, 9, 1, 7, 0, TOUCHE, BRUSH_TOUCHE, "ACCUEIL");
+
+  //createBouton(pMap, 2, 12, 1, 1, 0, TOUCHE, BRUSH_TOUCHE, "I");
+  //createBouton(pMap, 1, 13, 1, 3, 0, TOUCHE, BRUSH_TOUCHE, "INV");
 }
 
 
@@ -155,7 +195,8 @@ Obj constructor_Obj(Id_Obj O_nom, int nb_Max, char nom[30], char symbole[10]){
 
 ListeObj init_ListeObj(){
   ListeObj listObj;
-  
+
+  listObj.coco = constructor_Obj(O_COCO, 10, "Coco", "🥥");
   listObj.baton = constructor_Obj(O_BATON, 20, "Baton", "▂");
   listObj.feuille = constructor_Obj(O_FEUILLE, 30, "Feuille", "🍃");
   listObj.caillou = constructor_Obj(O_CAILLOU, 20, "Caillou", "☁");
@@ -210,7 +251,7 @@ void res_Entitee(Entitee* pEnt){
   pEnt->atk = 0;
   pEnt->vie = 0;
   
-  init_Inventaire(&(pEnt->inventaire), 30);
+  init_Inventaire(&(pEnt->inventaire), 8);
 }
 
 
@@ -239,26 +280,28 @@ int ramasserObjet(Obj* pObj, Entitee* pJoueur){ //return 0 => pas ramassé retur
   if(pObj->placeinv != -1){
       if(pObj->nb < pObj->nb_Max){
         pObj->nb += 1;
+
+        pJoueur->inventaire.inv[pObj->placeinv] = *pObj;
         estRamasse = 1;
       }
       else{
-        printw("Tu as déjà le nombre maximum pour cette ressource.");
+        //printw("Tu as déjà le nombre maximum pour cette ressource.");
       }
     }
   else{
     for(int n = 0; n < pJoueur->inventaire.stockageTotal && pObj->placeinv == -1; n++){
       if(pJoueur->inventaire.inv[n].id_Obj == O_VIDE ){
-        pJoueur->inventaire.inv[n] = *pObj;
+        
         pObj->nb += 1;
         pObj->placeinv = n;
+        pJoueur->inventaire.stockagePris ++;
+        
+        pJoueur->inventaire.inv[n] = *pObj;
         estRamasse = 1;
-      }
-      if(estRamasse == 1){
-        printw("place %d\n", n);
       }
     }
     if(estRamasse == 0){
-      printw("Tu n'as plus de place dans ton inventaire.\n");
+      //printw("Tu n'as plus de place dans ton inventaire.\n");
     }
   }
   return estRamasse;

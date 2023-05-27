@@ -14,6 +14,7 @@
 typedef enum{
   VOID,
   WATER,
+  DEEP_WATER,
   SAND,
   GRASS,
 
@@ -22,8 +23,10 @@ typedef enum{
 
 typedef enum{
   EMPTY,  //
-  TREE,   //🌳
+  WAVE,   //🌊
+  TREE,   //🌳🌴
   BATON,  //▂
+  COCO,   //🥥
   LEAF,   //🍃    
   ROCHER, //⛰ 
   CAILLOU,//☁
@@ -33,6 +36,7 @@ typedef enum{
   HACHE,  //🪓
   PIOCHE, //⛏
 
+  TOUCHE,
   NOUVEAU_JEU,
   REPRENDRE_JEU,
   QUITTER_JEU

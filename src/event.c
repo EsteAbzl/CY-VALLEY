@@ -42,6 +42,7 @@ void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
         score = score + 5;
         break;
       case 'A':
+        clear();
         pFenetre->ecran = ACCUEIL;
         pJoueur->coordonnees.x = 10;
         pJoueur->coordonnees.y = 10;
@@ -230,10 +231,14 @@ void interagir(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
       else{
         switch(pCaseMap->ressource){
           case PNG_BOAT:
-            quete_Radeau(pJeu->pQ_Radeau, &pJeu->listeObj, pJeu->pQ_Survivant->etape);
+            quete_Radeau(pJeu->pJoueur, pJeu->pQ_Radeau, &pJeu->listeObj, pJeu->pQ_Survivant->etape);
             break;
           case PNG_PAUL:
-            quete_Paul(pJeu->pQ_Survivant, &pJeu->listeObj, pJeu->pQ_Radeau->e_Dialogue);
+            quete_Paul(pJeu->pJoueur, pJeu->pQ_Survivant, &pJeu->listeObj, pJeu->pQ_Radeau->e_Dialogue);
+            if(pJeu->pQ_Survivant->etape == 4){
+              pCaseMap->ressource = EMPTY;
+              *pIsLoaded = 0;
+            }
             break;
       }
       break;
@@ -247,6 +252,12 @@ int ramasser(Info_Jeu *pJeu, CaseMap caseMap){
   Entitee* pJoueur = pJeu->pJoueur;
   ListeObj* pListeObj = &(pJeu->listeObj);
   switch(caseMap.ressource){
+    case COCO :
+      if(pJeu->pJoueur->pvActuelle <= pJeu->pJoueur->pvTotal - 20){
+        ramassable = 1;
+        pJeu->pJoueur->pvActuelle += 20;
+      }
+      break;
     case BATON :
       ramassable = ramasserObjet(&pListeObj->baton, pJoueur);
       break;
@@ -297,7 +308,8 @@ void faim(Entitee* pJoueur, long temps){
 }
 
 
-void death(Entitee* pEntitee, Info_Jeu* pJeu, Info_Fenetre* pFenetre){
+void death(Info_Jeu* pJeu, Info_Fenetre* pFenetre){
+  Entitee* pEntitee = pJeu->pJoueur;
   if(pEntitee->pvActuelle <= 0){
     pEntitee->coordonnees.x = pEntitee->initial.x;
     pEntitee->coordonnees.y = pEntitee->initial.y;
@@ -314,8 +326,6 @@ void death(Entitee* pEntitee, Info_Jeu* pJeu, Info_Fenetre* pFenetre){
   }
  
 }
-
-
 
 void limiteScore(Info_Jeu* pJeu, Info_Fenetre* pFenetre){
   if(pJeu->score > 10000){

@@ -58,6 +58,9 @@ typedef struct{
   long temps;
 
   int event;
+
+  FILE* fSauvegarde;
+  int partie_sauv;
 }Info_Jeu;
 
 //
@@ -79,12 +82,18 @@ void debutJeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 //AUTRES FONCTIONS
 //
 
+void save_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+void load_Game(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+
 void init_Curses(Info_Fenetre* pFenetre);
 void freeGame(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
 
 void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu);
+
 void printStat(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height);
+void printInv(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height);
 void printDialogue(Info_Fenetre* pFenetre, Info_Jeu* pJeu, int height);
+
 void gestionFps(Info_Fenetre* pFenetre);
 #include "event.h"
 

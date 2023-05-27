@@ -45,13 +45,12 @@ void dialogue_Radeau(Quete* pQuete){
     
       case 9:
         sprintf(pQuete->dialogue, " RADEAU : Ce n’est pas tout mais je suis sur qu'avant de partir tu as \n un compagnon de fortune qui rêverait de venir avec toi.");
-        pQuete->etape = 4;
         break; 
-      // 10: QUETE 4
+      // 10: ATTENTE DE PAUL ETAPE 4
   }
 }
 
-void quete_Radeau(Quete* pQuete, ListeObj* pListe, int e_Paul){
+void quete_Radeau(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe, int e_Paul){
   
   if(pQuete->e_Dialogue != 4 && pQuete->e_Dialogue != 6 && pQuete->e_Dialogue != 8 && pQuete->e_Dialogue != 10 ){
     dialogue_Radeau(pQuete);
@@ -62,33 +61,30 @@ void quete_Radeau(Quete* pQuete, ListeObj* pListe, int e_Paul){
         sprintf(pQuete->dialogue, " RADEAU : Il te manque un compagnon non?");
       }
       else{
-        pQuete->e_Dialogue += 1;
-        sprintf(pQuete->dialogue, " RADEAU : *brr brr* ");
+        pQuete->etape = 4;
       }
   }
   else{
     switch(pQuete->etape){
       case 1:
-        quete_Radeau_1(pQuete, pListe);
+        quete_Radeau_1(pJoueur, pQuete, pListe);
         break;
       case 2:
-        quete_Radeau_2(pQuete, pListe);
+        quete_Radeau_2(pJoueur, pQuete, pListe);
         break;
       case 3:
-        quete_Radeau_3(pQuete, pListe);
-        break;
-      case 4:
-        quete_Radeau_4(pQuete, pListe, e_Paul);
+        quete_Radeau_3(pJoueur, pQuete, pListe);
         break;
     }
   }
 }
 
 
-void quete_Radeau_1(Quete* pQuete, ListeObj* pListe){ //si le joueur veut finir la quete.
+void quete_Radeau_1(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ //si le joueur veut finir la quete.
   //condition de quête
   if(pListe->baton.nb >= 1){ // a remodifier
-    pListe->baton.nb -= 1; // a remodifier
+    pListe->baton.nb -= 2; // a remodifier
+    ramasserObjet(&pListe->baton, pJoueur);
     
     sprintf(pQuete->dialogue, " *Tu as réparé le radeau à 25%%* \n RADEAU : Merci! Mais ce ne sera pas suffisant...");
     
@@ -99,9 +95,10 @@ void quete_Radeau_1(Quete* pQuete, ListeObj* pListe){ //si le joueur veut finir 
   }
 }
 
-void quete_Radeau_2(Quete* pQuete, ListeObj* pListe){ 
+void quete_Radeau_2(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ 
   if(pListe->corde.nb >= 2){
-    pListe->corde.nb -= 2;
+    pListe->corde.nb -= 3;
+    ramasserObjet(&pListe->corde, pJoueur);
     
     sprintf(pQuete->dialogue, " *Tu as réparé le radeau 50%% *,\n RADEAU : Je me sens beaucoup mieux dejà, je pourrais presque flotter.");
     
@@ -112,9 +109,10 @@ void quete_Radeau_2(Quete* pQuete, ListeObj* pListe){
   }
 }
 
-void quete_Radeau_3(Quete* pQuete, ListeObj* pListe){ 
+void quete_Radeau_3(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ 
   if(pListe->voile.nb >= 1){
-    pListe->voile.nb -= 1;
+    pListe->voile.nb -= 2;
+    ramasserObjet(&pListe->voile, pJoueur);
     
     sprintf(pQuete->dialogue, " *Tu as réparé le radeau à 75%% *\n RADEAU : JE SUIS COMME NEUF, ça faisait longtemps !");
     
@@ -123,10 +121,6 @@ void quete_Radeau_3(Quete* pQuete, ListeObj* pListe){
   else{
     sprintf(pQuete->dialogue, " RADEAU : Il me faut une voile.");
   }
-}
-
-void quete_Radeau_4(Quete* pQuete, ListeObj* pListe, int e_Paul){
-  pQuete->etape = 5;
 }
 
 
@@ -180,7 +174,7 @@ void dialogue_Paul(Quete* pQuete){
 }
 
 
-void quete_Paul(Quete* pQuete, ListeObj* pListe, int eDQuete_Radeau){
+void quete_Paul(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe, int eDQuete_Radeau){
   if(pQuete->e_Dialogue != 4 && pQuete->e_Dialogue != 5 &&  pQuete->e_Dialogue != 7 && pQuete->e_Dialogue != 8 && pQuete->e_Dialogue != 10 && pQuete->e_Dialogue != 11 && pQuete->e_Dialogue != 14 ){
     dialogue_Paul(pQuete);
     pQuete->e_Dialogue += 1;
@@ -216,13 +210,13 @@ void quete_Paul(Quete* pQuete, ListeObj* pListe, int eDQuete_Radeau){
     else{
       switch(pQuete->etape){
         case 1:
-            quete_Paul_1(pQuete, pListe);
+            quete_Paul_1(pJoueur, pQuete, pListe);
           break;
         case 2:
-            quete_Paul_2(pQuete, pListe);
+            quete_Paul_2(pJoueur, pQuete, pListe);
           break;
           case 3:
-            quete_Paul_3(pQuete, pListe);
+            quete_Paul_3(pJoueur, pQuete, pListe);
           break;
       }
     }
@@ -230,12 +224,12 @@ void quete_Paul(Quete* pQuete, ListeObj* pListe, int eDQuete_Radeau){
 }
 
 
-void quete_Paul_1(Quete* pQuete, ListeObj* pListe){ //si le joueur veut finir la quete.
+void quete_Paul_1(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ //si le joueur veut finir la quete.
   if(pListe->pioche.nb == 0){
-    pListe->pioche.nb += 1;
+    ramasserObjet(&pListe->pioche, pJoueur);
   }
   if(pListe->hache.nb == 0){
-    pListe->hache.nb += 1;
+    ramasserObjet(&pListe->hache, pJoueur);
   }
   
   sprintf(pQuete->dialogue, " *Ta relation avec Paul a augmenté ! (25%%)* (tu as reçu une HACHE et une PIOCHE)*\n PAUL : C'est pas grand-chose mais ça devrait pouvoir t'aider j'ai pas raison 🤙");
@@ -243,10 +237,12 @@ void quete_Paul_1(Quete* pQuete, ListeObj* pListe){ //si le joueur veut finir la
   pQuete->e_Dialogue += 1;
 }
 
-void quete_Paul_2(Quete* pQuete, ListeObj* pListe){ 
+void quete_Paul_2(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ 
   if(pListe->caillou.nb >= 1){ //remplacer avec viande de poule si fais 
-    pListe->caillou.nb -= 1;// a remodifier
-    pListe->corde.nb += 2;
+    pListe->caillou.nb -= 2;// a remodifier
+    ramasserObjet(&pListe->caillou, pJoueur);
+    ramasserObjet(&pListe->corde, pJoueur);
+    ramasserObjet(&pListe->corde, pJoueur);
     
     sprintf(pQuete->dialogue, "* Ta relation avec Paul a augmenté ! (50%%) ,\n PAUL : Voilà ta corde, tu vas faire quoi avec ça ?");
     
@@ -257,10 +253,11 @@ void quete_Paul_2(Quete* pQuete, ListeObj* pListe){
   }
 }
 
-void quete_Paul_3(Quete* pQuete, ListeObj* pListe){ 
+void quete_Paul_3(Entitee* pJoueur, Quete* pQuete, ListeObj* pListe){ 
   if(pListe->feuille.nb >= 1){ // a remodifier
-    pListe->feuille.nb -= 1;// a remodifier
-    pListe->voile.nb += 1;
+    pListe->feuille.nb -= 2;// a remodifier
+    ramasserObjet(&pListe->feuille, pJoueur);
+    ramasserObjet(&pListe->voile, pJoueur);
     
     sprintf(pQuete->dialogue, " *Ta relation avec Paul a augmenté ! (75%%) *\n PAUL : Il faudrait que tu m'expliques un jour... \n (tu as reçu une voile)");
     

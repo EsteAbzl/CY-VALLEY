@@ -24,6 +24,7 @@ typedef enum{
 typedef enum{
 O_VIDE,
 //ressources
+O_COCO,
 O_BATON,
 O_FEUILLE,
 O_CAILLOU,
@@ -49,6 +50,7 @@ typedef struct{
 }Obj;
 
 typedef struct{
+  Obj coco;
   Obj baton;
   Obj feuille;
   Obj caillou;
@@ -108,7 +110,7 @@ int alea(int min, int max);
 
 void generateMap(Map* pMap);
 
-void createBouton(Map* pMap, int coordX, int coordY, int heigh, int width, Ressource ressource, Brush brush, char text[30]);
+void createBouton(Map* pMap, int coordX, int coordY, int heigh, int width, int h_Affichage, Ressource ressource, Brush brush, char text[30]);
 void createMapAccueil(Map* pMap);
 
 void createMapOcean(Map* pMap);

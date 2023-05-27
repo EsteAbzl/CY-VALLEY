@@ -27,7 +27,7 @@ int ramasser(Info_Jeu *pJeu, CaseMap caseMap);
 
 int peutCasser(Info_Jeu* pJeu, CaseMap caseMap);
 
-void death(Entitee* pEntitee, Info_Jeu* pJeu, Info_Fenetre* pFenetre);
+void death(Info_Jeu* pJeu, Info_Fenetre* pFenetre);
 
 void limiteScore(Info_Jeu* pJeu, Info_Fenetre* pFenetre);
 

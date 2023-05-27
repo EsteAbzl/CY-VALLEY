@@ -16,7 +16,8 @@ void setColor(unsigned char id, unsigned char r, unsigned char g, unsigned char 
 
 void init_Colors(){
   setColor(COLOR_VOID, 10, 10, 10);
-  setColor(COLOR_WATER, 27, 113, 207);
+  setColor(COLOR_WATER, 47, 223, 219);
+  setColor(BRUSH_DEEP_WATER, 24, 120, 177);
   setColor(COLOR_SAND, 226, 231, 50);
   setColor(COLOR_GRASS, 34, 177, 76);
 
@@ -24,11 +25,14 @@ void init_Colors(){
   setColor(COLOR_STONE, 180, 180, 180);
 
   setColor(COLOR_STAT, 205, 163, 75);
+  setColor(COLOR_INVENTAIRE_NEUTRE, 125, 196, 100);
+  setColor(COLOR_INVENTAIRE_ACTIF, 205, 163, 75);
   setColor(COLOR_D_RADEAU, 231, 205, 148);
   setColor(COLOR_D_PAUL, 142, 180, 234);
 
-  setColor(COLOR_NOUVEAU_JEU, 104, 159, 136);
-  setColor(COLOR_REPRENDRE_JEU, 104, 159, 136);
+  setColor(COLOR_TOUCHE, 140, 99, 57);
+  setColor(COLOR_NOUVEAU_JEU, 149, 236, 184);
+  setColor(COLOR_REPRENDRE_JEU, 140, 230, 180);
   setColor(COLOR_QUITTER_JEU, 200, 100, 95);
   
   setColor(COLOR_TERMINAL, 96, 176, 185);
@@ -38,16 +42,22 @@ void init_Brush(){
   init_Colors();
   init_pair(BRUSH_VOID, COLOR_VOID, COLOR_VOID);
   init_pair(BRUSH_WATER, COLOR_WATER, COLOR_WATER);
+  init_pair(BRUSH_DEEP_WATER, COLOR_VOID, COLOR_DEEP_WATER);
   init_pair(BRUSH_SAND, COLOR_VOID, COLOR_SAND);
-  init_pair(BRUSH_GRASS, COLOR_STONE, COLOR_GRASS);
+  init_pair(BRUSH_GRASS, COLOR_VOID, COLOR_GRASS);
 
   init_pair(BRUSH_BOIS, COLOR_BOIS, COLOR_GRASS);
   init_pair(BRUSH_STONE, COLOR_STONE, COLOR_GRASS);
 
   init_pair(BRUSH_STAT, COLOR_STAT, COLOR_VOID);
+  
+  init_pair(BRUSH_INVENTAIRE_NEUTRE, COLOR_INVENTAIRE_NEUTRE, COLOR_VOID);
+  init_pair(BRUSH_INVENTAIRE_ACTIF, COLOR_INVENTAIRE_ACTIF, COLOR_VOID);
+  
   init_pair(BRUSH_D_RADEAU, COLOR_D_RADEAU, COLOR_VOID);
   init_pair(BRUSH_D_PAUL, COLOR_D_PAUL, COLOR_VOID);
 
+  init_pair(BRUSH_TOUCHE, COLOR_STAT, COLOR_TOUCHE);
   init_pair(BRUSH_NOUVEAU_JEU, COLOR_VOID, COLOR_NOUVEAU_JEU);
   init_pair(BRUSH_REPRENDRE_JEU, COLOR_VOID, COLOR_REPRENDRE_JEU);
   init_pair(BRUSH_QUITTER_JEU, COLOR_VOID, COLOR_QUITTER_JEU);
@@ -100,7 +110,10 @@ void loadPrint(CaseMap caseMap, Print* pPrint){
         
         pPrint->brush = BRUSH_WATER;
       break;
-  
+      case DEEP_WATER: // eau
+        
+        pPrint->brush = BRUSH_DEEP_WATER;
+      break;  
       case SAND: // sable
         pPrint->brush = BRUSH_SAND;
       break;
@@ -111,14 +124,37 @@ void loadPrint(CaseMap caseMap, Print* pPrint){
   
     switch(caseMap.ressource){
       case EMPTY:
-        sprintf(pPrint->caractere, "  ");
+        if(!(rand()%100)){
+          sprintf(pPrint->caractere, "░░");
+        }
+        else if(!(rand()%40)){
+          sprintf(pPrint->caractere, "⚘ ");
+        }
+        else{
+          sprintf(pPrint->caractere, "  ");
+        }
       break;
+      case WAVE:
+        if(!(rand()%40)){
+          sprintf(pPrint->caractere, "🌊");
+        }
+        else if(!(rand()%30)){
+          sprintf(pPrint->caractere, " ≋");
+        }
+        else{
+          sprintf(pPrint->caractere, "  ");
+        }
+      break;
+      
       case TREE:
-        sprintf(pPrint->caractere, "🌳");
+        sprintf(pPrint->caractere, "🌴");
       break;
       case BATON:
         sprintf(pPrint->caractere, "▂ ");
         pPrint->brush = BRUSH_BOIS;
+      break;
+      case COCO:
+        sprintf(pPrint->caractere, "🥥");
       break;
       case LEAF:
         sprintf(pPrint->caractere, "🍃");
