@@ -353,9 +353,9 @@ void printFin_Radeau(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info
     for(int i = xCam; i<xCam + pCam->width; i++){ // x
 
       // affichage d'une case de la mapv
-      attron(COLOR_PAIR(pAffichage_Map->tab[i][j].brush));
+      attron(COLOR_PAIR(BRUSH_DEEP_WATER));
       printw("%s", pAffichage_Map->tab[i][j].caractere);
-      attroff(COLOR_PAIR(pAffichage_Map->tab[i][j].brush));
+      attroff(COLOR_PAIR(BRUSH_DEEP_WATER));
     }
     
     //affichage des contours gauche et droit de l'écran
@@ -373,19 +373,19 @@ void printFin_Radeau(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info
 
   //affichage d'infos sur la position de la caméra
 
-  attron(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
+  attron(COLOR_PAIR(BRUSH_DEEP_WATER));
   mvprintw((coordonnee.y - yCam) + 1, (coordonnee.x - xCam) *2 + 1, "⛵");
-  attroff(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
+  attroff(COLOR_PAIR(BRUSH_DEEP_WATER));
   
   
-  move(pCam->height+5, 0);
-  printw("\n*coin superieur gauche: xCam = %d/yCam = %d", xCam, yCam);
-  printw("\n*joueur: x = %d/y = %d", coordonnee.x, coordonnee.y);
-  printw("\n|joueur dans cam: x = %d/ y = %d", coordonnee.x - xCam, coordonnee.y - yCam);
+  attron(COLOR_PAIR(BRUSH_STAT));
+  mvprintw(4, 12, "VOUS AVEZ REUSSIS A PARTIR DE L'ILE'");
+  attroff(COLOR_PAIR(BRUSH_STAT));
+  
   
 }
 
-void printFin_Mort(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){  
+void printFin_Mort(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){
   int ligne = 0;
   
   // coordonnées du coin haut gauche de la caméra
@@ -429,9 +429,9 @@ void printFin_Mort(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_C
     for(int i = xCam; i<xCam + pCam->width; i++){ // x
 
       // affichage d'une case de la mapv
-      attron(COLOR_PAIR(pAffichage_Map->tab[i][j].brush));
+      attron(COLOR_PAIR(BRUSH_VOID));
       printw("%s", pAffichage_Map->tab[i][j].caractere);
-      attroff(COLOR_PAIR(pAffichage_Map->tab[i][j].brush));
+      attroff(COLOR_PAIR(BRUSH_VOID));
     }
     
     //affichage des contours gauche et droit de l'écran
@@ -449,17 +449,95 @@ void printFin_Mort(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_C
 
   //affichage d'infos sur la position de la caméra
 
-  attron(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
+  attron(COLOR_PAIR(BRUSH_VOID));
   mvprintw((coordonnee.y - yCam) + 1, (coordonnee.x - xCam) *2 + 1, "☠");
-  attroff(COLOR_PAIR(pAffichage_Map->tab[coordonnee.x][coordonnee.y].brush));
+  attroff(COLOR_PAIR(BRUSH_VOID));
   
   
-  move(pCam->height+5, 0);
-  printw("\n*coin superieur gauche: xCam = %d/yCam = %d", xCam, yCam);
-  printw("\n*joueur: x = %d/y = %d", coordonnee.x, coordonnee.y);
-  printw("\n|joueur dans cam: x = %d/ y = %d", coordonnee.x - xCam, coordonnee.y - yCam);
+  attron(COLOR_PAIR(BRUSH_STAT));
+  mvprintw(4, 12, "VOUS AVEZ PERIS SUR L'ILE");
+  attroff(COLOR_PAIR(BRUSH_STAT));
+  
   
 }
+
+void printFin_Paul(Coordonnees coordonnee, Affichage_Map* pAffichage_Map, Info_Cam* pCam){
+  int ligne = 0;
+  
+  // coordonnées du coin haut gauche de la caméra
+  int xCam = -1;
+  int yCam = -1;
+
+  // on place la caméra en fonction de la position du joueur par raport aux bords de la map
+  // on vérifie s'il n'est pas trop proche)
+  // xCam
+  if((coordonnee.x - (pCam->width/2)) < 0) // trop a gauche
+    xCam = 0;
+  else if((coordonnee.x + (pCam->width/2) - pAffichage_Map->width) > 0) // trop a droite
+    xCam = pAffichage_Map->width - (pCam->width);
+  else
+    xCam = coordonnee.x - (pCam->width/2);
+
+  // yCam
+  if((coordonnee.y - (pCam->height/2)) < 0)
+    yCam = 0;
+  else if((coordonnee.y + (pCam->height/2) - pAffichage_Map->height) > 0)
+    yCam = pAffichage_Map->height - (pCam->height);
+  else
+    yCam = coordonnee.y - (pCam->height/2);
+
+
+  move(ligne, 0);
+  attron(COLOR_PAIR(COLOR_VOID));
+
+  //affichage du contour haut de l'écran
+  printw("╔");
+  for(int i = 0; i<pCam->width*2; i++){
+    printw("═");
+  }
+  printw("╗");
+
+  ligne++;
+
+  
+  for(int j = yCam; j<yCam + pCam->height; j++){ // y
+    mvprintw(ligne, 0, "║");
+    for(int i = xCam; i<xCam + pCam->width; i++){ // x
+
+      // affichage d'une case de la mapv
+      attron(COLOR_PAIR(BRUSH_GRASS));
+      printw("%s", pAffichage_Map->tab[i][j].caractere);
+      attroff(COLOR_PAIR(BRUSH_GRASS));
+    }
+    
+    //affichage des contours gauche et droit de l'écran
+    printw("║");
+    ligne++;
+  }
+
+  move(ligne, 0);
+  //affichage du contour bas de l'écran
+  printw("╚");
+  for(int i = 0; i<pCam->width*2; i++){
+    printw("═");
+  }
+  printw("╝");
+
+  //affichage d'infos sur la position de la caméra
+
+  attron(COLOR_PAIR(BRUSH_GRASS));
+  mvprintw((coordonnee.y - yCam) + 1, (coordonnee.x - xCam) *2 + 1, "🕺 ⛺ 🧍");
+  attroff(COLOR_PAIR(BRUSH_GRASS));
+  
+  
+  attron(COLOR_PAIR(BRUSH_GRASS));
+  mvprintw(4, 12, "APRES AVOIR PASSER AUTANT DE TEMPS SUR L'ILE" );
+  mvprintw(5, 12, "VOUS VOUS HABITUEZ A VOTRE QUOTIDIEN AVEC PAUL...");
+  attroff(COLOR_PAIR(BRUSH_GRASS));
+  
+  
+}
+
 
 void printMap(Affichage_Map* pAffichage_Map){
   move(0, 0);

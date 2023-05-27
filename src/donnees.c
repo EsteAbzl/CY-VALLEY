@@ -65,10 +65,10 @@ void generateMap(Map* pMap){
     }// x
   }// y
 
-  pDonnees_Map->tab[alea(10, 13)][alea(10, 15)].ressource = PNG_BOAT;
-  pDonnees_Map->tab[alea(12, 15)][alea(10, 15)].ressource = PNG_PAUL;
-  pDonnees_Map->tab[alea(10, 13)][alea(15, 20)].ressource = HACHE;
-  pDonnees_Map->tab[alea(10, 13)][alea(15, 20)].ressource = PIOCHE;
+  pDonnees_Map->tab[alea(10, 13)][alea(20, 70)].ressource = PNG_BOAT;
+  pDonnees_Map->tab[alea(20, 40)][alea(20, 40)].ressource = PNG_PAUL;
+  pDonnees_Map->tab[alea(40, 83)][alea(10, 20)].ressource = HACHE;
+  pDonnees_Map->tab[alea(60, 90)][alea(60, 80)].ressource = PIOCHE;
   
 }
 
@@ -162,6 +162,44 @@ void createMapOcean(Map* pMap){
 
       if( !(rand() % 50)){
         sprintf(pAffichage_Map->tab[x][y].caractere, "🌊");
+      }
+          
+    }// x
+  }// y
+
+}
+
+
+void createMapMort(Map* pMap){
+  srand(time(NULL));
+  Donnees_Map* pDonnees_Map = pMap->pDonnees;
+  Affichage_Map* pAffichage_Map = pMap->pAffichage;
+  
+  for (int y = 0; y < pDonnees_Map->height; y++) {
+    for (int x = 0; x < pDonnees_Map->width; x++) {
+      pDonnees_Map->tab[x][y].biome = WATER;
+
+      if( !(rand() % 5)){
+        sprintf(pAffichage_Map->tab[x][y].caractere, "💀");
+      }
+          
+    }// x
+  }// y
+
+}
+
+
+void createMapPaul(Map* pMap){
+  srand(time(NULL));
+  Donnees_Map* pDonnees_Map = pMap->pDonnees;
+  Affichage_Map* pAffichage_Map = pMap->pAffichage;
+  
+  for (int y = 0; y < pDonnees_Map->height; y++) {
+    for (int x = 0; x < pDonnees_Map->width; x++) {
+      pDonnees_Map->tab[x][y].biome = WATER;
+
+      if( !(rand() % 50)){
+        sprintf(pAffichage_Map->tab[x][y].caractere, "🌴");
       }
           
     }// x

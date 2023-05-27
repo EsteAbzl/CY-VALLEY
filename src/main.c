@@ -15,7 +15,7 @@ Info_Fenetre* init_Info_Fenetre(){
   
   pFenetre->pWin = NULL;
 
-  pFenetre->ecran = ACCUEIL;
+  pFenetre->ecran = PAUL;
 
   pFenetre->camJeu = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
   pFenetre->camAccueil = constructor_Info_Cam(16*2, 9*2);
@@ -59,7 +59,9 @@ Info_Jeu* init_Info_Jeu(){
   pJeu->mapOcean = constructor_Map(16*2, 9*2);
   createMapOcean(pJeu->mapOcean);
   pJeu->mapMort = constructor_Map(16*2, 9*2);
-  
+  createMapMort(pJeu->mapMort);
+  pJeu->mapPaul = constructor_Map(16*2, 9*2);
+  createMapPaul(pJeu->mapPaul);
   
 
   pJeu->enJeu = 0;
@@ -301,6 +303,10 @@ void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
       pCam = pFenetre->camAccueil;
       pMap = pJeu->mapMort;
       break;
+    case PAUL:
+      pCam = pFenetre->camAccueil;
+      pMap = pJeu->mapPaul;
+      break;
   }
 
   if(pFenetre->ecran == OCEAN){
@@ -308,6 +314,16 @@ void affiche_jeu(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
     coord.x = 16; coord.y = 9;
     printFin_Radeau(coord, pMap->pAffichage, pCam);
   }
+  else if(pFenetre->ecran == MORT){
+    Coordonnees coord;
+    coord.x = 16; coord.y = 9;
+    printFin_Mort(coord, pMap->pAffichage, pCam);
+  }
+  else if(pFenetre->ecran == PAUL){
+    Coordonnees coord;
+    coord.x = 16; coord.y = 9;
+    printFin_Paul(coord, pMap->pAffichage, pCam);
+  }  
   else{
     // actualise la partie affichage de la map
     loadCamPrint(pJeu->pJoueur->coordonnees, pMap, pCam);

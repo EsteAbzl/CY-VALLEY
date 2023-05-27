@@ -14,7 +14,7 @@
 #include "brush.h"
 
 typedef enum{
-  ACCUEIL, JEU, OCEAN, MORT
+  ACCUEIL, JEU, OCEAN, MORT, PAUL
 }Ecran;
 
 typedef struct{
@@ -52,6 +52,7 @@ typedef struct{
   Map* mapAccueil;
   Map* mapOcean;
   Map* mapMort;
+  Map* mapPaul;
 
   int enJeu;
   int score;

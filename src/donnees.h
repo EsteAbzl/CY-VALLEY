@@ -114,6 +114,8 @@ void createBouton(Map* pMap, int coordX, int coordY, int heigh, int width, int h
 void createMapAccueil(Map* pMap);
 
 void createMapOcean(Map* pMap);
+void createMapMort(Map* pMap);
+void createMapPaul(Map* pMap);
 
 
 //res et ini

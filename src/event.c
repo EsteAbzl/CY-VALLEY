@@ -11,7 +11,6 @@ int getEvent(Info_Jeu* pJeu){
   return nouvelEvent;
 }
 
-
 void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   Entitee* pJoueur = pJeu->pJoueur;
   int score = pJeu->score;
@@ -254,9 +253,9 @@ int ramasser(Info_Jeu *pJeu, CaseMap caseMap){
   ListeObj* pListeObj = &(pJeu->listeObj);
   switch(caseMap.ressource){
     case COCO :
-      if(pJeu->pJoueur->pvActuelle <= pJeu->pJoueur->pvTotal - 20){
+      if(pJeu->pJoueur->pvActuelle <= pJeu->pJoueur->pvTotal - 10){
         ramassable = 1;
-        pJeu->pJoueur->pvActuelle += 20;
+        modifpvA(20 , pJeu->pJoueur);
       }
       break;
     case BATON :
@@ -329,7 +328,7 @@ void death(Info_Jeu* pJeu, Info_Fenetre* pFenetre){
 }
 
 void limiteScore(Info_Jeu* pJeu, Info_Fenetre* pFenetre){
-  if(pJeu->score > 10000){
+  if(pJeu->score > 6000){
     fin(pJeu, pFenetre, 2);
   }
 }
@@ -337,13 +336,13 @@ void limiteScore(Info_Jeu* pJeu, Info_Fenetre* pFenetre){
 void fin(Info_Jeu* pJeu, Info_Fenetre* pFenetre, int nb_Fin){
   switch(nb_Fin){
     case 1:    // fin quête
-    pJeu->enJeu = 0;
+    pFenetre->ecran = OCEAN;
   break;
     case 2:    // fin score
-    pJeu->enJeu = 0;
+    pFenetre->ecran = PAUL;
   break;
     case 3:    // fin vie / temps
-    pJeu->enJeu = 0;
+    pFenetre->ecran = MORT;
   break;
   }
 }
