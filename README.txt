@@ -2,10 +2,10 @@
 			CY VALLEY : ESTEBAN ABEHZELE, ILAN DASSONVILLE ET NICOLAS LAGRANGE.
 
 		SYNOPSIS: 
-	Vous êtes échouer sur une île deserte, enfin pas si deserte que ça. En effet, en explorant cet île vous
-allez découvrir comment s'échapper de cet île. 
-	Pour ce faire, vous allez devoir récolter des ressources et vous lier d'amitier avec les habitants de cet
-île...
+	Vous êtes échoué sur une île déserte, enfin pas si déserte que ça. En effet, en explorant cette île vous
+allez découvrir comment s'échapper de cette île. 
+	Pour ce faire, vous allez devoir récolter des ressources et vous lier d'amitié avec les habitants de cet
+île....
 
 		LES COMMANDES : 
 	Il y en as pas tant que ça, 
@@ -16,7 +16,7 @@ allez découvrir comment s'échapper de cet île.
 		S : BAS
 		D : DROITE
 	E :
-	Pour interagir, cela peut permettre de casser des objets, récuperer des ressources et toute sorte 
+	Pour interagir, cela peut permettre de casser des objets, récupérer des ressources et toute sorte 
 de choses.
 	A :
 	Cette touche permet de revenir dans le menu, mais pas de panique vous pouvez toujours utiliser le bouton
