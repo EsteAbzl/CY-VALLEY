@@ -15,7 +15,7 @@ Info_Fenetre* init_Info_Fenetre(){
   
   pFenetre->pWin = NULL;
 
-  pFenetre->ecran = PAUL;
+  pFenetre->ecran = ACCUEIL;
 
   pFenetre->camJeu = constructor_Info_Cam(16*2, 9*2); //la caméra est en 16/9 du coup (48/27)
   pFenetre->camAccueil = constructor_Info_Cam(16*2, 9*2);
