@@ -15,49 +15,62 @@ void action(Info_Fenetre* pFenetre, Info_Jeu* pJeu){
   Entitee* pJoueur = pJeu->pJoueur;
   int score = pJeu->score;
   if(getEvent(pJeu)){
-    switch (pJeu->event){
-      case 'Z':
-        pJoueur->regard = HAUT;
-        
-        deplacer(pFenetre, pJeu);
-        score = score + 5;
-        break;
-      case 'S':
-        pJoueur->regard = BAS;
-
-        deplacer(pFenetre, pJeu);
-        score = score + 5;
-        break;
-      case 'Q':
-        pJoueur->regard = GAUCHE;
-
-        deplacer(pFenetre, pJeu);
-        score = score + 5;
-        break;
-      case 'D':
-        pJoueur->regard = DROITE;
-
-        deplacer(pFenetre, pJeu);
-        score = score + 5;
-        break;
-      case 'A':
-        save_Game(pFenetre, pJeu);
-        clear();
-        pFenetre->ecran = ACCUEIL;
-        pJoueur->coordonnees.x = 10;
-        pJoueur->coordonnees.y = 10;
-        break;
-      case 'E':
-        interagir(pFenetre, pJeu);
-        break;
-      case ' ':
-        pJeu->enJeu = 0;
-        break;
-      /*case 'I' :
-          inventaire
-          break; */
+    if(pFenetre->ecran == JEU || pFenetre->ecran == ACCUEIL){
+      switch (pJeu->event){
+        case 'Z':
+          pJoueur->regard = HAUT;
+          
+          deplacer(pFenetre, pJeu);
+          score = score + 5;
+          break;
+        case 'S':
+          pJoueur->regard = BAS;
+  
+          deplacer(pFenetre, pJeu);
+          score = score + 5;
+          break;
+        case 'Q':
+          pJoueur->regard = GAUCHE;
+  
+          deplacer(pFenetre, pJeu);
+          score = score + 5;
+          break;
+        case 'D':
+          pJoueur->regard = DROITE;
+  
+          deplacer(pFenetre, pJeu);
+          score = score + 5;
+          break;
+        case 'A':
+          save_Game(pFenetre, pJeu);
+          clear();
+          pFenetre->ecran = ACCUEIL;
+          pJoueur->coordonnees.x = 10;
+          pJoueur->coordonnees.y = 10;
+          break;
+        case 'E':
+          interagir(pFenetre, pJeu);
+          break;
+        case ' ':
+          pJeu->enJeu = 0;
+          break;
+      }
     }
-    
+    else{
+      switch (pJeu->event){
+        case 'A':
+          save_Game(pFenetre, pJeu);
+          clear();
+          pFenetre->ecran = ACCUEIL;
+          pJoueur->coordonnees.x = 10;
+          pJoueur->coordonnees.y = 10;
+          break;
+        case ' ':
+          pJeu->enJeu = 0;
+          break;
+      }
+    }
+        
   }
 }
 
