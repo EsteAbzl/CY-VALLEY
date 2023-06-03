@@ -14,7 +14,7 @@ allez découvrir comment s'échapper de cette île.
 	Classique, comme souvent, ce sont les touches de déplacement.
 		Z : HAUT
 		Q : GAUCHE
-		S : BAS
+		S : BAS 
 		D : DROITE
 	E :
 	Pour interagir avec la case devant le personnage. Cela peut permettre de casser des objets, récupérer des ressources et toute sorte 
