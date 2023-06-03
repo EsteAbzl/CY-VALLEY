@@ -6,6 +6,7 @@
 allez découvrir comment s'échapper de cette île. 
 	Pour ce faire, vous allez devoir récolter des ressources et vous lier d'amitié avec les habitants de cet
 île....
+	Il parrait qu'une mistérieuse épave a été apérçu sur la plage Ouest de l'île.
 
 		LES COMMANDES : 
 	Il y en as pas tant que ça, 
@@ -16,7 +17,7 @@ allez découvrir comment s'échapper de cette île.
 		S : BAS
 		D : DROITE
 	E :
-	Pour interagir, cela peut permettre de casser des objets, récupérer des ressources et toute sorte 
+	Pour interagir avec la case devant le personnage. Cela peut permettre de casser des objets, récupérer des ressources et toute sorte 
 de choses.
 	A :
 	Cette touche permet de revenir dans le menu, mais pas de panique vous pouvez toujours utiliser le bouton
