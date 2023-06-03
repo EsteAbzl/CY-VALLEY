@@ -6,7 +6,7 @@
 allez découvrir comment s'échapper de cette île. 
 	Pour ce faire, vous allez devoir récolter des ressources et vous lier d'amitié avec les habitants de cet
 île....
-	Il parrait qu'une mistérieuse épave a été apérçu sur la plage Ouest de l'île.
+	Il parrait qu'une mystérieuse épave a été apérçu sur la plage Ouest de l'île.
 
 		LES COMMANDES : 
 	Il y en as pas tant que ça, 
