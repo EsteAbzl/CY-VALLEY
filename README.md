@@ -38,3 +38,5 @@
 	2 - Entrez la commande "make".
   	    2.BIS - Si la compilation échoue, faites "gcc -o main src/*.c -lncursesw".
 	3 - Il ne vous restes plus qu'à faire "./main" pour lancer le jeu.
+ 
+ ====================================================================================================================
